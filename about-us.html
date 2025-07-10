@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - NexaTools</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for smooth transitions and animations */
+        .card-lift {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .card-lift:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+        .btn-bounce:hover {
+            animation: bounce-sm 0.5s;
+        }
+        @keyframes bounce-sm {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-4px);
+            }
+        }
+        /* Style for sticky header */
+        .header-scrolled {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .dark .header-scrolled {
+            background-color: rgba(15, 23, 42, 0.8); /* slate-900 with opacity */
+        }
+        /* Custom styles for the about page content */
+        .about-content h1, .about-content h2, .about-content h3, .about-content h4 {
+            font-weight: 700;
+        }
+        .about-content h1 { font-size: 2.25rem; line-height: 2.5rem; margin-bottom: 1.5rem; }
+        .about-content h2 { font-size: 1.875rem; line-height: 2.25rem; margin-top: 2.5rem; margin-bottom: 1rem; border-bottom: 2px solid #3b82f6; padding-bottom: 0.5rem;}
+        .about-content h3 { font-size: 1.5rem; line-height: 2rem; margin-top: 2rem; margin-bottom: 1rem; }
+        .about-content h4 { font-size: 1.25rem; line-height: 1.75rem; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+        .about-content p, .about-content li { font-size: 1.125rem; line-height: 1.75rem; margin-bottom: 1rem; color: #475569; }
+        .dark .about-content p, .dark .about-content li { color: #cbd5e1; }
+        .about-content ol, .about-content ul { padding-left: 1.5rem; }
+        .about-content ol li { list-style-type: decimal; }
+        .about-content ul li { list-style-type: disc; }
+    </style>
+    <script>
+        // Set theme on initial load
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            blue: '#3b82f6',
+                            green: '#10b981',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 transition-colors duration-300">
+
+    <!-- =========== HEADER =========== -->
+    <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 header-scrolled">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Home</a>
+                <a href="index.html#tools" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Tools</a>
+                <a href="about-us.html" class="text-brand-blue dark:text-brand-blue font-semibold">About</a>
+                <a href="contact-us.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Contact</a>
+            </nav>
+            <div class="flex items-center">
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                    <svg id="theme-toggle-dark-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                    <svg id="theme-toggle-light-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 5.05A1 1 0 003.636 6.464l.707.707a1 1 0 001.414-1.414l-.707-.707zM3 11a1 1 0 100-2H2a1 1 0 100 2h1zM6.464 16.364l.707-.707a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="pt-24">
+        <div class="container mx-auto px-4 py-16">
+            <div class="max-w-4xl mx-auto about-content text-slate-800 dark:text-slate-200">
+                
+                <h1>About NexaTools: Simplifying Your Digital World, One Tool at a Time</h1>
+
+                <p>Welcome to NexaTools, your go-to destination for a comprehensive suite of free, fast, and secure online tools. In a digital world often cluttered with complex software, expensive subscriptions, and persistent privacy concerns, we saw the need for a simpler, more respectful alternative. We asked: what if there was a single, reliable place where anyone—from a student to a seasoned developer—could get their tasks done instantly, without barriers?</p>
+
+                <p>That question is the foundation of NexaTools.</p>
+
+                <p>Our mission is simple: to provide a powerful and ever-expanding library of high-quality online tools that are accessible to everyone, everywhere, for free. We are dedicated to building utilities that solve real-world problems, enhance productivity, and empower our users to work smarter, not harder.</p>
+
+                <h2>Our Core Principles</h2>
+                <p>At NexaTools, we operate on a foundation of core principles that guide every tool we build and every decision we make. These are our promises to you.</p>
+                <ol>
+                    <li>
+                        <h4>1. Completely Free, Forever</h4>
+                        <p>NexaTools is and always will be free to use. There are no hidden fees, no "premium" features held hostage behind a paywall, and no trial periods. We believe essential utilities should be available to all, whether you're compressing a single image or converting documents every day.</p>
+                    </li>
+                    <li>
+                        <h4>2. Privacy is Paramount</h4>
+                        <p>We get it—your files and data are your own. That’s why we built NexaTools as a suite of privacy-focused tools. We do not ask you to create an account, and we do not store your uploaded files on our servers. For most of our tools, the magic happens directly in your browser, meaning your sensitive information never leaves your device. Your privacy isn't an afterthought; it's our default setting.</p>
+                    </li>
+                    <li>
+                        <h4>3. Simplicity and Unmatched Speed</h4>
+                        <p>Time is your most valuable asset. Our interface is clean, intuitive, and designed to get you from problem to solution in seconds. You won't find intrusive ads, confusing layouts, or unnecessary steps. Just upload your file or input your data, and let our powerful backend do the work. From our image compressor to our PDF converter, every tool is optimized for performance.</p>
+                    </li>
+                    <li>
+                        <h4>4. Accessibility for Everyone</h4>
+                        <p>No login required. No software to install. NexaTools is a fully browser-based platform, making it universally accessible. Whether you’re on a desktop at the office, a laptop in a library, or on your phone while on the move, our tools are fully responsive and ready to work whenever you are.</p>
+                    </li>
+                </ol>
+
+                <h2>Who We Build For</h2>
+                <p>NexaTools is designed for doers—people who need to get things done quickly and efficiently.</p>
+                
+                <h4>For Students:</h4>
+                <p>Juggling assignments and research is tough. Use our tools to merge PDF articles into a single study guide, convert lecture notes from a PDF to an image for your presentations, or use the Age Calculator for statistics projects.</p>
+
+                <h4>For Professionals:</h4>
+                <p>In the business world, efficiency is key. Compress images for a fast-loading website, convert a Word proposal to a universally readable PDF, or use our free OCR tool to extract text from a scanned invoice, saving you hours of manual typing.</p>
+
+                <h4>For Developers:</h4>
+                <p>We speak your language. Quickly format a messy JSON file, encode or decode strings with our Base64 and URL tools, or generate a unique UUID for your next project. NexaTools provides the handy utilities you need, right in your browser.</p>
+
+                <h2>Explore Our Growing Toolkit</h2>
+                <p>Our library of free online tools is constantly expanding. Some of our most popular utilities include:</p>
+                <ul>
+                    <li><strong>Document Management:</strong> PDF to Image, Word to PDF, PDF Merger & Splitter.</li>
+                    <li><strong>Image Optimization:</strong> A powerful Image Compressor, Image Resizer, Image to PDF, and Image Converter.</li>
+                    <li><strong>Text & SEO Utilities:</strong> Case Converter, Word & Character Counter, and Keyword Density Checker.</li>
+                    <li><strong>Calculators & Converters:</strong> Age Calculator, BMI Calculator, and Unit Converters.</li>
+                    <li>And so much more...</li>
+                </ul>
+
+                <h2>Your Trusted Digital Partner</h2>
+                <p>NexaTools is more than just a website; it’s a commitment to providing real value without compromise. We believe in building trust through transparency, security, and a user-first approach. We are passionate about creating a resource that you can rely on for your daily digital tasks.</p>
+
+                <p>So go ahead, explore our collection. Find the right tool for your task and experience the NexaTools difference. Your next project just got a whole lot easier.</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- =========== FOOTER =========== -->
+    <footer class="bg-slate-100 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700/50">
+        <div class="container mx-auto px-4 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left space-y-4 md:space-y-0">
+                <div>
+                    <a href="index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">Simplifying your digital life.</p>
+                </div>
+                <div class="text-sm text-slate-600 dark:text-slate-400">
+                    <p>contact@nexatools.com</p>
+                    <p class="mt-1">© 2024 NexaTools. All Rights Reserved.</p>
+                </div>
+                <div class="flex space-x-4 text-sm">
+                    <a href="privacy-policy.html" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
+                    <a href="terms-of-use.html" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- THEME TOGGLE SCRIPT ---
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const darkIcon = document.getElementById('theme-toggle-dark-icon');
+            const lightIcon = document.getElementById('theme-toggle-light-icon');
+            
+            const toggleTheme = () => {
+                const isDark = document.documentElement.classList.toggle('dark');
+                localStorage.theme = isDark ? 'dark' : 'light';
+                updateThemeIcons();
+            };
+
+            const updateThemeIcons = () => {
+                if (document.documentElement.classList.contains('dark')) {
+                    darkIcon.classList.remove('hidden');
+                    lightIcon.classList.add('hidden');
+                } else {
+                    darkIcon.classList.add('hidden');
+                    lightIcon.classList.remove('hidden');
+                }
+            };
+            
+            themeToggleBtn.addEventListener('click', toggleTheme);
+            updateThemeIcons(); // Set correct icon on page load
+        });
+    </script>
+</body>
+</html>
