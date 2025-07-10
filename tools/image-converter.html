@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Converter - NexaTools</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- JSZip for creating zip files -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <style>
+        /* Re-using styles from the homepage for consistency */
+        .header-scrolled {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .dark .header-scrolled {
+            background-color: rgba(15, 23, 42, 0.8);
+        }
+        .file-list-item {
+            transition: background-color 0.2s ease-in-out;
+        }
+        /* Custom styles for drag-and-drop area */
+        .drag-over {
+            border-color: #3b82f6; /* brand-blue */
+            background-color: rgb(59 130 246 / 0.05);
+        }
+        .dark .drag-over {
+            background-color: rgb(59 130 246 / 0.1);
+        }
+    </style>
+    <script>
+        // Set theme on initial load
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            blue: '#3b82f6',
+                            green: '#10b981',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 transition-colors duration-300 flex flex-col min-h-screen">
+
+    <!-- =========== HEADER =========== -->
+    <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Home</a>
+                <a href="index.html#tools" class="text-brand-blue font-semibold">Tools</a> <!-- Highlight current section -->
+                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">About</a>
+                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Contact</a>
+            </nav>
+            <div class="flex items-center">
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                    <svg id="theme-toggle-dark-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                    <svg id="theme-toggle-light-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 5.05A1 1 0 003.636 6.464l.707.707a1 1 0 001.414-1.414l-.707-.707zM3 11a1 1 0 100-2H2a1 1 0 100 2h1zM6.464 16.364l.707-.707a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow pt-24 pb-12">
+        <div class="container mx-auto px-4">
+            <!-- Tool Header -->
+            <div class="text-center mb-12">
+                <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white flex items-center justify-center gap-4">
+                    <span class="text-brand-blue">
+                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" /></svg>
+                    </span>
+                    Image Converter
+                </h1>
+                <p class="mt-4 text-lg md:text-xl max-w-2xl mx-auto text-slate-600 dark:text-slate-300">Convert your images to JPG, PNG, and WEBP formats quickly and easily.</p>
+            </div>
+            
+            <!-- Tool UI -->
+            <div class="max-w-4xl mx-auto bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 md:p-8">
+                
+                <!-- Upload Area -->
+                <div id="drop-zone" class="border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-lg p-8 text-center cursor-pointer transition-all duration-300">
+                    <div class="flex flex-col items-center justify-center space-y-4 text-slate-500 dark:text-slate-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
+                        <p class="text-lg font-semibold">Drag & drop image files here</p>
+                        <p>or</p>
+                        <button id="select-files-btn" class="bg-brand-blue text-white font-bold py-2 px-6 rounded-lg shadow-md hover:bg-blue-600 transition-colors">Select Files</button>
+                        <input type="file" id="file-input" class="hidden" multiple accept="image/*">
+                        <p class="text-xs text-slate-400">Supports: JPG, PNG, GIF, BMP, WEBP, SVG</p>
+                    </div>
+                </div>
+
+                <!-- Options & File Queue -->
+                <div id="processing-section" class="hidden mt-8">
+                    <!-- Conversion Options -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-end bg-slate-100 dark:bg-slate-700/50 p-4 rounded-lg">
+                        <div>
+                            <label for="format-select" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Convert to:</label>
+                            <select id="format-select" class="w-full bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600 rounded-md shadow-sm focus:ring-brand-blue focus:border-brand-blue">
+                                <option value="jpg">JPG</option>
+                                <option value="png">PNG</option>
+                                <option value="webp">WEBP</option>
+                            </select>
+                        </div>
+                        <div id="quality-control">
+                            <label for="quality-slider" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Quality: <span id="quality-value">80</span>%</label>
+                            <input id="quality-slider" type="range" min="1" max="100" value="80" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer dark:bg-slate-600">
+                        </div>
+                    </div>
+
+                    <!-- File List -->
+                    <div id="file-list" class="mt-6 space-y-3">
+                        <!-- File items will be injected here by JS -->
+                    </div>
+                    
+                    <!-- Action Buttons -->
+                    <div class="mt-8 flex flex-col sm:flex-row gap-4">
+                        <button id="convert-btn" class="w-full sm:w-auto flex-1 bg-brand-green text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-green-600 transition-colors flex items-center justify-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" /><path fill-rule="evenodd" d="M10 3a1 1 0 011 1v12a1 1 0 11-2 0V4a1 1 0 011-1z" clip-rule="evenodd" transform="rotate(45 10 10)" /></svg>
+                            Convert
+                        </button>
+                        <button id="download-all-btn" class="w-full sm:w-auto hidden bg-brand-blue text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-blue-600 transition-colors flex items-center justify-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                            Download All (.zip)
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- =========== FOOTER =========== -->
+    <footer class="bg-slate-100 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700/50 mt-auto">
+        <div class="container mx-auto px-4 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left space-y-4 md:space-y-0">
+                <div>
+                    <a href="index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">Simplifying your digital life.</p>
+                </div>
+                <div class="text-sm text-slate-600 dark:text-slate-400">
+                    <p>contact@nexatools.com</p>
+                    <p class="mt-1">© 2024 NexaTools. All Rights Reserved.</p>
+                </div>
+                <div class="flex space-x-4 text-sm">
+                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
+                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // --- THEME & HEADER LOGIC (from homepage) ---
+    const header = document.getElementById('header');
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const darkIcon = document.getElementById('theme-toggle-dark-icon');
+    const lightIcon = document.getElementById('theme-toggle-light-icon');
+    
+    const toggleTheme = () => {
+        const isDark = document.documentElement.classList.toggle('dark');
+        localStorage.theme = isDark ? 'dark' : 'light';
+        updateThemeIcons();
+    };
+
+    const updateThemeIcons = () => {
+        if (document.documentElement.classList.contains('dark')) {
+            darkIcon.classList.remove('hidden');
+            lightIcon.classList.add('hidden');
+        } else {
+            darkIcon.classList.add('hidden');
+            lightIcon.classList.remove('hidden');
+        }
+    };
+    
+    themeToggleBtn.addEventListener('click', toggleTheme);
+    updateThemeIcons();
+    
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 10) {
+            header.classList.add('header-scrolled');
+        } else {
+            header.classList.remove('header-scrolled');
+        }
+    });
+
+    // --- IMAGE CONVERTER LOGIC ---
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('file-input');
+    const selectFilesBtn = document.getElementById('select-files-btn');
+    const processingSection = document.getElementById('processing-section');
+    const fileListElem = document.getElementById('file-list');
+    const formatSelect = document.getElementById('format-select');
+    const qualityControl = document.getElementById('quality-control');
+    const qualitySlider = document.getElementById('quality-slider');
+    const qualityValue = document.getElementById('quality-value');
+    const convertBtn = document.getElementById('convert-btn');
+    const downloadAllBtn = document.getElementById('download-all-btn');
+
+    let filesToProcess = [];
+
+    // Event Listeners
+    selectFilesBtn.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', () => handleFiles(fileInput.files));
+    
+    dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dropZone.classList.add('drag-over');
+    });
+
+    dropZone.addEventListener('dragleave', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dropZone.classList.remove('drag-over');
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dropZone.classList.remove('drag-over');
+        handleFiles(e.dataTransfer.files);
+    });
+    
+    formatSelect.addEventListener('change', () => {
+        const format = formatSelect.value;
+        qualityControl.style.display = (format === 'jpg' || format === 'webp') ? 'block' : 'none';
+    });
+    
+    qualitySlider.addEventListener('input', () => {
+        qualityValue.textContent = qualitySlider.value;
+    });
+
+    convertBtn.addEventListener('click', processConversion);
+    downloadAllBtn.addEventListener('click', downloadAllAsZip);
+
+
+    function handleFiles(files) {
+        const newFiles = Array.from(files).filter(file => file.type.startsWith('image/'));
+        filesToProcess = [...filesToProcess, ...newFiles];
+        updateFileList();
+        if (filesToProcess.length > 0) {
+            processingSection.classList.remove('hidden');
+        }
+    }
+
+    function formatFileSize(bytes) {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+    function updateFileList() {
+        fileListElem.innerHTML = '';
+        filesToProcess.forEach((file, index) => {
+            const fileItem = document.createElement('div');
+            fileItem.className = 'file-list-item bg-slate-50 dark:bg-slate-700/60 p-3 rounded-lg flex items-center justify-between';
+            fileItem.dataset.index = index;
+            
+            const thumbnailUrl = URL.createObjectURL(file);
+
+            fileItem.innerHTML = `
+                <div class="flex items-center gap-4">
+                    <img src="${thumbnailUrl}" alt="${file.name}" class="w-12 h-12 object-cover rounded-md">
+                    <div>
+                        <p class="font-semibold text-sm text-slate-800 dark:text-slate-100 truncate max-w-[200px] sm:max-w-xs md:max-w-sm">${file.name}</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">${formatFileSize(file.size)}</p>
+                    </div>
+                </div>
+                <div class="file-status text-sm flex items-center gap-4">
+                    <!-- Status/Download will go here -->
+                </div>
+                <button class="remove-btn p-1 text-slate-400 hover:text-red-500 dark:hover:text-red-400">×</button>
+            `;
+            
+            fileItem.querySelector('.remove-btn').addEventListener('click', (e) => {
+                e.stopPropagation();
+                const itemIndex = parseInt(fileItem.dataset.index);
+                filesToProcess.splice(itemIndex, 1);
+                updateFileList();
+                if (filesToProcess.length === 0) {
+                    processingSection.classList.add('hidden');
+                }
+            });
+
+            fileListElem.appendChild(fileItem);
+        });
+        resetConvertButton();
+        downloadAllBtn.classList.add('hidden');
+    }
+    
+    function resetConvertButton() {
+        convertBtn.disabled = false;
+        convertBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" /><path fill-rule="evenodd" d="M10 3a1 1 0 011 1v12a1 1 0 11-2 0V4a1 1 0 011-1z" clip-rule="evenodd" transform="rotate(45 10 10)" /></svg> Convert`;
+    }
+
+    async function processConversion() {
+        convertBtn.disabled = true;
+        convertBtn.innerHTML = `<svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Converting...`;
+
+        const format = formatSelect.value;
+        const quality = qualitySlider.value / 100;
+        const mimeType = `image/${format}`;
+
+        const conversionPromises = filesToProcess.map((file, index) => {
+            const fileItem = fileListElem.querySelector(`[data-index='${index}']`);
+            const statusElem = fileItem.querySelector('.file-status');
+            statusElem.textContent = 'Processing...';
+
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                        const ctx = canvas.getContext('2d');
+                        if (format === 'jpg') { // Fill background for transparency
+                            ctx.fillStyle = '#FFFFFF';
+                            ctx.fillRect(0, 0, canvas.width, canvas.height);
+                        }
+                        ctx.drawImage(img, 0, 0);
+
+                        canvas.toBlob((blob) => {
+                            const originalName = file.name.substring(0, file.name.lastIndexOf('.'));
+                            const newFileName = `${originalName}.${format}`;
+                            const newFile = new File([blob], newFileName, { type: mimeType });
+                            
+                            const downloadUrl = URL.createObjectURL(blob);
+                            statusElem.innerHTML = `
+                                <span class="text-green-600 dark:text-green-400 font-semibold">${formatFileSize(blob.size)}</span>
+                                <a href="${downloadUrl}" download="${newFileName}" class="bg-blue-100 dark:bg-blue-900/50 text-brand-blue text-xs font-bold py-1 px-3 rounded-full hover:bg-blue-200 dark:hover:bg-blue-800/80">Download</a>
+                            `;
+                            resolve({ blob, fileName: newFileName });
+                        }, mimeType, quality);
+                    };
+                    img.src = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+
+        const results = await Promise.all(conversionPromises);
+        window.convertedFiles = results; // Store for zip download
+        
+        resetConvertButton();
+        if (results.length > 0) {
+            downloadAllBtn.classList.remove('hidden');
+        }
+    }
+    
+    async function downloadAllAsZip() {
+        if (!window.convertedFiles || window.convertedFiles.length === 0) return;
+
+        downloadAllBtn.disabled = true;
+        downloadAllBtn.innerHTML = `Zipping...`;
+
+        const zip = new JSZip();
+        window.convertedFiles.forEach(file => {
+            zip.file(file.fileName, file.blob);
+        });
+
+        zip.generateAsync({ type: "blob" }).then(content => {
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(content);
+            link.download = "NexaTools_Converted_Images.zip";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            downloadAllBtn.disabled = false;
+            downloadAllBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" /></svg> Download All (.zip)`;
+        });
+    }
+
+});
+</script>
+
+</body>
+</html>

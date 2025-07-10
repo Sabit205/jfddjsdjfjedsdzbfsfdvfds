@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scientific Calculator - NexaTools</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .header-scrolled {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .dark .header-scrolled {
+            background-color: rgba(15, 23, 42, 0.8);
+        }
+        /* Custom styles for calculator display */
+        #main-display {
+            font-variant-numeric: tabular-nums;
+        }
+        /* Active state for DEG/RAD toggle */
+        .btn-toggle-active {
+            background-color: #3b82f6 !important; /* brand-blue */
+            color: white !important;
+        }
+    </style>
+    <script>
+        // Set theme on initial load
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+
+        // Configure Tailwind CSS
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            blue: '#3b82f6',
+                            green: '#10b981',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 transition-colors duration-300 flex flex-col min-h-screen">
+
+    <!-- =========== HEADER =========== -->
+    <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Home</a>
+                <a href="index.html#tools" class="text-brand-blue font-semibold">Tools</a>
+                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">About</a>
+                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Contact</a>
+            </nav>
+            <div class="flex items-center">
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                    <svg id="theme-toggle-dark-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                    <svg id="theme-toggle-light-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 5.05A1 1 0 003.636 6.464l.707.707a1 1 0 001.414-1.414l-.707-.707zM3 11a1 1 0 100-2H2a1 1 0 100 2h1zM6.464 16.364l.707-.707a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow pt-24 pb-12">
+        <div class="container mx-auto px-4">
+            <!-- Tool Header -->
+            <div class="text-center mb-12">
+                <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white flex items-center justify-center gap-4">
+                    <span class="text-brand-blue">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calculator-icon lucide-calculator"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></svg>
+                    </span>
+                    Scientific Calculator
+                </h1>
+                <p class="mt-4 text-lg md:text-xl max-w-2xl mx-auto text-slate-600 dark:text-slate-300">Perform basic and advanced calculations with our feature-rich scientific calculator.</p>
+            </div>
+
+            <!-- Calculator Body -->
+            <div class="max-w-md mx-auto bg-white dark:bg-slate-800 rounded-xl shadow-lg p-4 sm:p-6">
+                <!-- Display -->
+                <div class="bg-slate-100 dark:bg-slate-900/50 rounded-lg p-4 mb-4 text-right break-words">
+                    <div id="expression-display" class="h-8 text-slate-500 dark:text-slate-400 text-lg"> </div>
+                    <div id="main-display" class="h-12 text-4xl font-bold text-slate-900 dark:text-white">0</div>
+                </div>
+
+                <!-- Buttons Grid -->
+                <div id="calculator-keys" class="grid grid-cols-5 gap-2 sm:gap-3 text-lg">
+                    <!-- Row 1 -->
+                    <button data-value="deg" id="deg-btn" class="btn-toggle-active p-3 rounded-lg bg-slate-300 dark:bg-slate-700 hover:bg-slate-400 dark:hover:bg-slate-600 transition-colors">DEG</button>
+                    <button data-value="rad" id="rad-btn" class="p-3 rounded-lg bg-slate-300 dark:bg-slate-700 hover:bg-slate-400 dark:hover:bg-slate-600 transition-colors">RAD</button>
+                    <button data-value="pi" class="p-3 rounded-lg bg-slate-300 dark:bg-slate-700 hover:bg-slate-400 dark:hover:bg-slate-600 transition-colors">π</button>
+                    <button data-value="e" class="p-3 rounded-lg bg-slate-300 dark:bg-slate-700 hover:bg-slate-400 dark:hover:bg-slate-600 transition-colors">e</button>
+                    <button data-value="AC" class="p-3 rounded-lg bg-slate-500 hover:bg-slate-600 text-white transition-colors">AC</button>
+                    
+                    <!-- Row 2 -->
+                    <button data-value="sin(" class="p-3 rounded-lg bg-slate-300 dark:bg-slate-700 hover:bg-slate-400 dark:hover:bg-slate-600 transition-colors">sin</button>
+                    <button data-value="cos(" class="p-3 rounded-lg bg-slate-300 dark:bg-slate-700 hover:bg-slate-400 dark:hover:bg-slate-600 transition-colors">cos</button>
+                    <button data-value="tan(" class="p-3 rounded-lg bg-slate-300 dark:bg-slate-700 hover:bg-slate-400 dark:hover:bg-slate-600 transition-colors">tan</button>
+                    <button data-value="^" class="p-3 rounded-lg bg-slate-300 dark:bg-slate-700 hover:bg-slate-400 dark:hover:bg-slate-600 transition-colors">x<sup>y</sup></button>
+                    <button data-value="DEL" class="p-3 rounded-lg bg-slate-500 hover:bg-slate-600 text-white transition-colors">DEL</button>
+
+                    <!-- Row 3 -->
+                    <button data-value="log(" class="p-3 rounded-lg bg-slate-300 dark:bg-slate-700 hover:bg-slate-400 dark:hover:bg-slate-600 transition-colors">log</button>
+                    <button data-value="ln(" class="p-3 rounded-lg bg-slate-300 dark:bg-slate-700 hover:bg-slate-400 dark:hover:bg-slate-600 transition-colors">ln</button>
+                    <button data-value="(" class="p-3 rounded-lg bg-slate-300 dark:bg-slate-700 hover:bg-slate-400 dark:hover:bg-slate-600 transition-colors">(</button>
+                    <button data-value=")" class="p-3 rounded-lg bg-slate-300 dark:bg-slate-700 hover:bg-slate-400 dark:hover:bg-slate-600 transition-colors">)</button>
+                    <button data-value="/" class="p-3 rounded-lg bg-brand-blue/80 hover:bg-brand-blue text-white transition-colors text-2xl">÷</button>
+                    
+                    <!-- Row 4 -->
+                    <button data-value="sqrt(" class="p-3 rounded-lg bg-slate-300 dark:bg-slate-700 hover:bg-slate-400 dark:hover:bg-slate-600 transition-colors">√</button>
+                    <button data-value="7" class="p-3 rounded-lg bg-slate-200 dark:bg-slate-600 hover:bg-slate-300 dark:hover:bg-slate-500 transition-colors font-bold">7</button>
+                    <button data-value="8" class="p-3 rounded-lg bg-slate-200 dark:bg-slate-600 hover:bg-slate-300 dark:hover:bg-slate-500 transition-colors font-bold">8</button>
+                    <button data-value="9" class="p-3 rounded-lg bg-slate-200 dark:bg-slate-600 hover:bg-slate-300 dark:hover:bg-slate-500 transition-colors font-bold">9</button>
+                    <button data-value="*" class="p-3 rounded-lg bg-brand-blue/80 hover:bg-brand-blue text-white transition-colors text-2xl">×</button>
+                    
+                    <!-- Row 5 -->
+                    <button data-value="%" class="p-3 rounded-lg bg-slate-300 dark:bg-slate-700 hover:bg-slate-400 dark:hover:bg-slate-600 transition-colors">%</button>
+                    <button data-value="4" class="p-3 rounded-lg bg-slate-200 dark:bg-slate-600 hover:bg-slate-300 dark:hover:bg-slate-500 transition-colors font-bold">4</button>
+                    <button data-value="5" class="p-3 rounded-lg bg-slate-200 dark:bg-slate-600 hover:bg-slate-300 dark:hover:bg-slate-500 transition-colors font-bold">5</button>
+                    <button data-value="6" class="p-3 rounded-lg bg-slate-200 dark:bg-slate-600 hover:bg-slate-300 dark:hover:bg-slate-500 transition-colors font-bold">6</button>
+                    <button data-value="-" class="p-3 rounded-lg bg-brand-blue/80 hover:bg-brand-blue text-white transition-colors text-2xl">-</button>
+                    
+                    <!-- Row 6 -->
+                    <button data-value="!" class="p-3 rounded-lg bg-slate-300 dark:bg-slate-700 hover:bg-slate-400 dark:hover:bg-slate-600 transition-colors">x!</button>
+                    <button data-value="1" class="p-3 rounded-lg bg-slate-200 dark:bg-slate-600 hover:bg-slate-300 dark:hover:bg-slate-500 transition-colors font-bold">1</button>
+                    <button data-value="2" class="p-3 rounded-lg bg-slate-200 dark:bg-slate-600 hover:bg-slate-300 dark:hover:bg-slate-500 transition-colors font-bold">2</button>
+                    <button data-value="3" class="p-3 rounded-lg bg-slate-200 dark:bg-slate-600 hover:bg-slate-300 dark:hover:bg-slate-500 transition-colors font-bold">3</button>
+                    <button data-value="+" class="p-3 rounded-lg bg-brand-blue/80 hover:bg-brand-blue text-white transition-colors text-2xl">+</button>
+                    
+                    <!-- Row 7 -->
+                    <button data-value="." class="col-span-2 p-3 rounded-lg bg-slate-200 dark:bg-slate-600 hover:bg-slate-300 dark:hover:bg-slate-500 transition-colors font-bold">.</button>
+                    <button data-value="0" class="p-3 rounded-lg bg-slate-200 dark:bg-slate-600 hover:bg-slate-300 dark:hover:bg-slate-500 transition-colors font-bold">0</button>
+                    <button data-value="=" class="col-span-2 p-3 rounded-lg bg-brand-green hover:bg-green-600 text-white transition-colors text-2xl">=</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- =========== FOOTER =========== -->
+    <footer class="bg-slate-100 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700/50 mt-auto">
+        <div class="container mx-auto px-4 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left space-y-4 md:space-y-0">
+                <div>
+                    <a href="index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">Simplifying your digital life.</p>
+                </div>
+                <div class="text-sm text-slate-600 dark:text-slate-400">
+                    <p>contact@nexatools.com</p>
+                    <p class="mt-1">© 2024 NexaTools. All Rights Reserved.</p>
+                </div>
+                <div class="flex space-x-4 text-sm">
+                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
+                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // --- THEME & HEADER LOGIC ---
+    const header = document.getElementById('header');
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const darkIcon = document.getElementById('theme-toggle-dark-icon');
+    const lightIcon = document.getElementById('theme-toggle-light-icon');
+    const toggleTheme = () => { document.documentElement.classList.toggle('dark'); localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'; updateThemeIcons(); };
+    const updateThemeIcons = () => { if (document.documentElement.classList.contains('dark')) { darkIcon.classList.remove('hidden'); lightIcon.classList.add('hidden'); } else { darkIcon.classList.add('hidden'); lightIcon.classList.remove('hidden'); } };
+    themeToggleBtn.addEventListener('click', toggleTheme);
+    updateThemeIcons();
+    window.addEventListener('scroll', () => { header.classList.toggle('header-scrolled', window.scrollY > 10); });
+
+    // --- CALCULATOR LOGIC ---
+    const mainDisplay = document.getElementById('main-display');
+    const expressionDisplay = document.getElementById('expression-display');
+    const keys = document.getElementById('calculator-keys');
+    const degBtn = document.getElementById('deg-btn');
+    const radBtn = document.getElementById('rad-btn');
+
+    let expression = '';
+    let isDeg = true; // Start in Degree mode
+
+    const factorial = (n) => {
+        if (n < 0 || n % 1 !== 0) return NaN; // Factorial is not defined for negative or non-integer numbers
+        if (n === 0 || n === 1) return 1;
+        let result = 1;
+        for (let i = 2; i <= n; i++) {
+            result *= i;
+        }
+        return result;
+    }
+
+    keys.addEventListener('click', e => {
+        const button = e.target.closest('button');
+        if (!button) return;
+
+        const { value } = button.dataset;
+
+        if (value === 'AC') {
+            expression = '';
+            mainDisplay.textContent = '0';
+            expressionDisplay.textContent = '\u00A0'; // non-breaking space
+            return;
+        }
+        
+        if (value === 'DEL') {
+            expression = expression.slice(0, -1);
+            mainDisplay.textContent = expression || '0';
+            return;
+        }
+        
+        if (value === '=') {
+            try {
+                expressionDisplay.textContent = expression.replace(/\*/g, '×').replace(/\//g, '÷') + '=';
+                let evalExpression = expression
+                    .replace(/\^/g, '**')
+                    .replace(/%/g, '/100')
+                    .replace(/π/g, 'Math.PI')
+                    .replace(/e/g, 'Math.E')
+                    .replace(/sqrt\(/g, 'Math.sqrt(')
+                    .replace(/log\(/g, 'Math.log10(')
+                    .replace(/ln\(/g, 'Math.log(')
+                    .replace(/sin\(/g, isDeg ? 'Math.sin(Math.PI/180*' : 'Math.sin(')
+                    .replace(/cos\(/g, isDeg ? 'Math.cos(Math.PI/180*' : 'Math.cos(')
+                    .replace(/tan\(/g, isDeg ? 'Math.tan(Math.PI/180*' : 'Math.tan(')
+                    .replace(/(\d+)!/g, (match, n) => `factorial(${n})`);
+
+                const result = new Function('factorial', `return ${evalExpression}`)(factorial);
+                
+                if (isNaN(result) || !isFinite(result)) {
+                    mainDisplay.textContent = 'Error';
+                } else {
+                    // Round to a reasonable number of decimal places to avoid floating point issues
+                    mainDisplay.textContent = parseFloat(result.toPrecision(14));
+                }
+                expression = mainDisplay.textContent;
+
+            } catch (error) {
+                mainDisplay.textContent = 'Error';
+                expression = '';
+            }
+            return;
+        }
+        
+        if (value === 'deg' || value === 'rad') {
+            isDeg = (value === 'deg');
+            degBtn.classList.toggle('btn-toggle-active', isDeg);
+            radBtn.classList.toggle('btn-toggle-active', !isDeg);
+            return;
+        }
+
+        // Handle initial '0' or error state
+        if (mainDisplay.textContent === '0' || mainDisplay.textContent === 'Error') {
+             expression = '';
+        }
+
+        expression += value;
+        mainDisplay.textContent = expression.replace(/\*/g, '×').replace(/\//g, '÷');
+    });
+});
+</script>
+
+</body>
+</html>

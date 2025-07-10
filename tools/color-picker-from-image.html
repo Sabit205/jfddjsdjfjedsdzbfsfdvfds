@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Picker from Image - NexaTools</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .header-scrolled { background-color: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
+        .dark .header-scrolled { background-color: rgba(15, 23, 42, 0.8); }
+        .drag-over { border-color: #10b981; background-color: rgb(16 185 129 / 0.05); }
+        .dark .drag-over { background-color: rgb(16 185 129 / 0.1); }
+        #image-canvas { cursor: crosshair; }
+        #loupe-canvas { border: 2px solid #e5e7eb; border-radius: 50%; image-rendering: pixelated; image-rendering: -moz-crisp-edges; image-rendering: crisp-edges; }
+        .dark #loupe-canvas { border-color: #4b5563; }
+        .palette-swatch { cursor: pointer; transition: transform 0.1s ease-in-out; }
+        .palette-swatch:hover { transform: scale(1.1); }
+    </style>
+    <script>
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) { document.documentElement.classList.add('dark') } else { document.documentElement.classList.remove('dark') }
+        tailwind.config = { darkMode: 'class', theme: { extend: { colors: { brand: { blue: '#3b82f6', green: '#10b981' } } } } }
+    </script>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 transition-colors duration-300 flex flex-col min-h-screen">
+
+    <!-- =========== HEADER =========== -->
+    <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Home</a>
+                <a href="index.html#tools" class="text-brand-green font-semibold">Tools</a>
+                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">About</a>
+                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Contact</a>
+            </nav>
+            <div class="flex items-center">
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700">
+                    <svg id="theme-toggle-dark-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                    <svg id="theme-toggle-light-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 5.05A1 1 0 003.636 6.464l.707.707a1 1 0 001.414-1.414l-.707-.707zM3 11a1 1 0 100-2H2a1 1 0 100 2h1zM6.464 16.364l.707-.707a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow pt-24 pb-12">
+        <div class="container mx-auto px-4">
+            <!-- Tool Header -->
+            <div class="text-center mb-12">
+                <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white flex items-center justify-center gap-4">
+                    <span class="text-brand-green">
+                       <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pipette-icon lucide-pipette"><path d="m12 9-8.414 8.414A2 2 0 0 0 3 18.828v1.344a2 2 0 0 1-.586 1.414A2 2 0 0 1 3.828 21h1.344a2 2 0 0 0 1.414-.586L15 12"/><path d="m18 9 .4.4a1 1 0 1 1-3 3l-3.8-3.8a1 1 0 1 1 3-3l.4.4 3.4-3.4a1 1 0 1 1 3 3z"/><path d="m2 22 .414-.414"/></svg>
+                    </span>
+                    Color Picker from Image
+                </h1>
+                <p class="mt-4 text-lg md:text-xl max-w-2xl mx-auto text-slate-600 dark:text-slate-300">Upload an image to get its color palette and pick exact pixel colors.</p>
+            </div>
+            
+            <div class="max-w-6xl mx-auto bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 md:p-8">
+                
+                 <!-- Upload Area -->
+                <div id="upload-section">
+                    <div id="drop-zone" class="border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-lg p-12 text-center cursor-pointer transition-all duration-300">
+                        <div class="flex flex-col items-center justify-center space-y-4 text-slate-500 dark:text-slate-400">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
+                            <p class="text-lg font-semibold">Drag & drop an image here</p>
+                            <p>or</p>
+                            <button id="select-files-btn" class="bg-brand-green text-white font-bold py-2 px-6 rounded-lg shadow-md hover:bg-green-600">Select Image</button>
+                            <input type="file" id="file-input" class="hidden" accept="image/png, image/jpeg, image/webp, image/gif">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Processing UI -->
+                <div id="processing-section" class="hidden">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <!-- Image Canvas Area -->
+                        <div id="canvas-container" class="w-full h-[500px] bg-slate-100 dark:bg-slate-900/50 rounded-lg flex items-center justify-center overflow-hidden">
+                            <canvas id="image-canvas"></canvas>
+                        </div>
+                        <!-- Controls and Info -->
+                        <div>
+                            <!-- Loupe -->
+                            <div class="flex items-center gap-6">
+                                <canvas id="loupe-canvas" width="128" height="128"></canvas>
+                                <div>
+                                    <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100">Picked Color</h3>
+                                    <div id="picked-color-swatch" class="w-20 h-20 rounded-lg mt-2 border-2 border-slate-200 dark:border-slate-700"></div>
+                                </div>
+                            </div>
+                            <!-- Color Codes -->
+                            <div id="picked-color-info" class="mt-4 space-y-2 text-sm"></div>
+
+                            <!-- Image Palette -->
+                            <div class="mt-8">
+                                <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-2">Image Palette</h3>
+                                <div id="palette-container" class="flex flex-wrap gap-2"></div>
+                            </div>
+                        </div>
+                    </div>
+                     <!-- Action Buttons -->
+                    <div class="mt-8 flex justify-end">
+                        <button id="reset-btn" class="bg-slate-500 text-white font-semibold py-2 px-6 rounded-lg hover:bg-slate-600 flex items-center justify-center gap-2">
+                            Use Another Image
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- =========== FOOTER (RESTORED) =========== -->
+    <footer class="bg-slate-100 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700/50 mt-auto">
+        <div class="container mx-auto px-4 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left space-y-4 md:space-y-0">
+                <div>
+                    <a href="index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">Simplifying your digital life.</p>
+                </div>
+                <div class="text-sm text-slate-600 dark:text-slate-400">
+                    <p>contact@nexatools.com</p>
+                    <p class="mt-1">© 2024 NexaTools. All Rights Reserved.</p>
+                </div>
+                <div class="flex space-x-4 text-sm">
+                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
+                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ColorThief Library for palette generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // UI Elements
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const uploadSection = document.getElementById('upload-section');
+            const dropZone = document.getElementById('drop-zone');
+            const fileInput = document.getElementById('file-input');
+            const selectFilesBtn = document.getElementById('select-files-btn');
+            const processingSection = document.getElementById('processing-section');
+            const canvasContainer = document.getElementById('canvas-container');
+            const imageCanvas = document.getElementById('image-canvas');
+            const loupeCanvas = document.getElementById('loupe-canvas');
+            const pickedColorSwatch = document.getElementById('picked-color-swatch');
+            const pickedColorInfo = document.getElementById('picked-color-info');
+            const paletteContainer = document.getElementById('palette-container');
+            const resetBtn = document.getElementById('reset-btn');
+            
+            const ctx = imageCanvas.getContext('2d');
+            const loupeCtx = loupeCanvas.getContext('2d');
+            
+            // Create an off-screen canvas for original image data to ensure accurate color picking
+            const originalCanvas = document.createElement('canvas');
+            const originalCtx = originalCanvas.getContext('2d');
+
+            // --- THEME & HEADER ---
+            const toggleTheme = () => { document.documentElement.classList.toggle('dark'); localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'; updateThemeIcons(); };
+            const updateThemeIcons = () => { const isDark = document.documentElement.classList.contains('dark'); if (themeToggleBtn) { document.getElementById('theme-toggle-dark-icon').classList.toggle('hidden', !isDark); document.getElementById('theme-toggle-light-icon').classList.toggle('hidden', isDark); } };
+            const handleHeaderScroll = () => { const header = document.getElementById('header'); if (header) { window.scrollY > 10 ? header.classList.add('header-scrolled') : header.classList.remove('header-scrolled'); } };
+            
+            if (themeToggleBtn) themeToggleBtn.addEventListener('click', toggleTheme);
+            window.addEventListener('scroll', handleHeaderScroll);
+            updateThemeIcons();
+            
+            // --- FILE HANDLING & IMAGE DRAWING (FIXED) ---
+            const handleFile = (file) => {
+                if (!file || !file.type.startsWith('image/')) {
+                    alert('Please select a valid image file.');
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        uploadSection.classList.add('hidden');
+                        processingSection.classList.remove('hidden');
+
+                        // 1. Draw full-res image to the off-screen canvas
+                        originalCanvas.width = img.width;
+                        originalCanvas.height = img.height;
+                        originalCtx.drawImage(img, 0, 0);
+
+                        // 2. Calculate scaled dimensions to fit the container
+                        const containerWidth = canvasContainer.clientWidth;
+                        const containerHeight = canvasContainer.clientHeight;
+                        const ratio = Math.min(containerWidth / img.width, containerHeight / img.height);
+                        const scaledWidth = img.width * ratio;
+                        const scaledHeight = img.height * ratio;
+
+                        // 3. Set the visible canvas to the new scaled dimensions
+                        imageCanvas.width = scaledWidth;
+                        imageCanvas.height = scaledHeight;
+                        
+                        // 4. Draw the scaled image to the visible canvas
+                        ctx.drawImage(img, 0, 0, scaledWidth, scaledHeight);
+
+                        extractPalette(img);
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            };
+
+            // --- COLOR EXTRACTION & DISPLAY ---
+            const extractPalette = (img) => {
+                const colorThief = new ColorThief();
+                const palette = colorThief.getPalette(img, 8);
+                
+                paletteContainer.innerHTML = '';
+                palette.forEach(rgb => {
+                    const swatch = document.createElement('div');
+                    swatch.className = 'palette-swatch w-10 h-10 rounded-md';
+                    const colorStr = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+                    swatch.style.backgroundColor = colorStr;
+                    swatch.addEventListener('click', () => updatePickedColor(rgb[0], rgb[1], rgb[2]));
+                    paletteContainer.appendChild(swatch);
+                });
+                updatePickedColor(palette[0][0], palette[0][1], palette[0][2]);
+            };
+
+            const updatePickedColor = (r, g, b) => {
+                const rgbStr = `rgb(${r}, ${g}, ${b})`;
+                const hexStr = rgbToHex(r, g, b);
+                const hslStr = rgbToHsl(r, g, b);
+
+                pickedColorSwatch.style.backgroundColor = rgbStr;
+                pickedColorInfo.innerHTML = `
+                    ${createInfoRow('HEX', hexStr)}
+                    ${createInfoRow('RGB', rgbStr)}
+                    ${createInfoRow('HSL', hslStr)}
+                `;
+            };
+
+            const createInfoRow = (label, value) => {
+                return `
+                    <div class="flex items-center justify-between bg-slate-100 dark:bg-slate-700/50 p-2 rounded-md">
+                        <span class="font-semibold text-slate-600 dark:text-slate-300">${label}:</span>
+                        <span class="font-mono text-slate-800 dark:text-slate-100">${value}</span>
+                        <button class="copy-btn text-sm text-brand-blue font-semibold ml-4" data-value="${value}">Copy</button>
+                    </div>
+                `;
+            };
+
+            // --- CANVAS INTERACTION (FIXED) ---
+            const getOriginalCoords = (e) => {
+                const rect = imageCanvas.getBoundingClientRect();
+                // Mouse position on the visible (scaled) canvas
+                const mouseX = e.clientX - rect.left;
+                const mouseY = e.clientY - rect.top;
+
+                // Map these coordinates to the original, full-resolution image
+                const scaleX = originalCanvas.width / imageCanvas.width;
+                const scaleY = originalCanvas.height / imageCanvas.height;
+                const originalX = Math.floor(mouseX * scaleX);
+                const originalY = Math.floor(mouseY * scaleY);
+
+                return { x: originalX, y: originalY };
+            };
+
+            const updateLoupe = (e) => {
+                const { x, y } = getOriginalCoords(e);
+
+                loupeCtx.imageSmoothingEnabled = false;
+                loupeCtx.clearRect(0, 0, loupeCanvas.width, loupeCanvas.height);
+                
+                const zoomFactor = 10;
+                loupeCtx.drawImage(
+                    originalCanvas, // Read from the full-res canvas
+                    x - (loupeCanvas.width / zoomFactor / 2),
+                    y - (loupeCanvas.height / zoomFactor / 2),
+                    loupeCanvas.width / zoomFactor,
+                    loupeCanvas.height / zoomFactor,
+                    0, 0,
+                    loupeCanvas.width, loupeCanvas.height
+                );
+                
+                loupeCtx.strokeStyle = 'rgba(0,0,0,0.5)';
+                loupeCtx.lineWidth = 2;
+                loupeCtx.beginPath();
+                loupeCtx.moveTo(loupeCanvas.width / 2, 0); loupeCtx.lineTo(loupeCanvas.width / 2, loupeCanvas.height);
+                loupeCtx.moveTo(0, loupeCanvas.height / 2); loupeCtx.lineTo(loupeCanvas.width, loupeCanvas.height / 2);
+                loupeCtx.stroke();
+            };
+
+            imageCanvas.addEventListener('mousemove', updateLoupe);
+            imageCanvas.addEventListener('click', (e) => {
+                const { x, y } = getOriginalCoords(e);
+                const pixel = originalCtx.getImageData(x, y, 1, 1).data;
+                updatePickedColor(pixel[0], pixel[1], pixel[2]);
+            });
+
+            // --- UTILITY & HELPER FUNCTIONS ---
+            const rgbToHex = (r, g, b) => '#' + [r, g, b].map(x => x.toString(16).padStart(2, '0')).join('');
+            const rgbToHsl = (r, g, b) => { /* Function unchanged */ r /= 255; g /= 255; b /= 255; const max = Math.max(r, g, b), min = Math.min(r, g, b); let h, s, l = (max + min) / 2; if (max == min) { h = s = 0; } else { const d = max - min; s = l > 0.5 ? d / (2 - max - min) : d / (max + min); switch (max) { case r: h = (g - b) / d + (g < b ? 6 : 0); break; case g: h = (b - r) / d + 2; break; case b: h = (r - g) / d + 4; break; } h /= 6; } return `${(h * 360).toFixed(0)}°, ${(s * 100).toFixed(0)}%, ${(l * 100).toFixed(0)}%`; };
+
+            const resetTool = () => {
+                uploadSection.classList.remove('hidden');
+                processingSection.classList.add('hidden');
+                fileInput.value = '';
+                ctx.clearRect(0, 0, imageCanvas.width, imageCanvas.height);
+                paletteContainer.innerHTML = '';
+                pickedColorInfo.innerHTML = '';
+                pickedColorSwatch.style.backgroundColor = 'transparent';
+            };
+
+            // --- EVENT LISTENERS ---
+            selectFilesBtn.addEventListener('click', () => fileInput.click()); 
+            fileInput.addEventListener('change', (e) => handleFile(e.target.files[0]));
+            dropZone.addEventListener('dragover', (e) => { e.preventDefault(); e.stopPropagation(); dropZone.classList.add('drag-over'); });
+            dropZone.addEventListener('dragleave', (e) => { e.preventDefault(); e.stopPropagation(); dropZone.classList.remove('drag-over'); });
+            dropZone.addEventListener('drop', (e) => { e.preventDefault(); e.stopPropagation(); dropZone.classList.remove('drag-over'); handleFile(e.dataTransfer.files[0]); });
+            resetBtn.addEventListener('click', resetTool);
+            
+            pickedColorInfo.addEventListener('click', (e) => {
+                if (e.target.classList.contains('copy-btn')) {
+                    navigator.clipboard.writeText(e.target.dataset.value).then(() => {
+                        const originalText = e.target.textContent;
+                        e.target.textContent = 'Copied!';
+                        setTimeout(() => { e.target.textContent = originalText; }, 1500);
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Number Generator - NexaTools</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .header-scrolled {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .dark .header-scrolled {
+            background-color: rgba(15, 23, 42, 0.8);
+        }
+        /* Custom scrollbar for textareas */
+        textarea::-webkit-scrollbar {
+            width: 8px;
+        }
+        textarea::-webkit-scrollbar-track {
+            background: #f1f5f9; /* slate-100 */
+        }
+        .dark textarea::-webkit-scrollbar-track {
+            background: #1e293b; /* slate-800 */
+        }
+        textarea::-webkit-scrollbar-thumb {
+            background: #94a3b8; /* slate-400 */
+            border-radius: 4px;
+        }
+        textarea::-webkit-scrollbar-thumb:hover {
+            background: #64748b; /* slate-500 */
+        }
+    </style>
+    <script>
+        // Set theme on initial load
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+
+        // Configure Tailwind CSS
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', '"Liberation Mono"', '"Courier New"', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            blue: '#3b82f6',
+                            green: '#10b981',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 transition-colors duration-300 flex flex-col min-h-screen">
+
+    <!-- =========== HEADER =========== -->
+    <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Home</a>
+                <a href="index.html#tools" class="text-brand-blue font-semibold">Tools</a>
+                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">About</a>
+                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Contact</a>
+            </nav>
+            <div class="flex items-center">
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                    <svg id="theme-toggle-dark-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                    <svg id="theme-toggle-light-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 5.05A1 1 0 003.636 6.464l.707.707a1 1 0 001.414-1.414l-.707-.707zM3 11a1 1 0 100-2H2a1 1 0 100 2h1zM6.464 16.364l.707-.707a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow pt-24 pb-12">
+        <div class="container mx-auto px-4">
+            <!-- Tool Header -->
+            <div class="text-center mb-12">
+                <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white flex items-center justify-center gap-4">
+                    <span class="text-brand-blue">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12"><path stroke-linecap="round" stroke-linejoin="round" d="M5.25 8.25h15m-16.5 7.5h15m-1.8-13.5l-3.9 19.5m-2.1-19.5l-3.9 19.5" /></svg>
+                    </span>
+                    Random Number Generator
+                </h1>
+                <p class="mt-4 text-lg md:text-xl max-w-2xl mx-auto text-slate-600 dark:text-slate-300">Generate random numbers with advanced options for range, quantity, and formatting.</p>
+            </div>
+
+            <!-- Generator Body -->
+            <div class="max-w-4xl mx-auto bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 md:p-8 space-y-8">
+                <!-- Controls Section -->
+                <div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div>
+                            <label for="min-input" class="block text-sm font-medium mb-1">Minimum Value</label>
+                            <input type="number" id="min-input" value="1" class="w-full p-3 bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg shadow-sm focus:ring-brand-blue focus:border-brand-blue">
+                        </div>
+                        <div>
+                            <label for="max-input" class="block text-sm font-medium mb-1">Maximum Value</label>
+                            <input type="number" id="max-input" value="100" class="w-full p-3 bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg shadow-sm focus:ring-brand-blue focus:border-brand-blue">
+                        </div>
+                        <div>
+                            <label for="count-input" class="block text-sm font-medium mb-1">How many numbers?</label>
+                            <input type="number" id="count-input" value="10" min="1" max="10000" class="w-full p-3 bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg shadow-sm focus:ring-brand-blue focus:border-brand-blue">
+                        </div>
+                    </div>
+                     <fieldset class="mt-6 pt-4 border-t border-slate-200 dark:border-slate-700">
+                        <legend class="text-sm font-medium mb-2">Options</legend>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <label class="flex items-center p-3 bg-slate-100 dark:bg-slate-700/50 rounded-lg"><input type="checkbox" id="decimals-check" class="h-4 w-4 rounded text-brand-blue focus:ring-brand-blue"><span class="ml-3">Allow Decimals</span></label>
+                            <label class="flex items-center p-3 bg-slate-100 dark:bg-slate-700/50 rounded-lg"><input type="checkbox" id="duplicates-check" checked class="h-4 w-4 rounded text-brand-blue focus:ring-brand-blue"><span class="ml-3">Allow Duplicates</span></label>
+                            <label class="flex items-center p-3 bg-slate-100 dark:bg-slate-700/50 rounded-lg"><input type="checkbox" id="sort-check" class="h-4 w-4 rounded text-brand-blue focus:ring-brand-blue"><span class="ml-3">Sort Results</span></label>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <!-- Action and Results Section -->
+                <div class="space-y-4">
+                    <button id="generate-btn" class="w-full bg-brand-blue text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-blue-600 transition-colors">Generate Numbers</button>
+                    <div class="relative">
+                         <h3 class="text-lg font-semibold mb-2">Generated Numbers</h3>
+                        <button id="copy-btn" class="absolute top-0 right-0 text-sm bg-slate-200 dark:bg-slate-600 px-3 py-1 rounded-md hover:bg-brand-blue hover:text-white transition-colors">Copy</button>
+                        <textarea id="result-area" readonly class="w-full h-64 p-3 font-mono text-sm bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg shadow-sm resize-none"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- =========== FOOTER =========== -->
+    <footer class="bg-slate-100 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700/50 mt-auto">
+        <div class="container mx-auto px-4 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left space-y-4 md:space-y-0">
+                <div>
+                    <a href="index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">Simplifying your digital life.</p>
+                </div>
+                <div class="text-sm text-slate-600 dark:text-slate-400">
+                    <p>contact@nexatools.com</p>
+                    <p class="mt-1">© 2024 NexaTools. All Rights Reserved.</p>
+                </div>
+                <div class="flex space-x-4 text-sm">
+                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
+                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Our custom script is moved to the end of the body. -->
+    <script>
+        // --- THEME & HEADER LOGIC ---
+        const header = document.getElementById('header');
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const darkIcon = document.getElementById('theme-toggle-dark-icon');
+        const lightIcon = document.getElementById('theme-toggle-light-icon');
+        const toggleTheme = () => { document.documentElement.classList.toggle('dark'); localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'; updateThemeIcons(); };
+        const updateThemeIcons = () => { if (document.documentElement.classList.contains('dark')) { darkIcon.classList.remove('hidden'); lightIcon.classList.add('hidden'); } else { darkIcon.classList.add('hidden'); lightIcon.classList.remove('hidden'); } };
+        themeToggleBtn.addEventListener('click', toggleTheme);
+        updateThemeIcons();
+        window.addEventListener('scroll', () => { header.classList.toggle('header-scrolled', window.scrollY > 10); });
+
+        // --- RANDOM NUMBER GENERATOR LOGIC ---
+        // DOM Elements
+        const generateBtn = document.getElementById('generate-btn');
+        const copyBtn = document.getElementById('copy-btn');
+        const resultArea = document.getElementById('result-area');
+        const minInput = document.getElementById('min-input');
+        const maxInput = document.getElementById('max-input');
+        const countInput = document.getElementById('count-input');
+        const decimalsCheck = document.getElementById('decimals-check');
+        const duplicatesCheck = document.getElementById('duplicates-check');
+        const sortCheck = document.getElementById('sort-check');
+        
+        // --- Functions ---
+        const generateNumbers = () => {
+            const min = parseFloat(minInput.value);
+            const max = parseFloat(maxInput.value);
+            const count = parseInt(countInput.value, 10);
+            
+            const allowDecimals = decimalsCheck.checked;
+            const allowDuplicates = duplicatesCheck.checked;
+            const sortResults = sortCheck.checked;
+            
+            // Validation
+            if (isNaN(min) || isNaN(max) || isNaN(count)) {
+                alert('Please enter valid numbers for min, max, and count.');
+                return;
+            }
+            if (min > max) {
+                alert('Minimum value cannot be greater than the maximum value.');
+                return;
+            }
+            if (count <= 0) {
+                alert('Number of results must be greater than 0.');
+                return;
+            }
+
+            const results = allowDuplicates ? [] : new Set();
+            
+            // Unique integer validation
+            if (!allowDuplicates && !allowDecimals) {
+                const range = Math.floor(max) - Math.floor(min) + 1;
+                if (count > range) {
+                    alert(`Cannot generate ${count} unique integers from a range of only ${range} possibilities.`);
+                    return;
+                }
+            }
+            
+            while ((allowDuplicates && results.length < count) || (!allowDuplicates && results.size < count)) {
+                 let randomNumber;
+                 if (allowDecimals) {
+                     randomNumber = Math.random() * (max - min) + min;
+                 } else {
+                     randomNumber = Math.floor(Math.random() * (Math.floor(max) - Math.ceil(min) + 1)) + Math.ceil(min);
+                 }
+
+                 if (allowDuplicates) {
+                     results.push(randomNumber);
+                 } else {
+                     results.add(randomNumber);
+                 }
+            }
+            
+            let finalResults = Array.from(results);
+            
+            if (sortResults) {
+                finalResults.sort((a, b) => a - b);
+            }
+            
+            resultArea.value = finalResults.join('\n');
+        };
+
+        const copyToClipboard = () => {
+            if (!resultArea.value) return;
+            navigator.clipboard.writeText(resultArea.value).then(() => {
+                const originalText = copyBtn.textContent;
+                copyBtn.textContent = 'Copied!';
+                setTimeout(() => { copyBtn.textContent = 'Copy'; }, 2000);
+            }).catch(err => alert('Failed to copy.'));
+        };
+
+        // --- Event Listeners ---
+        generateBtn.addEventListener('click', generateNumbers);
+        copyBtn.addEventListener('click', copyToClipboard);
+        
+        // Initial generation on page load
+        generateNumbers();
+    </script>
+</body>
+</html>

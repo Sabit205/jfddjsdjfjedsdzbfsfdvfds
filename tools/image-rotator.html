@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Rotator - NexaTools</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- JSZip for creating zip files -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <style>
+        .header-scrolled {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .dark .header-scrolled {
+            background-color: rgba(15, 23, 42, 0.8);
+        }
+        .drag-over {
+            border-color: #3b82f6;
+            background-color: rgb(59 130 246 / 0.05);
+        }
+        .dark .drag-over {
+            background-color: rgb(59 130 246 / 0.1);
+        }
+        /* Custom radio button styling */
+        input[type="radio"]:checked + label {
+            background-color: #3b82f6; /* brand-blue */
+            color: white;
+            border-color: #3b82f6;
+        }
+        /* Preview container styling */
+        .preview-container {
+            position: relative;
+        }
+        .preview-nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            z-index: 10;
+        }
+        .preview-nav-btn:hover {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+        .preview-nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+        #prev-btn { left: 1rem; }
+        #next-btn { right: 1rem; }
+    </style>
+    <script>
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            blue: '#3b82f6',
+                            green: '#10b981',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 transition-colors duration-300 flex flex-col min-h-screen">
+
+    <!-- =========== HEADER =========== -->
+    <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Home</a>
+                <a href="index.html#tools" class="text-brand-blue font-semibold">Tools</a>
+                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">About</a>
+                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Contact</a>
+            </nav>
+            <div class="flex items-center">
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                    <svg id="theme-toggle-dark-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                    <svg id="theme-toggle-light-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 5.05A1 1 0 003.636 6.464l.707.707a1 1 0 001.414-1.414l-.707-.707zM3 11a1 1 0 100-2H2a1 1 0 100 2h1zM6.464 16.364l.707-.707a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow pt-24 pb-12">
+        <div class="container mx-auto px-4">
+            <!-- Tool Header -->
+            <div class="text-center mb-12">
+                <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white flex items-center justify-center gap-4">
+                    <span class="text-brand-blue">
+                       <svg xmlns="http://www.w3.org/2000/svg" height="48px" viewBox="0 -960 960 960" width="48px" fill="currentColor"><path d="M522-80v-82q34-5 66.5-18t61.5-34l56 58q-42 32-88 51.5T522-80Zm-80 0Q304-98 213-199.5T122-438q0-75 28.5-140.5t77-114q48.5-48.5 114-77T482-798h6l-62-62 56-58 160 160-160 160-56-56 64-64h-8q-117 0-198.5 81.5T202-438q0 104 68 182.5T442-162v82Zm322-134-58-56q21-29 34-61.5t18-66.5h82q-5 50-24.5 96T764-214Zm76-264h-82q-5-34-18-66.5T706-606l58-56q32 39 51 86t25 98Z"/></svg>
+                    </span>
+                    Image Rotator
+                </h1>
+                <p class="mt-4 text-lg md:text-xl max-w-2xl mx-auto text-slate-600 dark:text-slate-300">Rotate or flip your JPG, PNG, and WEBP images with one click.</p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 md:p-8">
+                
+                <!-- Upload Area -->
+                <div id="upload-section">
+                    <div id="drop-zone" class="border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-lg p-8 text-center cursor-pointer transition-all duration-300">
+                        <div class="flex flex-col items-center justify-center space-y-4 text-slate-500 dark:text-slate-400">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
+                            <p class="text-lg font-semibold">Drag & drop image files here</p>
+                            <p>or</p>
+                            <button id="select-files-btn" class="bg-brand-blue text-white font-bold py-2 px-6 rounded-lg shadow-md hover:bg-blue-600 transition-colors">Select Files</button>
+                            <input type="file" id="file-input" class="hidden" multiple accept="image/*">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Processing UI -->
+                <div id="processing-section" class="hidden">
+                    <!-- Preview Area -->
+                    <div id="preview-section" class="hidden mb-6">
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Image Preview</label>
+                        <div class="preview-container bg-slate-100 dark:bg-slate-700/50 rounded-lg h-64 flex items-center justify-center p-2">
+                             <img id="preview-image" src="" alt="Preview" class="max-w-full max-h-full object-contain">
+                             <button id="prev-btn" class="preview-nav-btn hidden" title="Previous Image">❮</button>
+                             <button id="next-btn" class="preview-nav-btn hidden" title="Next Image">❯</button>
+                        </div>
+                    </div>
+
+                    <!-- Rotation Options -->
+                    <div class="bg-slate-100 dark:bg-slate-700/50 p-4 rounded-lg">
+                         <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Rotation Operation:</label>
+                         <div id="rotation-options" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 text-sm">
+                             <div>
+                                <input type="radio" name="rotation" value="90" id="rot-90" class="hidden" checked>
+                                <label for="rot-90" class="block text-center w-full py-2 px-3 border border-slate-300 dark:border-slate-600 rounded-md cursor-pointer transition-colors">Rotate 90°</label>
+                             </div>
+                             <div>
+                                <input type="radio" name="rotation" value="-90" id="rot-neg-90" class="hidden">
+                                <label for="rot-neg-90" class="block text-center w-full py-2 px-3 border border-slate-300 dark:border-slate-600 rounded-md cursor-pointer transition-colors">Rotate -90°</label>
+                             </div>
+                             <div>
+                                <input type="radio" name="rotation" value="180" id="rot-180" class="hidden">
+                                <label for="rot-180" class="block text-center w-full py-2 px-3 border border-slate-300 dark:border-slate-600 rounded-md cursor-pointer transition-colors">Rotate 180°</label>
+                             </div>
+                             <div>
+                                <input type="radio" name="rotation" value="h-flip" id="flip-h" class="hidden">
+                                <label for="flip-h" class="block text-center w-full py-2 px-3 border border-slate-300 dark:border-slate-600 rounded-md cursor-pointer transition-colors">Flip Horiz.</label>
+                             </div>
+                             <div>
+                                <input type="radio" name="rotation" value="v-flip" id="flip-v" class="hidden">
+                                <label for="flip-v" class="block text-center w-full py-2 px-3 border border-slate-300 dark:border-slate-600 rounded-md cursor-pointer transition-colors">Flip Vert.</label>
+                             </div>
+                         </div>
+                    </div>
+
+                    <!-- File List -->
+                    <div id="file-list" class="mt-6 space-y-3"></div>
+                    
+                    <!-- Action Buttons -->
+                    <div class="mt-8 flex flex-col sm:flex-row gap-4">
+                        <button id="rotate-btn" class="w-full sm:w-auto flex-1 bg-brand-green text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-green-600 transition-colors flex items-center justify-center gap-2">
+                            Rotate Images
+                        </button>
+                        <button id="download-all-btn" class="w-full sm:w-auto hidden flex-1 bg-brand-blue text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-blue-600 transition-colors flex items-center justify-center gap-2">
+                            Download All (.zip)
+                        </button>
+                    </div>
+                     <button id="reset-btn" class="mt-4 w-full bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold py-2 px-6 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors">
+                        Clear and Start Over
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- =========== FOOTER =========== -->
+    <footer class="bg-slate-100 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700/50 mt-auto">
+        <div class="container mx-auto px-4 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left space-y-4 md:space-y-0">
+                <div>
+                    <a href="index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">Simplifying your digital life.</p>
+                </div>
+                <div class="text-sm text-slate-600 dark:text-slate-400">
+                    <p>contact@nexatools.com</p>
+                    <p class="mt-1">© 2024 NexaTools. All Rights Reserved.</p>
+                </div>
+                <div class="flex space-x-4 text-sm">
+                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
+                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // --- THEME & HEADER LOGIC ---
+    const header = document.getElementById('header');
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const toggleTheme = () => { document.documentElement.classList.toggle('dark'); localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'; updateThemeIcons(); };
+    const updateThemeIcons = () => { const isDark = document.documentElement.classList.contains('dark'); document.getElementById('theme-toggle-dark-icon').classList.toggle('hidden', !isDark); document.getElementById('theme-toggle-light-icon').classList.toggle('hidden', isDark); };
+    themeToggleBtn.addEventListener('click', toggleTheme); updateThemeIcons();
+    window.addEventListener('scroll', () => { header.classList.toggle('header-scrolled', window.scrollY > 10); });
+
+    // --- IMAGE ROTATOR LOGIC ---
+    const uploadSection = document.getElementById('upload-section');
+    const processingSection = document.getElementById('processing-section');
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('file-input');
+    const selectFilesBtn = document.getElementById('select-files-btn');
+    const rotationOptions = document.getElementById('rotation-options');
+    const fileListElem = document.getElementById('file-list');
+    const rotateBtn = document.getElementById('rotate-btn');
+    const downloadAllBtn = document.getElementById('download-all-btn');
+    const resetBtn = document.getElementById('reset-btn');
+
+    const previewSection = document.getElementById('preview-section');
+    const previewImage = document.getElementById('preview-image');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+
+    let filesToProcess = [];
+    let processedFiles = [];
+    let currentPreviewIndex = 0;
+
+    // --- Event Listeners ---
+    selectFilesBtn.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', () => handleFiles(fileInput.files));
+    dropZone.addEventListener('dragover', (e) => { e.preventDefault(); e.stopPropagation(); dropZone.classList.add('drag-over'); });
+    dropZone.addEventListener('dragleave', (e) => { e.preventDefault(); e.stopPropagation(); dropZone.classList.remove('drag-over'); });
+    dropZone.addEventListener('drop', (e) => { e.preventDefault(); e.stopPropagation(); dropZone.classList.remove('drag-over'); handleFiles(e.dataTransfer.files); });
+    
+    rotationOptions.addEventListener('change', () => updatePreview(true));
+    rotateBtn.addEventListener('click', processAllRotations);
+    downloadAllBtn.addEventListener('click', downloadAllAsZip);
+    resetBtn.addEventListener('click', resetTool);
+    prevBtn.addEventListener('click', showPrevImage);
+    nextBtn.addEventListener('click', showNextImage);
+
+    function handleFiles(files) {
+        const newFiles = Array.from(files).filter(file => file.type.startsWith('image/'));
+        filesToProcess.push(...newFiles);
+        updateFileList();
+        if (filesToProcess.length > 0) {
+            uploadSection.classList.add('hidden');
+            processingSection.classList.remove('hidden');
+            updatePreview(true);
+        }
+    }
+
+    function updateFileList() {
+        fileListElem.innerHTML = '';
+        filesToProcess.forEach((file, index) => {
+            const fileItem = document.createElement('div');
+            fileItem.className = 'bg-slate-50 dark:bg-slate-700/60 p-3 rounded-lg flex items-center justify-between gap-2';
+            fileItem.innerHTML = `
+                <div class="flex items-center gap-3 flex-1 min-w-0">
+                    <img src="${URL.createObjectURL(file)}" alt="${file.name}" class="w-12 h-12 object-cover rounded-md flex-shrink-0">
+                    <p class="font-semibold text-sm text-slate-800 dark:text-slate-100 truncate">${file.name}</p>
+                </div>
+                <div class="file-status text-sm text-right flex-shrink-0"></div>
+                <button title="Remove" class="remove-btn p-1 text-slate-400 hover:text-red-500 dark:hover:text-red-400 flex-shrink-0" data-index="${index}">×</button>
+            `;
+            
+            fileItem.querySelector('.remove-btn').addEventListener('click', (e) => {
+                e.stopPropagation();
+                const idxToRemove = parseInt(e.target.dataset.index, 10);
+                filesToProcess.splice(idxToRemove, 1);
+                if (currentPreviewIndex >= filesToProcess.length) {
+                    currentPreviewIndex = Math.max(0, filesToProcess.length - 1);
+                }
+                updateFileList();
+                updatePreview(true);
+                if (filesToProcess.length === 0) resetTool();
+            });
+            fileListElem.appendChild(fileItem);
+        });
+        resetRotateButton();
+    }
+
+    async function applyRotationToCanvas(image, operation) {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        switch (operation) {
+            case '90': canvas.width = image.height; canvas.height = image.width; ctx.rotate(90 * Math.PI / 180); ctx.translate(0, -image.height); break;
+            case '-90': canvas.width = image.height; canvas.height = image.width; ctx.rotate(-90 * Math.PI / 180); ctx.translate(-image.width, 0); break;
+            case '180': canvas.width = image.width; canvas.height = image.height; ctx.rotate(180 * Math.PI / 180); ctx.translate(-image.width, -image.height); break;
+            case 'h-flip': canvas.width = image.width; canvas.height = image.height; ctx.translate(image.width, 0); ctx.scale(-1, 1); break;
+            case 'v-flip': canvas.width = image.width; canvas.height = image.height; ctx.translate(0, image.height); ctx.scale(1, -1); break;
+            default: canvas.width = image.width; canvas.height = image.height;
+        }
+        ctx.drawImage(image, 0, 0);
+        return canvas;
+    }
+
+    async function updatePreview(forceUpdate = false) {
+        if (filesToProcess.length === 0) {
+            previewSection.classList.add('hidden');
+            return;
+        }
+        if (forceUpdate) {
+            previewSection.classList.remove('hidden');
+            const file = filesToProcess[currentPreviewIndex];
+            const operation = document.querySelector('input[name="rotation"]:checked').value;
+            
+            const img = new Image();
+            img.src = URL.createObjectURL(file);
+            img.onload = async () => {
+                const canvas = await applyRotationToCanvas(img, operation);
+                previewImage.src = canvas.toDataURL();
+            };
+        }
+        prevBtn.classList.toggle('hidden', filesToProcess.length <= 1 || currentPreviewIndex === 0);
+        nextBtn.classList.toggle('hidden', filesToProcess.length <= 1 || currentPreviewIndex === filesToProcess.length - 1);
+    }
+    
+    function showPrevImage() { if (currentPreviewIndex > 0) { currentPreviewIndex--; updatePreview(true); } }
+    function showNextImage() { if (currentPreviewIndex < filesToProcess.length - 1) { currentPreviewIndex++; updatePreview(true); } }
+    
+    function resetRotateButton() {
+        rotateBtn.disabled = filesToProcess.length === 0;
+        rotateBtn.innerHTML = `Rotate Images`;
+        rotateBtn.onclick = processAllRotations;
+        downloadAllBtn.classList.add('hidden');
+        rotateBtn.classList.remove('hidden');
+    }
+
+    async function processAllRotations() {
+        rotateBtn.disabled = true;
+        rotateBtn.innerHTML = `<svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Rotating...`;
+        
+        const operation = document.querySelector('input[name="rotation"]:checked').value;
+        const mimeType = 'image/png';
+
+        const rotationPromises = filesToProcess.map((file, index) => {
+            const fileItem = fileListElem.querySelector(`.remove-btn[data-index='${index}']`)?.closest('div.bg-slate-50');
+            if (fileItem) fileItem.querySelector('.file-status').innerHTML = `<span class="text-xs text-slate-500">Processing...</span>`;
+
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.onload = async () => {
+                    try {
+                        const canvas = await applyRotationToCanvas(img, operation);
+                        canvas.toBlob((blob) => {
+                            if (fileItem) fileItem.querySelector('.file-status').innerHTML = `<span class="text-green-500">Done</span>`;
+                            const originalName = file.name.substring(0, file.name.lastIndexOf('.'));
+                            resolve({ blob, fileName: `${originalName}-rotated.png` });
+                        }, mimeType);
+                    } catch (e) {
+                        reject(e);
+                    }
+                };
+                img.onerror = (e) => reject(e);
+                img.src = URL.createObjectURL(file);
+            });
+        });
+        
+        try {
+            processedFiles = await Promise.all(rotationPromises);
+            if (processedFiles.length === 1) {
+                rotateBtn.innerHTML = 'Download Image';
+                rotateBtn.onclick = () => downloadSingleFile(processedFiles[0]);
+                downloadAllBtn.classList.add('hidden');
+            } else if (processedFiles.length > 1) {
+                rotateBtn.classList.add('hidden');
+                downloadAllBtn.classList.remove('hidden');
+            }
+        } catch (error) {
+            console.error("An error occurred during rotation:", error);
+            alert("An error occurred. Please check the console and try again.");
+            resetRotateButton(); // Reset on failure
+        } finally {
+            rotateBtn.disabled = false;
+        }
+    }
+
+    function downloadSingleFile(file) {
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(file.blob);
+        link.download = file.fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+    
+    function downloadAllAsZip() {
+        if (!processedFiles || processedFiles.length === 0) return;
+        const zip = new JSZip();
+        processedFiles.forEach(file => zip.file(file.fileName, file.blob));
+        zip.generateAsync({ type: "blob" }).then(content => {
+            downloadSingleFile({ blob: content, fileName: 'NexaTools_Rotated_Images.zip' });
+        });
+    }
+
+    function resetTool() {
+        filesToProcess = [];
+        processedFiles = [];
+        currentPreviewIndex = 0;
+        fileInput.value = '';
+        uploadSection.classList.remove('hidden');
+        processingSection.classList.add('hidden');
+        fileListElem.innerHTML = '';
+        resetRotateButton();
+    }
+});
+</script>
+
+</body>
+</html>

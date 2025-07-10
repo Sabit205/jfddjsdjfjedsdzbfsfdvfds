@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI Calculator - NexaTools</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .header-scrolled {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .dark .header-scrolled {
+            background-color: rgba(15, 23, 42, 0.8);
+        }
+        /* Active state for unit toggle */
+        .btn-toggle-active {
+            background-color: #3b82f6 !important; /* brand-blue */
+            color: white !important;
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+        }
+        /* BMI Gauge Pointer */
+        #bmi-pointer {
+            transition: left 0.5s ease-in-out;
+        }
+    </style>
+    <script>
+        // Set theme on initial load
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+
+        // Configure Tailwind CSS
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            blue: '#3b82f6',
+                            green: '#10b981',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 transition-colors duration-300 flex flex-col min-h-screen">
+
+    <!-- =========== HEADER =========== -->
+    <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Home</a>
+                <a href="index.html#tools" class="text-brand-blue font-semibold">Tools</a>
+                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">About</a>
+                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Contact</a>
+            </nav>
+            <div class="flex items-center">
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                    <svg id="theme-toggle-dark-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                    <svg id="theme-toggle-light-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 5.05A1 1 0 003.636 6.464l.707.707a1 1 0 001.414-1.414l-.707-.707zM3 11a1 1 0 100-2H2a1 1 0 100 2h1zM6.464 16.364l.707-.707a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow pt-24 pb-12">
+        <div class="container mx-auto px-4">
+            <!-- Tool Header -->
+            <div class="text-center mb-12">
+                <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white flex items-center justify-center gap-4">
+                    <span class="text-brand-blue">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-person-standing-icon lucide-person-standing"><circle cx="12" cy="5" r="1"/><path d="m9 20 3-6 3 6"/><path d="m6 8 6 2 6-2"/><path d="M12 10v4"/></svg>
+                    </span>
+                    BMI Calculator
+                </h1>
+                <p class="mt-4 text-lg md:text-xl max-w-2xl mx-auto text-slate-600 dark:text-slate-300">Check your Body Mass Index with visual feedback and see your healthy weight range.</p>
+            </div>
+
+            <!-- Calculator Body -->
+            <div class="max-w-4xl mx-auto bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 md:p-8 space-y-8">
+                <!-- Input Section -->
+                <div>
+                    <!-- Unit Toggle -->
+                    <div class="flex items-center justify-center mb-6">
+                        <div class="inline-flex rounded-lg shadow-sm">
+                            <button id="metric-btn" class="btn-toggle-active px-6 py-2 text-sm font-medium bg-slate-100 dark:bg-slate-700 rounded-l-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">Metric (kg, cm)</button>
+                            <button id="imperial-btn" class="px-6 py-2 text-sm font-medium bg-slate-100 dark:bg-slate-700 rounded-r-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">Imperial (lb, ft, in)</button>
+                        </div>
+                    </div>
+
+                    <!-- Input Fields -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
+                        <div id="metric-inputs">
+                            <div class="space-y-4">
+                                <div>
+                                    <label for="cm-input" class="block text-sm font-medium mb-1">Height (cm)</label>
+                                    <input type="number" id="cm-input" placeholder="e.g., 180" class="w-full p-3 bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg shadow-sm focus:ring-brand-blue focus:border-brand-blue">
+                                </div>
+                                <div>
+                                    <label for="kg-input" class="block text-sm font-medium mb-1">Weight (kg)</label>
+                                    <input type="number" id="kg-input" placeholder="e.g., 75" class="w-full p-3 bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg shadow-sm focus:ring-brand-blue focus:border-brand-blue">
+                                </div>
+                            </div>
+                        </div>
+                        <div id="imperial-inputs" class="hidden">
+                             <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium mb-1">Height</label>
+                                    <div class="flex items-center gap-2">
+                                        <input type="number" id="ft-input" placeholder="ft" class="w-full p-3 bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg shadow-sm focus:ring-brand-blue focus:border-brand-blue">
+                                        <input type="number" id="in-input" placeholder="in" class="w-full p-3 bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg shadow-sm focus:ring-brand-blue focus:border-brand-blue">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label for="lbs-input" class="block text-sm font-medium mb-1">Weight (lbs)</label>
+                                    <input type="number" id="lbs-input" placeholder="e.g., 165" class="w-full p-3 bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg shadow-sm focus:ring-brand-blue focus:border-brand-blue">
+                                </div>
+                            </div>
+                        </div>
+                         <div class="md:col-span-2">
+                             <button id="calculate-btn" class="w-full bg-brand-blue text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-blue-600 transition-colors mt-4">Calculate BMI</button>
+                         </div>
+                    </div>
+                </div>
+
+                <!-- Results Section (hidden by default) -->
+                <div id="results-section" class="hidden space-y-8">
+                    <!-- Main Result Card -->
+                    <div class="text-center bg-slate-100 dark:bg-slate-900/50 rounded-lg p-6">
+                        <h3 id="bmi-category" class="text-xl font-semibold mb-2 text-slate-700 dark:text-slate-300">Your BMI</h3>
+                        <p id="bmi-result" class="text-6xl font-bold text-brand-blue">22.5</p>
+                        <!-- BMI Gauge -->
+                        <div class="mt-4 px-2">
+                            <div class="relative w-full h-2 bg-gradient-to-r from-blue-300 via-green-400 to-red-500 rounded-full">
+                                <div id="bmi-pointer" class="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-slate-900 dark:bg-white border-2 border-white dark:border-slate-900 shadow-lg" style="left: 50%;"></div>
+                            </div>
+                            <div class="flex justify-between text-xs mt-1 text-slate-500 dark:text-slate-400">
+                                <span>15</span>
+                                <span>18.5</span>
+                                <span>25</span>
+                                <span>30</span>
+                                <span>40</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                         <!-- Healthy Range Card -->
+                        <div class="bg-slate-100 dark:bg-slate-700/50 rounded-lg p-6 text-center">
+                            <h3 class="text-xl font-semibold mb-2 text-slate-700 dark:text-slate-300">Healthy Weight Range</h3>
+                            <p class="text-2xl font-bold text-brand-green"><span id="healthy-range">60 kg - 80 kg</span></p>
+                            <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">for your height</p>
+                        </div>
+                        
+                         <!-- Ponderal Index Card -->
+                        <div class="bg-slate-100 dark:bg-slate-700/50 rounded-lg p-6 text-center">
+                            <h3 class="text-xl font-semibold mb-2 text-slate-700 dark:text-slate-300">Ponderal Index</h3>
+                            <p class="text-2xl font-bold text-brand-green"><span id="ponderal-result">12.3</span></p>
+                            <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">kg/m³ (Normal: 11-15)</p>
+                        </div>
+                    </div>
+                    
+                    <button id="reset-btn" class="w-full bg-slate-500 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-slate-600 transition-colors">Calculate Again</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- =========== FOOTER =========== -->
+    <footer class="bg-slate-100 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700/50 mt-auto">
+        <div class="container mx-auto px-4 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left space-y-4 md:space-y-0">
+                <div>
+                    <a href="index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">Simplifying your digital life.</p>
+                </div>
+                <div class="text-sm text-slate-600 dark:text-slate-400">
+                    <p>contact@nexatools.com</p>
+                    <p class="mt-1">© 2024 NexaTools. All Rights Reserved.</p>
+                </div>
+                <div class="flex space-x-4 text-sm">
+                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
+                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // --- THEME & HEADER LOGIC ---
+    const header = document.getElementById('header');
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const darkIcon = document.getElementById('theme-toggle-dark-icon');
+    const lightIcon = document.getElementById('theme-toggle-light-icon');
+    const toggleTheme = () => { document.documentElement.classList.toggle('dark'); localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'; updateThemeIcons(); };
+    const updateThemeIcons = () => { if (document.documentElement.classList.contains('dark')) { darkIcon.classList.remove('hidden'); lightIcon.classList.add('hidden'); } else { darkIcon.classList.add('hidden'); lightIcon.classList.remove('hidden'); } };
+    themeToggleBtn.addEventListener('click', toggleTheme);
+    updateThemeIcons();
+    window.addEventListener('scroll', () => { header.classList.toggle('header-scrolled', window.scrollY > 10); });
+
+    // --- BMI CALCULATOR LOGIC ---
+    const metricBtn = document.getElementById('metric-btn');
+    const imperialBtn = document.getElementById('imperial-btn');
+    const metricInputs = document.getElementById('metric-inputs');
+    const imperialInputs = document.getElementById('imperial-inputs');
+    const calculateBtn = document.getElementById('calculate-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const resultsSection = document.getElementById('results-section');
+
+    let currentUnit = 'metric';
+
+    // Unit toggle listeners
+    metricBtn.addEventListener('click', () => {
+        currentUnit = 'metric';
+        metricBtn.classList.add('btn-toggle-active');
+        imperialBtn.classList.remove('btn-toggle-active');
+        metricInputs.classList.remove('hidden');
+        imperialInputs.classList.add('hidden');
+    });
+    
+    imperialBtn.addEventListener('click', () => {
+        currentUnit = 'imperial';
+        imperialBtn.classList.add('btn-toggle-active');
+        metricBtn.classList.remove('btn-toggle-active');
+        imperialInputs.classList.remove('hidden');
+        metricInputs.classList.add('hidden');
+    });
+
+    calculateBtn.addEventListener('click', () => {
+        let heightCm, weightKg;
+
+        if (currentUnit === 'metric') {
+            heightCm = parseFloat(document.getElementById('cm-input').value);
+            weightKg = parseFloat(document.getElementById('kg-input').value);
+        } else {
+            const ft = parseFloat(document.getElementById('ft-input').value) || 0;
+            const inches = parseFloat(document.getElementById('in-input').value) || 0;
+            const lbs = parseFloat(document.getElementById('lbs-input').value);
+            
+            const totalInches = (ft * 12) + inches;
+            heightCm = totalInches * 2.54;
+            weightKg = lbs * 0.453592;
+        }
+
+        if (isNaN(heightCm) || isNaN(weightKg) || heightCm <= 0 || weightKg <= 0) {
+            alert('Please enter valid, positive numbers for height and weight.');
+            return;
+        }
+
+        const heightM = heightCm / 100;
+        const bmi = weightKg / (heightM * heightM);
+        const ponderalIndex = weightKg / (heightM * heightM * heightM);
+
+        displayResults(bmi, ponderalIndex, heightM, currentUnit);
+    });
+
+    function displayResults(bmi, ponderalIndex, heightM, unit) {
+        // Update result displays
+        document.getElementById('bmi-result').textContent = bmi.toFixed(1);
+        document.getElementById('ponderal-result').textContent = ponderalIndex.toFixed(1);
+
+        // Update BMI Category and color
+        const bmiCategoryEl = document.getElementById('bmi-category');
+        let category = '';
+        if (bmi < 18.5) {
+            category = 'Underweight';
+            bmiCategoryEl.style.color = '#3b82f6'; // Blue
+        } else if (bmi < 25) {
+            category = 'Normal weight';
+            bmiCategoryEl.style.color = '#10b981'; // Green
+        } else if (bmi < 30) {
+            category = 'Overweight';
+            bmiCategoryEl.style.color = '#f97316'; // Orange
+        } else {
+            category = 'Obesity';
+            bmiCategoryEl.style.color = '#ef4444'; // Red
+        }
+        bmiCategoryEl.textContent = category;
+
+        // Update Healthy Weight Range
+        const minWeight = 18.5 * (heightM * heightM);
+        const maxWeight = 24.9 * (heightM * heightM);
+        const healthyRangeEl = document.getElementById('healthy-range');
+
+        if(unit === 'metric') {
+            healthyRangeEl.textContent = `${minWeight.toFixed(1)} kg - ${maxWeight.toFixed(1)} kg`;
+        } else {
+            const minLbs = minWeight * 2.20462;
+            const maxLbs = maxWeight * 2.20462;
+            healthyRangeEl.textContent = `${minLbs.toFixed(1)} lbs - ${maxLbs.toFixed(1)} lbs`;
+        }
+        
+        // Update Gauge Pointer
+        const pointer = document.getElementById('bmi-pointer');
+        // Map BMI range (15-40) to percentage (0-100)
+        const bmiRange = 40 - 15;
+        let percentage = ((bmi - 15) / bmiRange) * 100;
+        // Clamp percentage between 0 and 100
+        percentage = Math.max(0, Math.min(100, percentage));
+        pointer.style.left = `${percentage}%`;
+
+        // Show results
+        resultsSection.classList.remove('hidden');
+    }
+
+    resetBtn.addEventListener('click', () => {
+        // Clear all inputs
+        document.getElementById('cm-input').value = '';
+        document.getElementById('kg-input').value = '';
+        document.getElementById('ft-input').value = '';
+        document.getElementById('in-input').value = '';
+        document.getElementById('lbs-input').value = '';
+
+        // Hide results
+        resultsSection.classList.add('hidden');
+    });
+});
+</script>
+
+</body>
+</html>

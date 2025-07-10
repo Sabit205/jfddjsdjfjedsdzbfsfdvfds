@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit Converter - NexaTools</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .header-scrolled {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .dark .header-scrolled {
+            background-color: rgba(15, 23, 42, 0.8);
+        }
+    </style>
+    <script>
+        // Set theme on initial load
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+
+        // Configure Tailwind CSS
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            blue: '#3b82f6',
+                            green: '#10b981',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 transition-colors duration-300 flex flex-col min-h-screen">
+
+    <!-- =========== HEADER =========== -->
+    <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Home</a>
+                <a href="index.html#tools" class="text-brand-blue font-semibold">Tools</a>
+                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">About</a>
+                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Contact</a>
+            </nav>
+            <div class="flex items-center">
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                    <svg id="theme-toggle-dark-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                    <svg id="theme-toggle-light-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 5.05A1 1 0 003.636 6.464l.707.707a1 1 0 001.414-1.414l-.707-.707zM3 11a1 1 0 100-2H2a1 1 0 100 2h1zM6.464 16.364l.707-.707a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow pt-24 pb-12">
+        <div class="container mx-auto px-4">
+            <!-- Tool Header -->
+            <div class="text-center mb-12">
+                <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white flex items-center justify-center gap-4">
+                    <span class="text-brand-blue">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0012 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 01-2.153.24c-1.095 0-2.178-.29-3.188-.87a5.985 5.985 0 01-2.62-4.119M7.5 4.97c-1.01.143-2.01.317-3 .52m3-.52l-2.62 10.726A5.988 5.988 0 002.25 18.25c.576 0 1.139-.08 1.688-.24a5.985 5.985 0 002.62-4.119" /></svg>
+                    </span>
+                    Unit Converter
+                </h1>
+                <p class="mt-4 text-lg md:text-xl max-w-2xl mx-auto text-slate-600 dark:text-slate-300">Instantly convert between various units for length, mass, temperature, and more.</p>
+            </div>
+
+            <!-- Converter Body -->
+            <div class="max-w-4xl mx-auto bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 md:p-8 space-y-8">
+                <!-- Category Selector -->
+                <div>
+                    <label for="category-select" class="block text-sm font-medium mb-1">Conversion Type</label>
+                    <select id="category-select" class="w-full p-3 bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg shadow-sm focus:ring-brand-blue focus:border-brand-blue"></select>
+                </div>
+
+                <!-- Conversion UI -->
+                <div class="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] gap-4 items-end">
+                     <!-- From Section -->
+                    <div class="space-y-2">
+                        <label for="from-unit" class="text-sm font-medium">From</label>
+                        <input type="number" id="input-amount" value="1" class="w-full p-3 bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg shadow-sm">
+                        <select id="from-unit" class="w-full p-3 bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg shadow-sm"></select>
+                    </div>
+
+                    <!-- Swap Button -->
+                    <div class="flex justify-center pb-12">
+                         <button id="swap-btn" class="p-3 bg-slate-200 dark:bg-slate-600 hover:bg-brand-blue hover:text-white rounded-full transition-all duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <!-- To Section -->
+                    <div class="space-y-2">
+                        <label for="to-unit" class="text-sm font-medium">To</label>
+                        <input type="text" id="output-amount" readonly class="w-full p-3 bg-slate-200 dark:bg-slate-600 border border-slate-300 dark:border-slate-600 rounded-lg shadow-sm text-brand-green font-bold">
+                        <select id="to-unit" class="w-full p-3 bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg shadow-sm"></select>
+                    </div>
+                </div>
+
+                <!-- Result Display -->
+                <div id="result-display" class="text-center text-xl font-semibold text-slate-700 dark:text-slate-300 pt-4 border-t border-slate-200 dark:border-slate-700">
+                    <!-- Result text appears here -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- =========== FOOTER =========== -->
+    <footer class="bg-slate-100 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700/50 mt-auto">
+        <div class="container mx-auto px-4 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left space-y-4 md:space-y-0">
+                <div>
+                    <a href="index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">Simplifying your digital life.</p>
+                </div>
+                <div class="text-sm text-slate-600 dark:text-slate-400">
+                    <p>contact@nexatools.com</p>
+                    <p class="mt-1">© 2024 NexaTools. All Rights Reserved.</p>
+                </div>
+                <div class="flex space-x-4 text-sm">
+                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
+                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Our custom script is moved to the end of the body. -->
+    <script>
+        // --- THEME & HEADER LOGIC ---
+        const header = document.getElementById('header');
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const darkIcon = document.getElementById('theme-toggle-dark-icon');
+        const lightIcon = document.getElementById('theme-toggle-light-icon');
+        const toggleTheme = () => { document.documentElement.classList.toggle('dark'); localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'; updateThemeIcons(); };
+        const updateThemeIcons = () => { if (document.documentElement.classList.contains('dark')) { darkIcon.classList.remove('hidden'); lightIcon.classList.add('hidden'); } else { darkIcon.classList.add('hidden'); lightIcon.classList.remove('hidden'); } };
+        themeToggleBtn.addEventListener('click', toggleTheme);
+        updateThemeIcons();
+        window.addEventListener('scroll', () => { header.classList.toggle('header-scrolled', window.scrollY > 10); });
+
+        // --- UNIT CONVERTER LOGIC ---
+        // DOM Elements
+        const categorySelect = document.getElementById('category-select');
+        const inputAmount = document.getElementById('input-amount');
+        const fromUnit = document.getElementById('from-unit');
+        const toUnit = document.getElementById('to-unit');
+        const outputAmount = document.getElementById('output-amount');
+        const swapBtn = document.getElementById('swap-btn');
+        const resultDisplay = document.getElementById('result-display');
+        
+        // --- Conversion Data ---
+        const unitsData = {
+            length: {
+                base_unit: 'meter',
+                units: {
+                    meter: { name: 'Meter', to_base: 1 },
+                    kilometer: { name: 'Kilometer', to_base: 1000 },
+                    centimeter: { name: 'Centimeter', to_base: 0.01 },
+                    millimeter: { name: 'Millimeter', to_base: 0.001 },
+                    mile: { name: 'Mile', to_base: 1609.34 },
+                    yard: { name: 'Yard', to_base: 0.9144 },
+                    foot: { name: 'Foot', to_base: 0.3048 },
+                    inch: { name: 'Inch', to_base: 0.0254 },
+                }
+            },
+            mass: {
+                base_unit: 'gram',
+                units: {
+                    gram: { name: 'Gram', to_base: 1 },
+                    kilogram: { name: 'Kilogram', to_base: 1000 },
+                    milligram: { name: 'Milligram', to_base: 0.001 },
+                    ton: { name: 'Metric Ton', to_base: 1000000 },
+                    pound: { name: 'Pound', to_base: 453.592 },
+                    ounce: { name: 'Ounce', to_base: 28.3495 },
+                }
+            },
+            temperature: {
+                // Temperature is a special case with functions instead of factors
+                units: {
+                    celsius: { name: 'Celsius' },
+                    fahrenheit: { name: 'Fahrenheit' },
+                    kelvin: { name: 'Kelvin' },
+                }
+            },
+            area: {
+                base_unit: 'square_meter',
+                units: {
+                    square_meter: { name: 'Square Meter', to_base: 1 },
+                    square_kilometer: { name: 'Square Kilometer', to_base: 1000000 },
+                    hectare: { name: 'Hectare', to_base: 10000 },
+                    square_mile: { name: 'Square Mile', to_base: 2589990 },
+                    acre: { name: 'Acre', to_base: 4046.86 },
+                }
+            },
+            volume: {
+                base_unit: 'liter',
+                units: {
+                    liter: { name: 'Liter', to_base: 1 },
+                    milliliter: { name: 'Milliliter', to_base: 0.001 },
+                    cubic_meter: { name: 'Cubic Meter', to_base: 1000 },
+                    gallon: { name: 'US Gallon', to_base: 3.78541 },
+                    quart: { name: 'US Quart', to_base: 0.946353 },
+                }
+            }
+        };
+
+        // --- Functions ---
+        const populateCategories = () => {
+            Object.keys(unitsData).forEach(key => {
+                const option = document.createElement('option');
+                option.value = key;
+                option.textContent = key.charAt(0).toUpperCase() + key.slice(1);
+                categorySelect.appendChild(option);
+            });
+        };
+
+        const populateUnits = (category) => {
+            fromUnit.innerHTML = '';
+            toUnit.innerHTML = '';
+            const categoryUnits = unitsData[category].units;
+            Object.keys(categoryUnits).forEach(key => {
+                const option = document.createElement('option');
+                option.value = key;
+                option.textContent = categoryUnits[key].name;
+                fromUnit.appendChild(option.cloneNode(true));
+                toUnit.appendChild(option);
+            });
+            // Set default selections
+            fromUnit.selectedIndex = 0;
+            toUnit.selectedIndex = 1;
+        };
+
+        const convertTemperature = (value, from, to) => {
+            if (from === to) return value;
+            let tempInCelsius;
+            // Convert to Celsius first (base)
+            switch (from) {
+                case 'celsius': tempInCelsius = value; break;
+                case 'fahrenheit': tempInCelsius = (value - 32) * 5 / 9; break;
+                case 'kelvin': tempInCelsius = value - 273.15; break;
+            }
+            // Convert from Celsius to target
+            switch (to) {
+                case 'celsius': return tempInCelsius;
+                case 'fahrenheit': return (tempInCelsius * 9 / 5) + 32;
+                case 'kelvin': return tempInCelsius + 273.15;
+            }
+        };
+
+        const convert = () => {
+            const category = categorySelect.value;
+            const amount = parseFloat(inputAmount.value);
+            const from = fromUnit.value;
+            const to = toUnit.value;
+            
+            if (isNaN(amount)) {
+                outputAmount.value = '';
+                resultDisplay.textContent = '';
+                return;
+            }
+
+            let result;
+
+            if (category === 'temperature') {
+                result = convertTemperature(amount, from, to);
+            } else {
+                const categoryData = unitsData[category];
+                const amountInBase = amount * categoryData.units[from].to_base;
+                result = amountInBase / categoryData.units[to].to_base;
+            }
+            
+            outputAmount.value = result.toFixed(5).replace(/\.0+$/, ''); // Format to 5 decimal places, remove trailing zeros
+            
+            const fromName = unitsData[category].units[from].name;
+            const toName = unitsData[category].units[to].name;
+            resultDisplay.textContent = `${amount} ${fromName} = ${outputAmount.value} ${toName}`;
+        };
+        
+        const swapUnits = () => {
+            [fromUnit.value, toUnit.value] = [toUnit.value, fromUnit.value];
+            convert();
+        };
+
+        // --- Event Listeners ---
+        categorySelect.addEventListener('change', (e) => {
+            populateUnits(e.target.value);
+            convert();
+        });
+        
+        [inputAmount, fromUnit, toUnit].forEach(el => el.addEventListener('input', convert));
+        swapBtn.addEventListener('click', swapUnits);
+
+        // --- Initialization ---
+        populateCategories();
+        populateUnits(categorySelect.value); // Populate for the default category
+        convert(); // Initial conversion
+    </script>
+</body>
+</html>

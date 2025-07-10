@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator - NexaTools</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- QR Code Styling library for advanced QR codes -->
+    <script src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
+    <style>
+        .header-scrolled {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .dark .header-scrolled {
+            background-color: rgba(15, 23, 42, 0.8);
+        }
+        /* Custom styles for range slider track */
+        input[type=range]::-webkit-slider-runnable-track {
+            background: #e2e8f0; /* slate-200 */
+        }
+        .dark input[type=range]::-webkit-slider-runnable-track {
+            background: #475569; /* slate-600 */
+        }
+    </style>
+    <script>
+        // --- THEME INITIALIZATION SCRIPT ---
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+
+        // --- TAILWIND CONFIGURATION ---
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            blue: '#3b82f6',
+                            green: '#10b981',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 transition-colors duration-300 flex flex-col min-h-screen">
+
+    <!-- =========== HEADER =========== -->
+    <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Home</a>
+                <a href="index.html#tools" class="text-brand-blue font-semibold">Tools</a>
+                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">About</a>
+                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Contact</a>
+            </nav>
+            <div class="flex items-center">
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                    <svg id="theme-toggle-dark-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                    <svg id="theme-toggle-light-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 5.05A1 1 0 003.636 6.464l.707.707a1 1 0 001.414-1.414l-.707-.707zM3 11a1 1 0 100-2H2a1 1 0 100 2h1zM6.464 16.364l.707-.707a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow pt-24 pb-12">
+        <div class="container mx-auto px-4">
+            <!-- Tool Header -->
+            <div class="text-center mb-12">
+                <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white flex items-center justify-center gap-4">
+                    <span class="text-brand-blue">
+                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 013.75 9.375v-4.5zM3.75 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 01-1.125-1.125v-4.5zM13.5 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0113.5 9.375v-4.5zM13.5 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 01-1.125-1.125v-4.5z" /></svg>
+                    </span>
+                    QR Code Generator
+                </h1>
+                <p class="mt-4 text-lg md:text-xl max-w-2xl mx-auto text-slate-600 dark:text-slate-300">Create, customize, and download high-quality QR codes with your own logo.</p>
+            </div>
+            
+            <!-- Tool UI -->
+            <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Left Side: Options -->
+                <div class="md:col-span-1 bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 space-y-5">
+                    <div>
+                        <label for="qr-data" class="block text-sm font-medium mb-1">Text or URL</label>
+                        <textarea id="qr-data" rows="3" class="w-full bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-md shadow-sm p-2 focus:ring-brand-blue focus:border-brand-blue">https://nexatools.com</textarea>
+                    </div>
+                    <div>
+                        <label for="qr-size" class="block text-sm font-medium mb-1">Size: <span id="qr-size-label">300</span>px</label>
+                        <input id="qr-size" type="range" min="100" max="1000" value="300" step="10" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer dark:bg-slate-600">
+                    </div>
+                     <div>
+                        <label for="qr-margin" class="block text-sm font-medium mb-1">Margin: <span id="qr-margin-label">10</span>px</label>
+                        <input id="qr-margin" type="range" min="0" max="50" value="10" step="2" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer dark:bg-slate-600">
+                    </div>
+                     <div class="grid grid-cols-2 gap-4">
+                        <div>
+                             <label for="dot-color" class="block text-sm font-medium mb-1">Dots Color</label>
+                             <input type="color" id="dot-color" value="#000000" class="w-full h-10 border-none rounded-md cursor-pointer">
+                        </div>
+                        <div>
+                             <label for="background-color" class="block text-sm font-medium mb-1">Background</label>
+                             <input type="color" id="background-color" value="#FFFFFF" class="w-full h-10 border-none rounded-md cursor-pointer">
+                        </div>
+                    </div>
+                    <div>
+                        <label for="dot-style" class="block text-sm font-medium mb-1">Dot Style</label>
+                        <select id="dot-style" class="w-full bg-slate-100 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-md shadow-sm p-2 focus:ring-brand-blue focus:border-brand-blue">
+                            <option value="square" selected>Square</option>
+                            <option value="dots">Dots</option>
+                            <option value="rounded">Rounded</option>
+                            <option value="extra-rounded">Extra Rounded</option>
+                            <option value="classy">Classy</option>
+                            <option value="classy-rounded">Classy Rounded</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="logo-upload" class="block text-sm font-medium mb-1">Logo (optional)</label>
+                        <input type="file" id="logo-upload" accept="image/png, image/jpeg, image/svg" class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-slate-200 dark:file:bg-slate-600 dark:file:text-slate-200 file:text-slate-700 hover:file:bg-slate-300 dark:hover:file:bg-slate-500 cursor-pointer">
+                    </div>
+                     <div class="flex items-center gap-4">
+                        <label for="download-format" class="text-sm font-medium">Download as:</label>
+                        <select id="download-format" class="bg-slate-100 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-md p-2 focus:ring-brand-blue focus:border-brand-blue">
+                            <option value="png" selected>PNG</option>
+                            <option value="jpeg">JPEG</option>
+                            <option value="svg">SVG</option>
+                        </select>
+                        <button id="download-btn" class="flex-grow bg-brand-green text-white font-bold py-2 px-4 rounded-lg shadow-md hover:bg-green-600 transition-colors">Download</button>
+                    </div>
+                </div>
+
+                <!-- Right Side: Preview -->
+                <div class="md:col-span-2 flex items-center justify-center p-6 bg-white dark:bg-slate-800 rounded-xl shadow-lg">
+                    <div id="qr-code-container"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- =========== FOOTER =========== -->
+    <footer class="bg-slate-100 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700/50 mt-auto">
+        <div class="container mx-auto px-4 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left space-y-4 md:space-y-0">
+                <div>
+                    <a href="index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">Simplifying your digital life.</p>
+                </div>
+                <div class="text-sm text-slate-600 dark:text-slate-400">
+                    <p>contact@nexatools.com</p>
+                    <p class="mt-1">© 2024 NexaTools. All Rights Reserved.</p>
+                </div>
+                <div class="flex space-x-4 text-sm">
+                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
+                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // --- THEME & HEADER LOGIC ---
+    const header = document.getElementById('header');
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const darkIcon = document.getElementById('theme-toggle-dark-icon');
+    const lightIcon = document.getElementById('theme-toggle-light-icon');
+    const toggleTheme = () => { document.documentElement.classList.toggle('dark'); localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'; updateThemeIcons(); };
+    const updateThemeIcons = () => { if (document.documentElement.classList.contains('dark')) { darkIcon.classList.remove('hidden'); lightIcon.classList.add('hidden'); } else { darkIcon.classList.add('hidden'); lightIcon.classList.remove('hidden'); } };
+    themeToggleBtn.addEventListener('click', toggleTheme);
+    updateThemeIcons();
+    window.addEventListener('scroll', () => { header.classList.toggle('header-scrolled', window.scrollY > 10); });
+
+    // --- QR CODE GENERATOR LOGIC ---
+    const qrDataInput = document.getElementById('qr-data');
+    const qrSizeSlider = document.getElementById('qr-size');
+    const qrSizeLabel = document.getElementById('qr-size-label');
+    const qrMarginSlider = document.getElementById('qr-margin');
+    const qrMarginLabel = document.getElementById('qr-margin-label');
+    const dotColorPicker = document.getElementById('dot-color');
+    const backgroundColorPicker = document.getElementById('background-color');
+    const dotStyleSelect = document.getElementById('dot-style');
+    const logoUpload = document.getElementById('logo-upload');
+    const downloadBtn = document.getElementById('download-btn');
+    const downloadFormatSelect = document.getElementById('download-format');
+    const qrContainer = document.getElementById('qr-code-container');
+
+    let uploadedLogo = null;
+    
+    // Initialize QR Code Styling instance
+    const qrCode = new QRCodeStyling({
+        width: 300,
+        height: 300,
+        data: qrDataInput.value,
+        margin: 10,
+        qrOptions: { errorCorrectionLevel: 'Q' },
+        dotsOptions: {
+            color: '#000000',
+            type: 'square'
+        },
+        backgroundOptions: {
+            color: '#ffffff',
+        },
+        imageOptions: {
+            crossOrigin: 'anonymous',
+            margin: 10
+        }
+    });
+
+    const updateQRCode = () => {
+        const options = {
+            width: parseInt(qrSizeSlider.value, 10),
+            height: parseInt(qrSizeSlider.value, 10),
+            data: qrDataInput.value || ' ', // Use a space if empty to prevent errors
+            margin: parseInt(qrMarginSlider.value, 10),
+            dotsOptions: {
+                color: dotColorPicker.value,
+                type: dotStyleSelect.value
+            },
+            backgroundOptions: {
+                color: backgroundColorPicker.value,
+            },
+            image: uploadedLogo
+        };
+        qrCode.update(options);
+    };
+
+    // Event Listeners for all controls
+    qrDataInput.addEventListener('input', updateQRCode);
+    qrSizeSlider.addEventListener('input', (e) => {
+        qrSizeLabel.textContent = e.target.value;
+        updateQRCode();
+    });
+    qrMarginSlider.addEventListener('input', (e) => {
+        qrMarginLabel.textContent = e.target.value;
+        updateQRCode();
+    });
+    dotColorPicker.addEventListener('input', updateQRCode);
+    backgroundColorPicker.addEventListener('input', updateQRCode);
+    dotStyleSelect.addEventListener('change', updateQRCode);
+
+    logoUpload.addEventListener('change', (e) => {
+        if (e.target.files && e.target.files[0]) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                uploadedLogo = event.target.result;
+                updateQRCode();
+            };
+            reader.readAsDataURL(e.target.files[0]);
+        } else {
+            uploadedLogo = null;
+            updateQRCode();
+        }
+    });
+    
+    downloadBtn.addEventListener('click', () => {
+        qrCode.download({
+            name: 'qrcode-nexatools',
+            extension: downloadFormatSelect.value
+        });
+    });
+
+    // Initial setup
+    qrCode.append(qrContainer);
+    updateQRCode();
+});
+</script>
+
+</body>
+</html>

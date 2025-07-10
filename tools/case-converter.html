@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Case Converter - NexaTools</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .header-scrolled { background-color: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
+        .dark .header-scrolled { background-color: rgba(15, 23, 42, 0.8); }
+        /* Style for the case buttons */
+        .case-btn {
+            @apply w-full p-3 bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-lg font-semibold text-center transition-colors hover:bg-slate-300 dark:hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-brand-blue;
+        }
+    </style>
+    <script>
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) { document.documentElement.classList.add('dark') } else { document.documentElement.classList.remove('dark') }
+        tailwind.config = { darkMode: 'class', theme: { extend: { colors: { brand: { blue: '#3b82f6', green: '#10b981' } } } } }
+    </script>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 transition-colors duration-300 flex flex-col min-h-screen">
+
+    <!-- =========== HEADER (FIXED) =========== -->
+    <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Home</a>
+                <a href="index.html#tools" class="text-brand-green font-semibold">Tools</a>
+                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">About</a>
+                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Contact</a>
+            </nav>
+            <div class="flex items-center">
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700">
+                    <svg id="theme-toggle-dark-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                    <svg id="theme-toggle-light-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 5.05A1 1 0 003.636 6.464l.707.707a1 1 0 001.414-1.414l-.707-.707zM3 11a1 1 0 100-2H2a1 1 0 100 2h1zM6.464 16.364l.707-.707a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow pt-24 pb-12">
+        <div class="container mx-auto px-4">
+            <!-- Tool Header -->
+            <div class="text-center mb-12">
+                <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white flex items-center justify-center gap-4">
+                    <span class="text-brand-green">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /><path stroke-linecap="round" d="M21.25 4.5v15M2.75 4.5v15" /></svg>
+                    </span>
+                    Advanced Case Converter
+                </h1>
+                <p class="mt-4 text-lg md:text-xl max-w-2xl mx-auto text-slate-600 dark:text-slate-300">Quickly convert text between different letter cases for any purpose.</p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 md:p-8">
+                
+                <!-- Input Text Area -->
+                <textarea id="text-input" class="w-full h-48 p-4 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 focus:ring-2 focus:ring-brand-blue focus:outline-none resize-y" placeholder="Type or paste your text here..."></textarea>
+                
+                <!-- Character and Word Counters -->
+                <div class="flex justify-end gap-6 mt-2 text-sm text-slate-500 dark:text-slate-400 font-medium">
+                    <p>Characters: <span id="char-count" class="font-bold">0</span></p>
+                    <p>Words: <span id="word-count" class="font-bold">0</span></p>
+                </div>
+
+                <!-- Conversion Buttons Grid -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 mt-6">
+                    <button id="btn-sentence-case" class="case-btn">Sentence case</button>
+                    <button id="btn-lower-case" class="case-btn">lower case</button>
+                    <button id="btn-upper-case" class="case-btn">UPPER CASE</button>
+                    <button id="btn-title-case" class="case-btn">Title Case</button>
+                    <button id="btn-camel-case" class="case-btn">camelCase</button>
+                    <button id="btn-pascal-case" class="case-btn">PascalCase</button>
+                    <button id="btn-snake-case" class="case-btn">snake_case</button>
+                    <button id="btn-kebab-case" class="case-btn">kebab-case</button>
+                    <button id="btn-alternating-case" class="case-btn">aLtErNaTiNg cAsE</button>
+                    <button id="btn-inverse-case" class="case-btn">iNVERSE cASE</button>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="mt-6 flex flex-col sm:flex-row gap-4">
+                    <button id="btn-copy" class="w-full sm:w-auto flex-grow bg-brand-blue text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-blue-700 flex items-center justify-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75" /></svg>
+                        Copy to Clipboard
+                    </button>
+                    <button id="btn-clear" class="w-full sm:w-auto bg-red-500 text-white font-semibold py-3 px-6 rounded-lg hover:bg-red-600 flex items-center justify-center gap-2">
+                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" /></svg>
+                        Clear
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- =========== FOOTER (FIXED) =========== -->
+    <footer class="bg-slate-100 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700/50 mt-auto">
+        <div class="container mx-auto px-4 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left space-y-4 md:space-y-0">
+                <div>
+                    <a href="index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">Simplifying your digital life.</p>
+                </div>
+                <div class="text-sm text-slate-600 dark:text-slate-400">
+                    <p>contact@nexatools.com</p>
+                    <p class="mt-1">© 2024 NexaTools. All Rights Reserved.</p>
+                </div>
+                <div class="flex space-x-4 text-sm">
+                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
+                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // UI Elements
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const textInput = document.getElementById('text-input');
+            const charCount = document.getElementById('char-count');
+            const wordCount = document.getElementById('word-count');
+            const copyBtn = document.getElementById('btn-copy');
+
+            // --- THEME & HEADER (Identical to other tools) ---
+            const toggleTheme = () => { document.documentElement.classList.toggle('dark'); localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'; updateThemeIcons(); };
+            const updateThemeIcons = () => { const isDark = document.documentElement.classList.contains('dark'); document.getElementById('theme-toggle-dark-icon').classList.toggle('hidden', !isDark); document.getElementById('theme-toggle-light-icon').classList.toggle('hidden', isDark); };
+            const handleHeaderScroll = () => { const header = document.getElementById('header'); if (header) { window.scrollY > 10 ? header.classList.add('header-scrolled') : header.classList.remove('header-scrolled'); } };
+            
+            // Add safety check for themeToggleBtn (FIX)
+            if (themeToggleBtn) {
+                themeToggleBtn.addEventListener('click', toggleTheme);
+            }
+            window.addEventListener('scroll', handleHeaderScroll);
+            updateThemeIcons();
+            
+            // --- CORE FUNCTIONS ---
+            const updateCounts = () => {
+                const text = textInput.value;
+                charCount.textContent = text.length;
+                const words = text.trim().match(/\s+/g);
+                wordCount.textContent = text.trim() === '' ? 0 : (words ? words.length + 1 : 1);
+            };
+
+            const applyConversion = (conversionFn) => {
+                textInput.value = conversionFn(textInput.value);
+                updateCounts();
+            };
+
+            // --- CONVERSION LOGIC ---
+            const toSentenceCase = text => text.toLowerCase().replace(/(^\s*\w|[.!?]\s*\w)/g, c => c.toUpperCase());
+            const toTitleCase = text => {
+                const smallWords = /^(a|an|and|as|at|but|by|en|for|if|in|nor|of|on|or|per|the|to|vs?\.?|via)$/i;
+                return text.toLowerCase().split(' ').map((word, index, arr) => {
+                    if (index === 0 || index === arr.length - 1 || !smallWords.test(word)) {
+                        return word.charAt(0).toUpperCase() + word.slice(1);
+                    }
+                    return word;
+                }).join(' ');
+            };
+            const toCamelCase = text => {
+                const cleaned = text.replace(/[^a-zA-Z0-9]+(.)?/g, (match, chr) => chr ? chr.toUpperCase() : '').trim();
+                return cleaned.charAt(0).toLowerCase() + cleaned.slice(1);
+            }
+            const toPascalCase = text => {
+                const cleaned = text.replace(/[^a-zA-Z0-9]+(.)?/g, (match, chr) => chr ? chr.toUpperCase() : '').trim();
+                return cleaned.charAt(0).toUpperCase() + cleaned.slice(1);
+            }
+            const toSnakeCase = text => text.match(/[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g)?.map(x => x.toLowerCase()).join('_') || '';
+            const toKebabCase = text => text.match(/[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g)?.map(x => x.toLowerCase()).join('-') || '';
+            const toAlternatingCase = text => text.split('').map((c, i) => i % 2 === 0 ? c.toLowerCase() : c.toUpperCase()).join('');
+            const toInverseCase = text => text.split('').map(c => c === c.toUpperCase() ? c.toLowerCase() : c.toUpperCase()).join('');
+
+            // --- EVENT LISTENERS ---
+            textInput.addEventListener('input', updateCounts);
+
+            document.getElementById('btn-sentence-case').addEventListener('click', () => applyConversion(toSentenceCase));
+            document.getElementById('btn-lower-case').addEventListener('click', () => applyConversion(text => text.toLowerCase()));
+            document.getElementById('btn-upper-case').addEventListener('click', () => applyConversion(text => text.toUpperCase()));
+            document.getElementById('btn-title-case').addEventListener('click', () => applyConversion(toTitleCase));
+            document.getElementById('btn-camel-case').addEventListener('click', () => applyConversion(toCamelCase));
+            document.getElementById('btn-pascal-case').addEventListener('click', () => applyConversion(toPascalCase));
+            document.getElementById('btn-snake-case').addEventListener('click', () => applyConversion(toSnakeCase));
+            document.getElementById('btn-kebab-case').addEventListener('click', () => applyConversion(toKebabCase));
+            document.getElementById('btn-alternating-case').addEventListener('click', () => applyConversion(toAlternatingCase));
+            document.getElementById('btn-inverse-case').addEventListener('click', () => applyConversion(toInverseCase));
+
+            copyBtn.addEventListener('click', () => {
+                if (!textInput.value) return;
+                navigator.clipboard.writeText(textInput.value).then(() => {
+                    const originalHTML = copyBtn.innerHTML;
+                    copyBtn.innerHTML = 'Copied!';
+                    setTimeout(() => { copyBtn.innerHTML = originalHTML; }, 2000);
+                });
+            });
+
+            document.getElementById('btn-clear').addEventListener('click', () => {
+                textInput.value = '';
+                updateCounts();
+            });
+            
+            // Initialize
+            updateCounts();
+        });
+    </script>
+</body>
+</html>

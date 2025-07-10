@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gradient Generator - NexaTools</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .header-scrolled { background-color: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
+        .dark .header-scrolled { background-color: rgba(15, 23, 42, 0.8); }
+        input[type="color"] { -webkit-appearance: none; border: none; width: 36px; height: 36px; padding: 0; cursor: pointer; border-radius: 0.375rem; }
+        input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+        input[type="color"]::-webkit-color-swatch { border: 2px solid #e5e7eb; border-radius: 0.375rem; }
+        .dark input[type="color"]::-webkit-color-swatch { border-color: #4b5563; }
+        input[type="range"] { @apply w-full h-2 bg-slate-200 dark:bg-slate-600 rounded-lg appearance-none cursor-pointer; }
+        input[type="range"]::-webkit-slider-thumb { @apply appearance-none h-5 w-5 bg-brand-blue rounded-full shadow-md; }
+    </style>
+    <script>
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) { document.documentElement.classList.add('dark') } else { document.documentElement.classList.remove('dark') }
+        tailwind.config = { darkMode: 'class', theme: { extend: { colors: { brand: { blue: '#3b82f6', green: '#10b981' } } } } }
+    </script>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 transition-colors duration-300 flex flex-col min-h-screen">
+
+    <!-- =========== HEADER (RESTORED) =========== -->
+    <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Home</a>
+                <a href="index.html#tools" class="text-brand-green font-semibold">Tools</a>
+                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">About</a>
+                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Contact</a>
+            </nav>
+            <div class="flex items-center">
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700">
+                    <svg id="theme-toggle-dark-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                    <svg id="theme-toggle-light-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 5.05A1 1 0 003.636 6.464l.707.707a1 1 0 001.414-1.414l-.707-.707zM3 11a1 1 0 100-2H2a1 1 0 100 2h1zM6.464 16.364l.707-.707a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow pt-24 pb-12">
+        <div class="container mx-auto px-4">
+            <!-- Tool Header -->
+            <div class="text-center mb-12">
+                <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white flex items-center justify-center gap-4">
+                    <span class="text-brand-green">
+                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12"><path stroke-linecap="round" stroke-linejoin="round" d="M12.75 15l3-3m0 0l-3-3m3 3h-7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    </span>
+                    Gradient Generator
+                </h1>
+                <p class="mt-4 text-lg md:text-xl max-w-2xl mx-auto text-slate-600 dark:text-slate-300">Create and customize beautiful CSS gradients with a live preview.</p>
+            </div>
+            
+            <div class="max-w-6xl mx-auto bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 md:p-8">
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Controls Panel -->
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-4">Controls</h3>
+                        
+                        <!-- Gradient Type -->
+                        <fieldset class="mb-6">
+                             <legend class="font-semibold mb-2">Gradient Type</legend>
+                             <div class="flex gap-4">
+                                 <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="gradient-type" value="linear" checked class="form-radio text-brand-blue focus:ring-brand-blue"> Linear</label>
+                                 <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="gradient-type" value="radial" class="form-radio text-brand-blue focus:ring-brand-blue"> Radial</label>
+                             </div>
+                        </fieldset>
+                        
+                        <!-- Angle -->
+                        <div id="angle-control" class="mb-6">
+                            <label for="angle-slider" class="block font-semibold mb-2">Angle</label>
+                            <div class="flex items-center gap-4">
+                                <input type="range" id="angle-slider" min="0" max="360" value="90">
+                                <input type="number" id="angle-input" min="0" max="360" value="90" class="w-20 p-2 text-center border border-slate-300 dark:border-slate-600 rounded-md bg-white dark:bg-slate-800">
+                                <span>deg</span>
+                            </div>
+                        </div>
+
+                        <!-- Color Stops -->
+                        <div>
+                            <label class="block font-semibold mb-2">Colors</label>
+                            <div id="color-stops-container" class="space-y-3">
+                                <!-- Color stops will be generated by JS -->
+                            </div>
+                            <button id="add-color-btn" class="mt-4 w-full bg-slate-200 dark:bg-slate-700 font-semibold py-2 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600">Add Color</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Preview and Code Panel -->
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-4">Preview & Code</h3>
+                        <div id="gradient-preview" class="w-full h-64 rounded-lg shadow-inner border border-slate-200 dark:border-slate-700"></div>
+                        
+                        <div class="mt-4">
+                            <label for="css-code" class="block font-semibold mb-2">CSS Code</label>
+                            <div class="relative">
+                                <textarea id="css-code" readonly class="w-full h-32 p-4 font-mono text-sm border border-slate-300 dark:border-slate-600 rounded-lg bg-slate-100 dark:bg-slate-900/50 resize-none focus:outline-none"></textarea>
+                                <button id="copy-css-btn" class="absolute top-2 right-2 bg-brand-blue text-white font-semibold text-xs py-1 px-3 rounded-md hover:bg-blue-700">Copy</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- =========== FOOTER (RESTORED) =========== -->
+    <footer class="bg-slate-100 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700/50 mt-auto">
+        <div class="container mx-auto px-4 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left space-y-4 md:space-y-0">
+                <div>
+                    <a href="index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">Simplifying your digital life.</p>
+                </div>
+                <div class="text-sm text-slate-600 dark:text-slate-400">
+                    <p>contact@nexatools.com</p>
+                    <p class="mt-1">© 2024 NexaTools. All Rights Reserved.</p>
+                </div>
+                <div class="flex space-x-4 text-sm">
+                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
+                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // UI Elements
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const colorStopsContainer = document.getElementById('color-stops-container');
+            const addColorBtn = document.getElementById('add-color-btn');
+            const gradientPreview = document.getElementById('gradient-preview');
+            const cssCode = document.getElementById('css-code');
+            const copyCssBtn = document.getElementById('copy-css-btn');
+            const angleSlider = document.getElementById('angle-slider');
+            const angleInput = document.getElementById('angle-input');
+            const angleControl = document.getElementById('angle-control');
+
+            let colorStops = [
+                { color: '#3b82f6', position: 0 },
+                { color: '#10b981', position: 100 }
+            ];
+
+            // --- THEME & HEADER ---
+            const toggleTheme = () => { document.documentElement.classList.toggle('dark'); localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'; updateThemeIcons(); };
+            const updateThemeIcons = () => { const isDark = document.documentElement.classList.contains('dark'); if (themeToggleBtn) { document.getElementById('theme-toggle-dark-icon').classList.toggle('hidden', !isDark); document.getElementById('theme-toggle-light-icon').classList.toggle('hidden', isDark); } };
+            const handleHeaderScroll = () => { const header = document.getElementById('header'); if (header) { window.scrollY > 10 ? header.classList.add('header-scrolled') : header.classList.remove('header-scrolled'); } };
+            
+            if (themeToggleBtn) themeToggleBtn.addEventListener('click', toggleTheme);
+            window.addEventListener('scroll', handleHeaderScroll);
+            updateThemeIcons();
+
+            // --- CORE LOGIC ---
+            const generateGradient = () => {
+                colorStops.sort((a, b) => a.position - b.position);
+
+                const type = document.querySelector('input[name="gradient-type"]:checked').value;
+                const angle = angleSlider.value;
+                const colorString = colorStops.map(stop => `${stop.color} ${stop.position}%`).join(', ');
+                
+                let cssString;
+                if (type === 'linear') {
+                    cssString = `linear-gradient(${angle}deg, ${colorString})`;
+                } else {
+                    cssString = `radial-gradient(circle, ${colorString})`;
+                }
+
+                gradientPreview.style.background = cssString;
+                cssCode.value = `background: ${cssString};`;
+                
+                angleControl.style.display = type === 'linear' ? 'block' : 'none';
+            };
+
+            const renderColorStops = () => {
+                colorStopsContainer.innerHTML = '';
+                colorStops.forEach((stop, index) => {
+                    const stopEl = document.createElement('div');
+                    stopEl.className = 'flex items-center gap-3 p-2 bg-slate-100 dark:bg-slate-700/50 rounded-lg';
+                    
+                    stopEl.innerHTML = `
+                        <input type="color" value="${stop.color}" data-index="${index}" class="color-picker flex-shrink-0">
+                        <input type="text" value="${stop.color}" data-index="${index}" class="hex-input w-24 p-1 font-mono text-sm border border-slate-300 dark:border-slate-600 rounded-md bg-white dark:bg-slate-800">
+                        <input type="range" value="${stop.position}" data-index="${index}" class="position-slider" min="0" max="100">
+                        <button data-index="${index}" class="remove-stop-btn text-red-500 hover:text-red-700 flex-shrink-0 disabled:opacity-50" ${colorStops.length <= 2 ? 'disabled' : ''}>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                        </button>
+                    `;
+                    colorStopsContainer.appendChild(stopEl);
+                });
+                addEventListenersToStops();
+                generateGradient();
+            };
+            
+            const addEventListenersToStops = () => {
+                document.querySelectorAll('.color-picker').forEach(picker => {
+                    picker.addEventListener('input', e => {
+                        const index = e.target.dataset.index;
+                        colorStops[index].color = e.target.value;
+                        document.querySelector(`.hex-input[data-index="${index}"]`).value = e.target.value;
+                        generateGradient();
+                    });
+                });
+                document.querySelectorAll('.hex-input').forEach(input => {
+                    input.addEventListener('change', e => {
+                        const index = e.target.dataset.index;
+                        colorStops[index].color = e.target.value;
+                        document.querySelector(`.color-picker[data-index="${index}"]`).value = e.target.value;
+                        generateGradient();
+                    });
+                });
+                document.querySelectorAll('.position-slider').forEach(slider => {
+                    slider.addEventListener('input', e => {
+                        colorStops[e.target.dataset.index].position = e.target.value;
+                        generateGradient();
+                    });
+                });
+                document.querySelectorAll('.remove-stop-btn').forEach(button => {
+                    button.addEventListener('click', e => {
+                        colorStops.splice(e.currentTarget.dataset.index, 1);
+                        renderColorStops();
+                    });
+                });
+            };
+
+            // --- EVENT LISTENERS ---
+            addColorBtn.addEventListener('click', () => {
+                colorStops.push({ color: '#ffffff', position: 100 });
+                renderColorStops();
+            });
+            
+            angleSlider.addEventListener('input', () => {
+                angleInput.value = angleSlider.value;
+                generateGradient();
+            });
+            angleInput.addEventListener('change', () => {
+                let value = parseInt(angleInput.value);
+                if (isNaN(value) || value < 0) value = 0;
+                if (value > 360) value = 360;
+                angleInput.value = value;
+                angleSlider.value = value;
+                generateGradient();
+            });
+
+            document.querySelectorAll('input[name="gradient-type"]').forEach(radio => radio.addEventListener('change', generateGradient));
+
+            copyCssBtn.addEventListener('click', () => {
+                navigator.clipboard.writeText(cssCode.value).then(() => {
+                    const originalText = copyCssBtn.textContent;
+                    copyCssBtn.textContent = 'Copied!';
+                    setTimeout(() => { copyCssBtn.textContent = originalText; }, 2000);
+                });
+            });
+
+            // --- INITIALIZATION ---
+            renderColorStops();
+        });
+    </script>
+</body>
+</html>

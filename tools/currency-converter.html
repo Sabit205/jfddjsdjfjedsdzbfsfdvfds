@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Converter - NexaTools</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .header-scrolled {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .dark .header-scrolled {
+            background-color: rgba(15, 23, 42, 0.8);
+        }
+        /* Custom spinner */
+        .loader {
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3b82f6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+    <script>
+        // Set theme on initial load
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+
+        // Configure Tailwind CSS
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            blue: '#3b82f6',
+                            green: '#10b981',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 transition-colors duration-300 flex flex-col min-h-screen">
+
+    <!-- =========== HEADER =========== -->
+    <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Home</a>
+                <a href="index.html#tools" class="text-brand-blue font-semibold">Tools</a>
+                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">About</a>
+                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Contact</a>
+            </nav>
+            <div class="flex items-center">
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                    <svg id="theme-toggle-dark-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                    <svg id="theme-toggle-light-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 5.05A1 1 0 003.636 6.464l.707.707a1 1 0 001.414-1.414l-.707-.707zM3 11a1 1 0 100-2H2a1 1 0 100 2h1zM6.464 16.364l.707-.707a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow pt-24 pb-12">
+        <div class="container mx-auto px-4">
+            <!-- Tool Header -->
+            <div class="text-center mb-12">
+                <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white flex items-center justify-center gap-4">
+                    <span class="text-brand-blue">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" /></svg>
+                    </span>
+                    Currency Converter
+                </h1>
+                <p class="mt-4 text-lg md:text-xl max-w-2xl mx-auto text-slate-600 dark:text-slate-300">Convert currencies with real-time global exchange rates, updated automatically.</p>
+            </div>
+
+            <!-- Calculator Body -->
+            <div class="max-w-3xl mx-auto bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 md:p-8 space-y-8">
+                <!-- Input Section -->
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
+                    <div class="md:col-span-2">
+                        <label for="from-currency" class="block text-sm font-medium mb-1">From</label>
+                        <select id="from-currency" class="w-full p-3 bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg shadow-sm focus:ring-brand-blue focus:border-brand-blue">
+                           <!-- Options populated by JS -->
+                        </select>
+                    </div>
+
+                    <div class="flex justify-center">
+                        <button id="swap-btn" class="p-3 bg-slate-200 dark:bg-slate-600 hover:bg-brand-blue hover:text-white rounded-full transition-all duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="md:col-span-2">
+                         <label for="to-currency" class="block text-sm font-medium mb-1">To</label>
+                        <select id="to-currency" class="w-full p-3 bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg shadow-sm focus:ring-brand-blue focus:border-brand-blue">
+                            <!-- Options populated by JS -->
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="amount-input" class="block text-sm font-medium mb-1">Amount</label>
+                    <input type="number" id="amount-input" value="1" placeholder="Enter amount" class="w-full p-3 bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg shadow-sm focus:ring-brand-blue focus:border-brand-blue">
+                </div>
+
+                <!-- Results Section -->
+                <div id="results-section" class="pt-6 border-t border-slate-200 dark:border-slate-700 space-y-2 text-center">
+                    <div id="loader" class="mx-auto loader"></div>
+                    <div id="result-text" class="hidden">
+                        <p id="conversion-result" class="text-4xl font-bold text-brand-green">1.00 USD = 0.93 EUR</p>
+                        <p id="rate-info" class="text-sm text-slate-500 dark:text-slate-400 mt-2">1 USD = 0.9312 EUR</p>
+                        <p id="last-updated" class="text-xs text-slate-400 dark:text-slate-500 mt-1">Last updated: ...</p>
+                    </div>
+                     <p id="error-message" class="hidden text-red-500">Could not fetch exchange rates. Please try again later.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- =========== FOOTER =========== -->
+    <footer class="bg-slate-100 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700/50 mt-auto">
+        <div class="container mx-auto px-4 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left space-y-4 md:space-y-0">
+                <div>
+                    <a href="index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">Simplifying your digital life.</p>
+                </div>
+                <div class="text-sm text-slate-600 dark:text-slate-400">
+                    <p>contact@nexatools.com</p>
+                    <p class="mt-1">© 2024 NexaTools. All Rights Reserved.</p>
+                </div>
+                <div class="flex space-x-4 text-sm">
+                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
+                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // --- THEME & HEADER LOGIC ---
+    const header = document.getElementById('header');
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const darkIcon = document.getElementById('theme-toggle-dark-icon');
+    const lightIcon = document.getElementById('theme-toggle-light-icon');
+    const toggleTheme = () => { document.documentElement.classList.toggle('dark'); localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'; updateThemeIcons(); };
+    const updateThemeIcons = () => { if (document.documentElement.classList.contains('dark')) { darkIcon.classList.remove('hidden'); lightIcon.classList.add('hidden'); } else { darkIcon.classList.add('hidden'); lightIcon.classList.remove('hidden'); } };
+    themeToggleBtn.addEventListener('click', toggleTheme);
+    updateThemeIcons();
+    window.addEventListener('scroll', () => { header.classList.toggle('header-scrolled', window.scrollY > 10); });
+
+    // --- CURRENCY CONVERTER LOGIC ---
+    const fromSelect = document.getElementById('from-currency');
+    const toSelect = document.getElementById('to-currency');
+    const amountInput = document.getElementById('amount-input');
+    const swapBtn = document.getElementById('swap-btn');
+    
+    const loader = document.getElementById('loader');
+    const resultText = document.getElementById('result-text');
+    const conversionResult = document.getElementById('conversion-result');
+    const rateInfo = document.getElementById('rate-info');
+    const lastUpdated = document.getElementById('last-updated');
+    const errorMessage = document.getElementById('error-message');
+
+    // API endpoint (no key required)
+    const API_URL_BASE = 'https://open.er-api.com/v6/latest/';
+
+    // --- Functions ---
+    async function populateCurrencies() {
+        try {
+            const response = await fetch(`${API_URL_BASE}USD`);
+            if (!response.ok) throw new Error('Network response was not ok.');
+            const data = await response.json();
+            const currencies = Object.keys(data.rates);
+
+            const fragment = document.createDocumentFragment();
+            currencies.forEach(currency => {
+                const option = document.createElement('option');
+                option.value = currency;
+                option.textContent = currency;
+                fragment.appendChild(option);
+            });
+
+            fromSelect.appendChild(fragment.cloneNode(true));
+            toSelect.appendChild(fragment.cloneNode(true));
+
+            // Set default values
+            fromSelect.value = 'USD';
+            toSelect.value = 'EUR';
+
+            convertCurrency(); // Initial conversion
+        } catch (error) {
+            console.error('Failed to populate currencies:', error);
+            showError();
+        }
+    }
+
+    async function convertCurrency() {
+        const amount = parseFloat(amountInput.value);
+        const fromCurrency = fromSelect.value;
+        const toCurrency = toSelect.value;
+
+        if (isNaN(amount) || amount < 0) {
+            showError('Please enter a valid amount.');
+            return;
+        }
+
+        showLoading();
+
+        try {
+            const response = await fetch(`${API_URL_BASE}${fromCurrency}`);
+            if (!response.ok) throw new Error('Failed to fetch rates.');
+            const data = await response.json();
+
+            if (data.result === 'error') throw new Error(data['error-type']);
+            
+            const rate = data.rates[toCurrency];
+            if (!rate) throw new Error('Target currency not found in rates.');
+            
+            const convertedAmount = amount * rate;
+            
+            // Display results
+            conversionResult.textContent = `${amount.toLocaleString()} ${fromCurrency} = ${convertedAmount.toLocaleString(undefined, {maximumFractionDigits: 2})} ${toCurrency}`;
+            rateInfo.textContent = `1 ${fromCurrency} = ${rate.toFixed(4)} ${toCurrency}`;
+            lastUpdated.textContent = `Last updated: ${new Date(data.time_last_update_utc).toLocaleString()}`;
+            
+            showResult();
+
+        } catch (error) {
+            console.error('Conversion failed:', error);
+            showError();
+        }
+    }
+
+    function swapCurrencies() {
+        [fromSelect.value, toSelect.value] = [toSelect.value, fromSelect.value];
+        convertCurrency();
+    }
+    
+    function showLoading() {
+        loader.classList.remove('hidden');
+        resultText.classList.add('hidden');
+        errorMessage.classList.add('hidden');
+    }
+
+    function showResult() {
+        loader.classList.add('hidden');
+        resultText.classList.remove('hidden');
+        errorMessage.classList.add('hidden');
+    }
+
+    function showError(message = 'Could not fetch exchange rates. Please try again later.') {
+        loader.classList.add('hidden');
+        resultText.classList.add('hidden');
+        errorMessage.textContent = message;
+        errorMessage.classList.remove('hidden');
+    }
+
+    // --- Event Listeners ---
+    amountInput.addEventListener('input', convertCurrency);
+    fromSelect.addEventListener('change', convertCurrency);
+    toSelect.addEventListener('change', convertCurrency);
+    swapBtn.addEventListener('click', swapCurrencies);
+
+    // --- Initial Setup ---
+    populateCurrencies();
+});
+</script>
+
+</body>
+</html>

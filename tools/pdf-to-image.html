@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF to Image Converter - NexaTools</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .header-scrolled { background-color: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
+        .dark .header-scrolled { background-color: rgba(15, 23, 42, 0.8); }
+        .drag-over { border-color: #10b981; background-color: rgb(16 185 129 / 0.05); }
+        .dark .drag-over { background-color: rgb(16 185 129 / 0.1); }
+        input[type="range"] { @apply w-full h-2 bg-slate-200 dark:bg-slate-600 rounded-lg appearance-none cursor-pointer; }
+        input[type="range"]::-webkit-slider-thumb { @apply appearance-none h-5 w-5 bg-brand-green rounded-full shadow-md; }
+    </style>
+    <script>
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) { document.documentElement.classList.add('dark') } else { document.documentElement.classList.remove('dark') }
+        tailwind.config = { darkMode: 'class', theme: { extend: { colors: { brand: { blue: '#3b82f6', green: '#10b981' } } } } }
+    </script>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 transition-colors duration-300 flex flex-col min-h-screen">
+
+    <!-- =========== HEADER =========== -->
+    <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Home</a>
+                <a href="index.html#tools" class="text-brand-green font-semibold">Tools</a>
+                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">About</a>
+                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Contact</a>
+            </nav>
+            <div class="flex items-center">
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700">
+                    <svg id="theme-toggle-dark-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                    <svg id="theme-toggle-light-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 5.05A1 1 0 003.636 6.464l.707.707a1 1 0 001.414-1.414l-.707-.707zM3 11a1 1 0 100-2H2a1 1 0 100 2h1zM6.464 16.364l.707-.707a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow pt-24 pb-12">
+        <div class="container mx-auto px-4">
+            <!-- Tool Header -->
+            <div class="text-center mb-12">
+                <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white flex items-center justify-center gap-4">
+                    <span class="text-brand-green">
+                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
+                    </span>
+                    PDF to Image Converter
+                </h1>
+                <p class="mt-4 text-lg md:text-xl max-w-2xl mx-auto text-slate-600 dark:text-slate-300">Convert pages from a PDF document into high-quality JPG or PNG images.</p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 md:p-8">
+                
+                 <!-- Upload Area -->
+                <div id="upload-section">
+                    <div id="drop-zone" class="border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-lg p-12 text-center cursor-pointer transition-all duration-300">
+                        <div class="flex flex-col items-center justify-center space-y-4 text-slate-500 dark:text-slate-400">
+                             <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
+                            <p class="text-lg font-semibold">Drag & drop a PDF here</p>
+                            <p>or</p>
+                            <button id="select-files-btn" class="bg-brand-green text-white font-bold py-2 px-6 rounded-lg shadow-md hover:bg-green-600">Select PDF</button>
+                            <input type="file" id="file-input" class="hidden" accept=".pdf,application/pdf">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Processing UI -->
+                <div id="processing-section" class="hidden">
+                    <div class="bg-slate-100 dark:bg-slate-700/50 p-4 rounded-lg flex justify-between items-center">
+                        <p id="file-name" class="font-bold text-slate-800 dark:text-slate-100 truncate"></p>
+                        <p id="page-count" class="font-semibold text-slate-600 dark:text-slate-300 flex-shrink-0 ml-4"></p>
+                    </div>
+
+                    <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label for="range-input" class="block font-semibold">Pages to Convert</label>
+                            <input type="text" id="range-input" placeholder="e.g., 1, 3-5, 8" class="w-full p-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800">
+                        </div>
+                        <fieldset>
+                            <legend class="block font-semibold mb-2">Image Format</legend>
+                            <div class="flex gap-4">
+                               <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="format-type" value="image/png" checked class="form-radio text-brand-blue focus:ring-brand-blue"> PNG</label>
+                               <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="format-type" value="image/jpeg" class="form-radio text-brand-blue focus:ring-brand-blue"> JPG</label>
+                            </div>
+                        </fieldset>
+                    </div>
+                    
+                    <div class="mt-6">
+                        <label for="resolution-slider" class="block font-semibold">Resolution</label>
+                        <input type="range" id="resolution-slider" min="1" max="3" value="2" class="w-full mt-2">
+                        <div class="flex justify-between text-xs font-medium text-slate-500 mt-1">
+                            <span>Standard</span>
+                            <span>High</span>
+                            <span>Ultra High</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 flex flex-col sm:flex-row-reverse gap-4">
+                        <button id="action-btn" class="w-full sm:w-auto flex-grow bg-brand-green text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-green-700 flex items-center justify-center gap-2 disabled:opacity-50" disabled>
+                           Convert to Images
+                        </button>
+                         <button id="reset-btn" class="w-full sm:w-auto bg-slate-500 text-white font-semibold py-2 px-6 rounded-lg hover:bg-slate-600">
+                            Use Another File
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- =========== FOOTER =========== -->
+    <footer class="bg-slate-100 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700/50 mt-auto">
+        <div class="container mx-auto px-4 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left space-y-4 md:space-y-0">
+                <div>
+                    <a href="index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">Simplifying your digital life.</p>
+                </div>
+                <div class="text-sm text-slate-600 dark:text-slate-400">
+                    <p>contact@nexatools.com</p>
+                    <p class="mt-1">© 2024 NexaTools. All Rights Reserved.</p>
+                </div>
+                <div class="flex space-x-4 text-sm">
+                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
+                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- External Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js`;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // UI Elements
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const uploadSection = document.getElementById('upload-section');
+            const processingSection = document.getElementById('processing-section');
+            const dropZone = document.getElementById('drop-zone');
+            const fileInput = document.getElementById('file-input');
+            const selectFilesBtn = document.getElementById('select-files-btn');
+            const fileNameEl = document.getElementById('file-name');
+            const pageCountEl = document.getElementById('page-count');
+            const rangeInput = document.getElementById('range-input');
+            const actionBtn = document.getElementById('action-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            
+            let pdfDoc = null;
+            let outputBlob = null; // Can be a Zip blob or an image blob
+            let isSingleFile = false;
+
+            // --- THEME & HEADER ---
+            const toggleTheme = () => { document.documentElement.classList.toggle('dark'); localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'; updateThemeIcons(); };
+            const updateThemeIcons = () => { const isDark = document.documentElement.classList.contains('dark'); if (themeToggleBtn) { document.getElementById('theme-toggle-dark-icon').classList.toggle('hidden', !isDark); document.getElementById('theme-toggle-light-icon').classList.toggle('hidden', isDark); } };
+            const handleHeaderScroll = () => { const header = document.getElementById('header'); if (header) { window.scrollY > 10 ? header.classList.add('header-scrolled') : header.classList.remove('header-scrolled'); } };
+            if (themeToggleBtn) themeToggleBtn.addEventListener('click', toggleTheme);
+            window.addEventListener('scroll', handleHeaderScroll);
+            updateThemeIcons();
+            
+            // --- FILE HANDLING ---
+            const handleFile = async (file) => {
+                if (!file || !file.type.includes('pdf')) {
+                    alert('Please select a valid .pdf file.');
+                    return;
+                }
+                resetTool(false);
+                fileNameEl.textContent = file.name;
+                uploadSection.classList.add('hidden');
+                processingSection.classList.remove('hidden');
+
+                try {
+                    const arrayBuffer = await file.arrayBuffer();
+                    pdfDoc = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+                    pageCountEl.textContent = `Total Pages: ${pdfDoc.numPages}`;
+                    rangeInput.placeholder = `e.g., 1, 3-5, 8 (max ${pdfDoc.numPages})`;
+                    actionBtn.disabled = false;
+                } catch (err) {
+                    handleError(err, "Could not read the PDF file.");
+                }
+            };
+            
+            // --- CONVERSION LOGIC (FIXED) ---
+            const onActionClick = async () => {
+                if (outputBlob) {
+                    downloadFile();
+                } else {
+                    await convertToImages();
+                }
+            };
+
+            const parseRanges = (rangeStr, maxPages) => {
+                if (!rangeStr.trim()) { // If input is empty, convert all pages
+                    return Array.from({ length: maxPages }, (_, i) => i + 1);
+                }
+                const pages = new Set();
+                const parts = rangeStr.split(',');
+                for (const part of parts) {
+                    const trimmedPart = part.trim();
+                    if (trimmedPart.includes('-')) {
+                        const [start, end] = trimmedPart.split('-').map(num => parseInt(num, 10));
+                        if (isNaN(start) || isNaN(end) || start < 1 || end > maxPages || start > end) {
+                            throw new Error(`Invalid range: "${trimmedPart}".`);
+                        }
+                        for (let i = start; i <= end; i++) pages.add(i);
+                    } else {
+                        const pageNum = parseInt(trimmedPart, 10);
+                        if (isNaN(pageNum) || pageNum < 1 || pageNum > maxPages) {
+                            throw new Error(`Invalid page number: "${trimmedPart}".`);
+                        }
+                        pages.add(pageNum);
+                    }
+                }
+                return Array.from(pages).sort((a,b) => a - b);
+            };
+
+            const convertToImages = async () => {
+                try {
+                    const pagesToConvert = parseRanges(rangeInput.value, pdfDoc.numPages);
+                    if (pagesToConvert.length === 0) {
+                        alert('No valid pages selected for conversion.');
+                        return;
+                    }
+                    
+                    actionBtn.disabled = true;
+                    actionBtn.innerHTML = `<svg class="animate-spin h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Converting...`;
+                    
+                    const format = document.querySelector('input[name="format-type"]:checked').value;
+                    const scale = parseFloat(document.getElementById('resolution-slider').value);
+                    const extension = format.split('/')[1];
+                    isSingleFile = pagesToConvert.length === 1;
+
+                    if (isSingleFile) {
+                        const pageNum = pagesToConvert[0];
+                        const page = await pdfDoc.getPage(pageNum);
+                        const viewport = page.getViewport({ scale });
+                        const canvas = document.createElement('canvas');
+                        canvas.height = viewport.height;
+                        canvas.width = viewport.width;
+                        const context = canvas.getContext('2d');
+                        await page.render({ canvasContext: context, viewport }).promise;
+                        outputBlob = await new Promise(resolve => canvas.toBlob(resolve, format, 0.95));
+                        actionBtn.textContent = `Download .${extension} File`;
+                    } else {
+                        const zip = new JSZip();
+                        for (const pageNum of pagesToConvert) {
+                            const page = await pdfDoc.getPage(pageNum);
+                            const viewport = page.getViewport({ scale });
+                            const canvas = document.createElement('canvas');
+                            canvas.height = viewport.height;
+                            canvas.width = viewport.width;
+                            const context = canvas.getContext('2d');
+                            await page.render({ canvasContext: context, viewport }).promise;
+                            
+                            const blob = await new Promise(resolve => canvas.toBlob(resolve, format, 0.95));
+                            zip.file(`page_${pageNum}.${extension}`, blob);
+                        }
+                        outputBlob = await zip.generateAsync({ type: 'blob' });
+                        actionBtn.textContent = 'Download .zip File';
+                    }
+                    
+                    actionBtn.classList.replace('bg-brand-green', 'bg-brand-blue');
+                    actionBtn.classList.replace('hover:bg-green-700', 'hover:bg-blue-700');
+
+                } catch (err) {
+                    handleError(err, "Conversion failed");
+                } finally {
+                    actionBtn.disabled = false;
+                }
+            };
+            
+            // --- UTILITY FUNCTIONS (FIXED) ---
+            const downloadFile = () => {
+                const originalName = fileNameEl.textContent.replace(/\.pdf$/i, '');
+                const format = document.querySelector('input[name="format-type"]:checked').value;
+                const extension = isSingleFile ? format.split('/')[1] : 'zip';
+                const pageNum = parseRanges(rangeInput.value, pdfDoc.numPages)[0];
+                const newFileName = isSingleFile ? `${originalName}-page-${pageNum}.${extension}` : `${originalName}-images.zip`;
+
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(outputBlob);
+                link.download = newFileName;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(link.href);
+            };
+
+            const handleError = (error, message) => {
+                console.error(message, error);
+                alert(`${message}: ${error.message}`);
+                actionBtn.textContent = 'Convert to Images';
+                actionBtn.classList.remove('bg-red-500');
+            };
+            
+            const resetTool = (showUpload = true) => {
+                pdfDoc = null;
+                outputBlob = null;
+                isSingleFile = false;
+                fileInput.value = '';
+                rangeInput.value = '';
+                if (showUpload) {
+                    uploadSection.classList.remove('hidden');
+                    processingSection.classList.add('hidden');
+                }
+                actionBtn.disabled = true;
+                actionBtn.innerHTML = 'Convert to Images';
+                actionBtn.classList.replace('bg-brand-blue', 'bg-brand-green');
+                actionBtn.classList.replace('hover:bg-blue-700', 'hover:bg-green-700');
+            };
+
+            // --- EVENT LISTENERS ---
+            selectFilesBtn.addEventListener('click', () => fileInput.click()); 
+            fileInput.addEventListener('change', (e) => handleFile(e.target.files[0]));
+            dropZone.addEventListener('dragover', (e) => { e.preventDefault(); e.stopPropagation(); dropZone.classList.add('drag-over'); });
+            dropZone.addEventListener('dragleave', (e) => { e.preventDefault(); e.stopPropagation(); dropZone.classList.remove('drag-over'); });
+            dropZone.addEventListener('drop', (e) => { e.preventDefault(); e.stopPropagation(); dropZone.classList.remove('drag-over'); handleFile(e.dataTransfer.files[0]); });
+            actionBtn.addEventListener('click', onActionClick);
+            resetBtn.addEventListener('click', () => resetTool(true));
+        });
+    </script>
+</body>
+</html>

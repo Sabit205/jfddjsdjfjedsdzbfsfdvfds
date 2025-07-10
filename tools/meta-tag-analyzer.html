@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meta Tag Analyzer - NexaTools</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .header-scrolled { background-color: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
+        .dark .header-scrolled { background-color: rgba(15, 23, 42, 0.8); }
+        .status-pass { color: #10b981; }
+        .status-warn { color: #f59e0b; }
+        .status-fail { color: #ef4444; }
+    </style>
+    <script>
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) { document.documentElement.classList.add('dark') } else { document.documentElement.classList.remove('dark') }
+        tailwind.config = { darkMode: 'class', theme: { extend: { colors: { brand: { blue: '#3b82f6', green: '#10b981' } } } } }
+    </script>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 transition-colors duration-300 flex flex-col min-h-screen">
+
+    <!-- =========== HEADER =========== -->
+    <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Home</a>
+                <a href="index.html#tools" class="text-brand-green font-semibold">Tools</a>
+                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">About</a>
+                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Contact</a>
+            </nav>
+            <div class="flex items-center">
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700">
+                    <svg id="theme-toggle-dark-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                    <svg id="theme-toggle-light-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 5.05A1 1 0 003.636 6.464l.707.707a1 1 0 001.414-1.414l-.707-.707zM3 11a1 1 0 100-2H2a1 1 0 100 2h1zM6.464 16.364l.707-.707a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow pt-24 pb-12">
+        <div class="container mx-auto px-4">
+            <!-- Tool Header -->
+            <div class="text-center mb-12">
+                <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white flex items-center justify-center gap-4">
+                    <span class="text-brand-green">
+                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12"><path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" /></svg>
+                    </span>
+                    Meta Tag Analyzer
+                </h1>
+                <p class="mt-4 text-lg md:text-xl max-w-2xl mx-auto text-slate-600 dark:text-slate-300">Analyze the meta tags of any webpage to improve your SEO and social sharing.</p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 md:p-8">
+                
+                <!-- URL Input -->
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <input type="url" id="url-input" class="w-full p-3 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 focus:ring-2 focus:ring-brand-blue focus:outline-none" placeholder="Enter URL to analyze (e.g., https://example.com)">
+                    <button id="analyze-btn" class="w-full sm:w-auto bg-brand-green text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-green-700 flex items-center justify-center gap-2">
+                        Analyze
+                    </button>
+                </div>
+                
+                <!-- Loading/Error States -->
+                <div id="loading-state" class="hidden text-center p-8"><svg class="animate-spin h-8 w-8 mx-auto text-brand-green" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg><p class="mt-4 font-semibold">Fetching and analyzing URL...</p></div>
+                <div id="error-state" class="hidden text-center p-8 mt-6 bg-red-100 dark:bg-red-900/50 rounded-lg"></div>
+                
+                <!-- Results Area -->
+                <div id="results-section" class="hidden mt-8 space-y-8">
+                    <!-- Previews -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div id="serp-preview"></div>
+                        <div id="social-preview"></div>
+                    </div>
+                    <!-- Analysis Tables -->
+                    <div id="analysis-tables"></div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- =========== FOOTER =========== -->
+    <footer class="bg-slate-100 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700/50 mt-auto">
+        <div class="container mx-auto px-4 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left space-y-4 md:space-y-0">
+                <div>
+                    <a href="index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">Simplifying your digital life.</p>
+                </div>
+                <div class="text-sm text-slate-600 dark:text-slate-400">
+                    <p>contact@nexatools.com</p>
+                    <p class="mt-1">© 2024 NexaTools. All Rights Reserved.</p>
+                </div>
+                <div class="flex space-x-4 text-sm">
+                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
+                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // UI Elements
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const urlInput = document.getElementById('url-input');
+            const analyzeBtn = document.getElementById('analyze-btn');
+            const loadingState = document.getElementById('loading-state');
+            const errorState = document.getElementById('error-state');
+            const resultsSection = document.getElementById('results-section');
+
+            // --- THEME & HEADER ---
+            const toggleTheme = () => { document.documentElement.classList.toggle('dark'); localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'; updateThemeIcons(); };
+            const updateThemeIcons = () => { const isDark = document.documentElement.classList.contains('dark'); if (themeToggleBtn) { document.getElementById('theme-toggle-dark-icon').classList.toggle('hidden', !isDark); document.getElementById('theme-toggle-light-icon').classList.toggle('hidden', isDark); } };
+            const handleHeaderScroll = () => { const header = document.getElementById('header'); if (header) { window.scrollY > 10 ? header.classList.add('header-scrolled') : header.classList.remove('header-scrolled'); } };
+            if (themeToggleBtn) themeToggleBtn.addEventListener('click', toggleTheme);
+            window.addEventListener('scroll', handleHeaderScroll);
+            updateThemeIcons();
+            
+            // --- CORE ANALYSIS LOGIC ---
+            const analyzeUrl = async () => {
+                let url = urlInput.value.trim();
+                if (!url) {
+                    alert('Please enter a URL.');
+                    return;
+                }
+                
+                if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                    url = 'https://' + url;
+                    urlInput.value = url;
+                }
+
+                loadingState.classList.remove('hidden');
+                errorState.classList.add('hidden');
+                resultsSection.classList.add('hidden');
+
+                const proxies = [
+                    { type: 'allorigins', url: `https://api.allorigins.win/get?url=${encodeURIComponent(url)}` },
+                    { type: 'corsproxy', url: `https://corsproxy.io/?${encodeURIComponent(url)}` }
+                ];
+
+                let success = false;
+                for (const proxy of proxies) {
+                    try {
+                        const response = await fetch(proxy.url);
+                        if (!response.ok) throw new Error(`Proxy responded with status: ${response.status}`);
+                        
+                        let html, finalUrl;
+                        if (proxy.type === 'allorigins') {
+                             const data = await response.json();
+                             html = data.contents;
+                             finalUrl = data.status.url || url;
+                        } else {
+                            html = await response.text();
+                            finalUrl = url;
+                        }
+
+                        if (!html) throw new Error('Proxy returned empty content.');
+                        
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(html, 'text/html');
+
+                        const analysis = {
+                            title: getTagContent(doc, 'title', null) || 'Not Found',
+                            description: getTagContent(doc, 'meta[name="description"]'),
+                            keywords: getTagContent(doc, 'meta[name="keywords"]'),
+                            viewport: getTagContent(doc, 'meta[name="viewport"]'),
+                            ogTitle: getTagContent(doc, 'meta[property="og:title"]'),
+                            ogDescription: getTagContent(doc, 'meta[property="og:description"]'),
+                            ogImage: getTagContent(doc, 'meta[property="og:image"]'),
+                            ogType: getTagContent(doc, 'meta[property="og:type"]'),
+                            ogUrl: getTagContent(doc, 'meta[property="og:url"]'),
+                            twitterCard: getTagContent(doc, 'meta[name="twitter:card"]'),
+                            twitterTitle: getTagContent(doc, 'meta[name="twitter:title"]'),
+                            twitterDescription: getTagContent(doc, 'meta[name="twitter:description"]'),
+                            twitterImage: getTagContent(doc, 'meta[name="twitter:image"]'),
+                            finalUrl: finalUrl
+                        };
+
+                        renderResults(analysis);
+                        success = true;
+                        break;
+                    } catch (err) {
+                        console.warn(`Proxy failed: ${proxy.url}`, err);
+                    }
+                }
+                
+                if (!success) {
+                    errorState.innerHTML = `<p class="font-bold">Analysis Failed</p><p class="mt-1">All available methods to fetch the URL failed. The website may be down, blocking analysis tools, or the public proxies are temporarily unavailable.</p>`;
+                    errorState.classList.remove('hidden');
+                }
+
+                loadingState.classList.add('hidden');
+            };
+            
+            const getTagContent = (doc, selector, attribute = 'content') => {
+                const el = doc.querySelector(selector);
+                if (!el) return 'Not Found';
+                return attribute ? el.getAttribute(attribute) || '' : el.textContent || '';
+            };
+
+            const checkLength = (text, min, max, idealMax) => {
+                if (text === 'Not Found' || text.length === 0) return { status: 'status-fail', message: 'Missing' };
+                if (text.length < min) return { status: 'status-fail', message: `Too short (${text.length} chars)` };
+                if (text.length > max) return { status: 'status-fail', message: `Too long (${text.length} chars)` };
+                if (text.length > idealMax) return { status: 'status-warn', message: `Good, but long (${text.length} chars)` };
+                return { status: 'status-pass', message: `Good (${text.length} chars)` };
+            };
+            
+            // New helper function for basic presence check
+            const checkPresence = (text) => {
+                if (text === 'Not Found' || text.length === 0) return { status: 'status-fail', message: 'Missing' };
+                return { status: 'status-pass', message: 'Present' };
+            };
+            
+            // --- UI RENDERING (FIXED) ---
+            const renderResults = (data) => {
+                const titleStatus = checkLength(data.title, 20, 70, 60);
+                const descStatus = checkLength(data.description, 70, 160, 155);
+                const keywordStatus = checkPresence(data.keywords);
+                const viewportStatus = checkPresence(data.viewport);
+
+                // This flexible function renders 2 or 3 columns based on whether a 'status' is provided.
+                const renderTableRow = (label, value, status = null) => {
+                    const statusCell = status ? `
+                        <td class="p-3 text-right">
+                            <span class="flex items-center justify-end gap-1 text-xs ${status.status}">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-4 h-4 flex-shrink-0">${status.status === 'status-pass' ? '<path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />' : status.status === 'status-warn' ? '<path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />' : '<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />'}</svg>
+                                <span>${status.message}</span>
+                            </span>
+                        </td>
+                    ` : '';
+
+                    return `
+                        <tr class="border-b border-slate-200 dark:border-slate-700 last:border-b-0">
+                            <td class="p-3 font-semibold w-1/4">${label}</td>
+                            <td class="p-3 break-all" ${!status ? 'colspan="2"' : ''}>${value}</td>
+                            ${statusCell}
+                        </tr>
+                    `;
+                };
+                
+                // SERP Preview
+                document.getElementById('serp-preview').innerHTML = `
+                    <h4 class="font-bold mb-2">Google Preview</h4>
+                    <div class="p-4 border rounded-lg bg-slate-50 dark:bg-slate-900/50">
+                        <p class="text-sm truncate text-slate-600 dark:text-slate-400">${data.finalUrl}</p>
+                        <h5 class="text-xl text-blue-600 dark:text-blue-400 hover:underline truncate">${data.title}</h5>
+                        <p class="text-sm text-slate-700 dark:text-slate-300">${data.description}</p>
+                    </div>
+                `;
+
+                // Social Preview
+                document.getElementById('social-preview').innerHTML = `
+                     <h4 class="font-bold mb-2">Social Preview (OG)</h4>
+                     <div class="border rounded-lg overflow-hidden bg-slate-50 dark:bg-slate-900/50">
+                        ${data.ogImage && data.ogImage !== 'Not Found' ? `<img src="${data.ogImage}" alt="OG Image" class="w-full h-48 object-cover">` : '<div class="w-full h-48 bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-slate-500">No OG Image Found</div>'}
+                        <div class="p-4">
+                            <p class="text-sm truncate text-slate-500">${new URL(data.finalUrl).hostname}</p>
+                            <h5 class="font-bold truncate text-slate-800 dark:text-slate-100">${data.ogTitle}</h5>
+                            <p class="text-sm text-slate-600 dark:text-slate-400 text-ellipsis overflow-hidden h-10">${data.ogDescription}</p>
+                        </div>
+                     </div>
+                `;
+                
+                // Analysis Tables
+                document.getElementById('analysis-tables').innerHTML = `
+                    <div class="bg-slate-100 dark:bg-slate-700/50 rounded-lg p-4">
+                        <h4 class="font-bold text-lg mb-2">Meta Tags</h4>
+                        <table class="w-full text-base"><tbody>
+                            ${renderTableRow('Title', data.title, titleStatus)}
+                            ${renderTableRow('Description', data.description, descStatus)}
+                            ${renderTableRow('Keywords', data.keywords, keywordStatus)}
+                            ${renderTableRow('Viewport', data.viewport, viewportStatus)}
+                        </tbody></table>
+                    </div>
+                    <div class="bg-slate-100 dark:bg-slate-700/50 rounded-lg p-4 mt-6">
+                        <h4 class="font-bold text-lg mb-2">Open Graph Tags</h4>
+                        <table class="w-full text-base"><tbody>
+                            ${renderTableRow('og:title', data.ogTitle)}
+                            ${renderTableRow('og:description', data.ogDescription)}
+                            ${renderTableRow('og:image', data.ogImage)}
+                            ${renderTableRow('og:type', data.ogType)}
+                            ${renderTableRow('og:url', data.ogUrl)}
+                        </tbody></table>
+                    </div>
+                     <div class="bg-slate-100 dark:bg-slate-700/50 rounded-lg p-4 mt-6">
+                        <h4 class="font-bold text-lg mb-2">Twitter Card Tags</h4>
+                        <table class="w-full text-base"><tbody>
+                            ${renderTableRow('twitter:card', data.twitterCard)}
+                            ${renderTableRow('twitter:title', data.twitterTitle)}
+                            ${renderTableRow('twitter:description', data.twitterDescription)}
+                            ${renderTableRow('twitter:image', data.twitterImage)}
+                        </tbody></table>
+                    </div>
+                `;
+
+                resultsSection.classList.remove('hidden');
+            };
+
+            // --- EVENT LISTENERS ---
+            analyzeBtn.addEventListener('click', analyzeUrl);
+            urlInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') analyzeUrl();
+            });
+        });
+    </script>
+</body>
+</html>

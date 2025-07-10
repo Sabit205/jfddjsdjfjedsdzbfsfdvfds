@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GST Calculator - NexaTools</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .header-scrolled {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .dark .header-scrolled {
+            background-color: rgba(15, 23, 42, 0.8);
+        }
+        /* Active state for unit toggle */
+        .btn-toggle-active {
+            background-color: #3b82f6 !important; /* brand-blue */
+            color: white !important;
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+        }
+    </style>
+    <script>
+        // Set theme on initial load
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+
+        // Configure Tailwind CSS
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            blue: '#3b82f6',
+                            green: '#10b981',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 transition-colors duration-300 flex flex-col min-h-screen">
+
+    <!-- =========== HEADER =========== -->
+    <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Home</a>
+                <a href="index.html#tools" class="text-brand-blue font-semibold">Tools</a>
+                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">About</a>
+                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Contact</a>
+            </nav>
+            <div class="flex items-center">
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                    <svg id="theme-toggle-dark-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                    <svg id="theme-toggle-light-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 5.05A1 1 0 003.636 6.464l.707.707a1 1 0 001.414-1.414l-.707-.707zM3 11a1 1 0 100-2H2a1 1 0 100 2h1zM6.464 16.364l.707-.707a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow pt-24 pb-12">
+        <div class="container mx-auto px-4">
+            <!-- Tool Header -->
+            <div class="text-center mb-12">
+                <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white flex items-center justify-center gap-4">
+                    <span class="text-brand-blue">
+                       <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-dollar-sign-icon lucide-dollar-sign"><line x1="12" x2="12" y1="2" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                    </span>
+                    GST Calculator
+                </h1>
+                <p class="mt-4 text-lg md:text-xl max-w-2xl mx-auto text-slate-600 dark:text-slate-300">Easily calculate the Goods and Services Tax for any amount, with options for both inclusive and exclusive pricing.</p>
+            </div>
+
+            <!-- Calculator Body -->
+            <div class="max-w-xl mx-auto bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 md:p-8 space-y-8">
+                <!-- Input Section -->
+                <div class="space-y-6">
+                    <!-- Unit Toggle -->
+                    <div class="flex items-center justify-center">
+                        <div class="inline-flex rounded-lg shadow-sm">
+                            <button id="add-gst-btn" class="btn-toggle-active px-6 py-2 text-sm font-medium bg-slate-100 dark:bg-slate-700 rounded-l-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">Add GST</button>
+                            <button id="remove-gst-btn" class="px-6 py-2 text-sm font-medium bg-slate-100 dark:bg-slate-700 rounded-r-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">Remove GST</button>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label for="amount-input" id="amount-label" class="block text-sm font-medium mb-1">Base Amount ($)</label>
+                        <input type="number" id="amount-input" placeholder="Enter amount" class="w-full p-3 bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg shadow-sm focus:ring-brand-blue focus:border-brand-blue">
+                    </div>
+                     <div>
+                        <label for="rate-select" class="block text-sm font-medium mb-1">GST Rate (%)</label>
+                        <select id="rate-select" class="w-full p-3 bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg shadow-sm focus:ring-brand-blue focus:border-brand-blue">
+                             <option value="3">3%</option>
+                             <option value="5">5%</option>
+                             <option value="12">12%</option>
+                             <option value="18" selected>18%</option>
+                             <option value="28">28%</option>
+                        </select>
+                    </div>
+                    <button id="calculate-btn" class="w-full bg-brand-blue text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-blue-600 transition-colors mt-2">Calculate</button>
+                </div>
+
+                <!-- Results Section (hidden by default) -->
+                <div id="results-section" class="hidden pt-6 border-t border-slate-200 dark:border-slate-700 space-y-4">
+                    <h2 class="text-xl font-bold text-center mb-4">Calculation Results</h2>
+                    <div class="bg-slate-100 dark:bg-slate-700/50 rounded-lg p-4 space-y-3">
+                         <div class="flex justify-between items-center text-lg">
+                            <span class="text-slate-600 dark:text-slate-300">Base Amount:</span>
+                            <span id="base-amount-result" class="font-bold text-slate-800 dark:text-white">$0.00</span>
+                        </div>
+                        <div class="flex justify-between items-center text-lg">
+                            <span class="text-slate-600 dark:text-slate-300">GST Amount:</span>
+                            <span id="gst-amount-result" class="font-bold text-slate-800 dark:text-white">$0.00</span>
+                        </div>
+                        <div class="flex justify-between items-center text-xl border-t border-slate-300 dark:border-slate-600 pt-3 mt-3">
+                            <span class="font-semibold text-brand-blue">Final Amount:</span>
+                            <span id="final-amount-result" class="font-bold text-brand-blue">$0.00</span>
+                        </div>
+                    </div>
+                    <button id="reset-btn" class="w-full bg-slate-500 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-slate-600 transition-colors">Clear</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- =========== FOOTER =========== -->
+    <footer class="bg-slate-100 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700/50 mt-auto">
+        <div class="container mx-auto px-4 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left space-y-4 md:space-y-0">
+                <div>
+                    <a href="index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">Simplifying your digital life.</p>
+                </div>
+                <div class="text-sm text-slate-600 dark:text-slate-400">
+                    <p>contact@nexatools.com</p>
+                    <p class="mt-1">© 2024 NexaTools. All Rights Reserved.</p>
+                </div>
+                <div class="flex space-x-4 text-sm">
+                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
+                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // --- THEME & HEADER LOGIC ---
+    const header = document.getElementById('header');
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const darkIcon = document.getElementById('theme-toggle-dark-icon');
+    const lightIcon = document.getElementById('theme-toggle-light-icon');
+    const toggleTheme = () => { document.documentElement.classList.toggle('dark'); localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'; updateThemeIcons(); };
+    const updateThemeIcons = () => { if (document.documentElement.classList.contains('dark')) { darkIcon.classList.remove('hidden'); lightIcon.classList.add('hidden'); } else { darkIcon.classList.add('hidden'); lightIcon.classList.remove('hidden'); } };
+    themeToggleBtn.addEventListener('click', toggleTheme);
+    updateThemeIcons();
+    window.addEventListener('scroll', () => { header.classList.toggle('header-scrolled', window.scrollY > 10); });
+
+    // --- GST CALCULATOR LOGIC ---
+    // DOM Elements
+    const addGstBtn = document.getElementById('add-gst-btn');
+    const removeGstBtn = document.getElementById('remove-gst-btn');
+    const amountLabel = document.getElementById('amount-label');
+    const amountInput = document.getElementById('amount-input');
+    const rateSelect = document.getElementById('rate-select');
+    const calculateBtn = document.getElementById('calculate-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    
+    const resultsSection = document.getElementById('results-section');
+    const baseAmountResult = document.getElementById('base-amount-result');
+    const gstAmountResult = document.getElementById('gst-amount-result');
+    const finalAmountResult = document.getElementById('final-amount-result');
+
+    // State
+    let calculationType = 'add'; // 'add' or 'remove'
+
+    const formatCurrency = (value) => {
+        return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
+    };
+
+    const calculate = () => {
+        const amount = parseFloat(amountInput.value);
+        const gstRate = parseFloat(rateSelect.value);
+
+        if (isNaN(amount) || isNaN(gstRate) || amount <= 0) {
+            alert('Please enter a valid, positive amount.');
+            return;
+        }
+
+        let baseAmount, gstAmount, finalAmount;
+
+        if (calculationType === 'add') {
+            baseAmount = amount;
+            gstAmount = baseAmount * (gstRate / 100);
+            finalAmount = baseAmount + gstAmount;
+        } else { // 'remove'
+            finalAmount = amount;
+            baseAmount = finalAmount / (1 + (gstRate / 100));
+            gstAmount = finalAmount - baseAmount;
+        }
+
+        displayResults(baseAmount, gstAmount, finalAmount);
+    };
+
+    const displayResults = (base, gst, final) => {
+        baseAmountResult.textContent = formatCurrency(base);
+        gstAmountResult.textContent = formatCurrency(gst);
+        finalAmountResult.textContent = formatCurrency(final);
+        resultsSection.classList.remove('hidden');
+    };
+
+    const resetCalculator = () => {
+        amountInput.value = '';
+        resultsSection.classList.add('hidden');
+    };
+
+    // --- Event Listeners ---
+    addGstBtn.addEventListener('click', () => {
+        calculationType = 'add';
+        addGstBtn.classList.add('btn-toggle-active');
+        removeGstBtn.classList.remove('btn-toggle-active');
+        amountLabel.textContent = 'Base Amount ($)';
+        amountInput.placeholder = 'Enter base amount';
+    });
+
+    removeGstBtn.addEventListener('click', () => {
+        calculationType = 'remove';
+        removeGstBtn.classList.add('btn-toggle-active');
+        addGstBtn.classList.remove('btn-toggle-active');
+        amountLabel.textContent = 'Final Amount (GST Inclusive) ($)';
+        amountInput.placeholder = 'Enter final amount';
+    });
+    
+    calculateBtn.addEventListener('click', calculate);
+    resetBtn.addEventListener('click', resetCalculator);
+
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HEX to RGB Converter - NexaTools</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .header-scrolled { background-color: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
+        .dark .header-scrolled { background-color: rgba(15, 23, 42, 0.8); }
+        /* Style for the range sliders */
+        input[type="range"] {
+            @apply w-full h-2 bg-slate-200 dark:bg-slate-600 rounded-lg appearance-none cursor-pointer;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            @apply appearance-none h-5 w-5 bg-brand-green rounded-full shadow-md;
+        }
+        input[type="range"]::-moz-range-thumb {
+            @apply h-5 w-5 bg-brand-green rounded-full shadow-md border-none;
+        }
+    </style>
+    <script>
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) { document.documentElement.classList.add('dark') } else { document.documentElement.classList.remove('dark') }
+        tailwind.config = { darkMode: 'class', theme: { extend: { colors: { brand: { blue: '#3b82f6', green: '#10b981' } } } } }
+    </script>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 transition-colors duration-300 flex flex-col min-h-screen">
+
+    <!-- =========== HEADER =========== -->
+    <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Home</a>
+                <a href="index.html#tools" class="text-brand-green font-semibold">Tools</a>
+                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">About</a>
+                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Contact</a>
+            </nav>
+            <div class="flex items-center">
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700">
+                    <svg id="theme-toggle-dark-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                    <svg id="theme-toggle-light-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 5.05A1 1 0 003.636 6.464l.707.707a1 1 0 001.414-1.414l-.707-.707zM3 11a1 1 0 100-2H2a1 1 0 100 2h1zM6.464 16.364l.707-.707a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow pt-24 pb-12">
+        <div class="container mx-auto px-4">
+            <!-- Tool Header -->
+            <div class="text-center mb-12">
+                <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white flex items-center justify-center gap-4">
+                    <span class="text-brand-green">
+                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" /></svg>
+                    </span>
+                    HEX to RGB Converter
+                </h1>
+                <p class="mt-4 text-lg md:text-xl max-w-2xl mx-auto text-slate-600 dark:text-slate-300">Instantly convert colors between HEX and RGB formats with an interactive picker.</p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 md:p-8">
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Left Panel: Color Preview & HEX -->
+                    <div class="flex flex-col gap-6">
+                        <div id="color-swatch" class="w-full h-48 rounded-lg shadow-inner border border-slate-200 dark:border-slate-700"></div>
+                        <div>
+                            <label for="hex-input" class="block font-bold text-slate-800 dark:text-slate-100 mb-2">HEX Code</label>
+                            <div class="relative">
+                                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">#</span>
+                                <input type="text" id="hex-input" class="w-full p-3 pl-7 font-mono border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 focus:ring-2 focus:ring-brand-blue focus:outline-none" maxlength="6">
+                                <button id="copy-hex" class="absolute right-2 top-1/2 -translate-y-1/2 text-brand-blue font-semibold text-sm px-2">Copy</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Panel: RGB Sliders -->
+                    <div class="flex flex-col gap-6">
+                        <!-- Red Slider -->
+                        <div class="space-y-2">
+                            <label for="r-slider" class="block font-bold text-slate-800 dark:text-slate-100">Red (R)</label>
+                            <div class="flex items-center gap-4">
+                                <input type="range" id="r-slider" min="0" max="255" class="accent-red-500">
+                                <input type="number" id="r-input" min="0" max="255" class="w-20 p-2 text-center border border-slate-300 dark:border-slate-600 rounded-md bg-white dark:bg-slate-800">
+                            </div>
+                        </div>
+                        <!-- Green Slider -->
+                        <div class="space-y-2">
+                            <label for="g-slider" class="block font-bold text-slate-800 dark:text-slate-100">Green (G)</label>
+                            <div class="flex items-center gap-4">
+                                <input type="range" id="g-slider" min="0" max="255" class="accent-green-500">
+                                <input type="number" id="g-input" min="0" max="255" class="w-20 p-2 text-center border border-slate-300 dark:border-slate-600 rounded-md bg-white dark:bg-slate-800">
+                            </div>
+                        </div>
+                        <!-- Blue Slider -->
+                        <div class="space-y-2">
+                            <label for="b-slider" class="block font-bold text-slate-800 dark:text-slate-100">Blue (B)</label>
+                            <div class="flex items-center gap-4">
+                                <input type="range" id="b-slider" min="0" max="255" class="accent-blue-500">
+                                <input type="number" id="b-input" min="0" max="255" class="w-20 p-2 text-center border border-slate-300 dark:border-slate-600 rounded-md bg-white dark:bg-slate-800">
+                            </div>
+                        </div>
+                         <!-- RGB Value Display -->
+                        <div class="mt-2 p-3 bg-slate-100 dark:bg-slate-700/50 rounded-lg flex justify-between items-center">
+                            <span id="rgb-value" class="font-mono text-slate-800 dark:text-slate-100"></span>
+                            <button id="copy-rgb" class="text-brand-blue font-semibold text-sm px-2">Copy</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- =========== FOOTER (RESTORED) =========== -->
+    <footer class="bg-slate-100 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700/50 mt-auto">
+        <div class="container mx-auto px-4 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left space-y-4 md:space-y-0">
+                <div>
+                    <a href="index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">Simplifying your digital life.</p>
+                </div>
+                <div class="text-sm text-slate-600 dark:text-slate-400">
+                    <p>contact@nexatools.com</p>
+                    <p class="mt-1">© 2024 NexaTools. All Rights Reserved.</p>
+                </div>
+                <div class="flex space-x-4 text-sm">
+                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
+                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // UI Elements
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const colorSwatch = document.getElementById('color-swatch');
+            const hexInput = document.getElementById('hex-input');
+            const rgbValue = document.getElementById('rgb-value');
+            
+            const rSlider = document.getElementById('r-slider');
+            const gSlider = document.getElementById('g-slider');
+            const bSlider = document.getElementById('b-slider');
+            const rInput = document.getElementById('r-input');
+            const gInput = document.getElementById('g-input');
+            const bInput = document.getElementById('b-input');
+
+            const copyHexBtn = document.getElementById('copy-hex');
+            const copyRgbBtn = document.getElementById('copy-rgb');
+            
+            // --- THEME & HEADER ---
+            const toggleTheme = () => { document.documentElement.classList.toggle('dark'); localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'; updateThemeIcons(); };
+            const updateThemeIcons = () => { const isDark = document.documentElement.classList.contains('dark'); if (themeToggleBtn) { document.getElementById('theme-toggle-dark-icon').classList.toggle('hidden', !isDark); document.getElementById('theme-toggle-light-icon').classList.toggle('hidden', isDark); } };
+            const handleHeaderScroll = () => { const header = document.getElementById('header'); if (header) { window.scrollY > 10 ? header.classList.add('header-scrolled') : header.classList.remove('header-scrolled'); } };
+            
+            if (themeToggleBtn) themeToggleBtn.addEventListener('click', toggleTheme);
+            window.addEventListener('scroll', handleHeaderScroll);
+            updateThemeIcons();
+            
+            // --- CORE LOGIC ---
+            let isUpdating = false; // A flag to prevent infinite loops
+
+            const updateFromHex = () => {
+                if (isUpdating) return;
+                isUpdating = true;
+                
+                let hex = hexInput.value.replace(/[^0-9a-fA-F]/g, '');
+                if (hex.length === 3) {
+                    hex = hex.split('').map(char => char + char).join('');
+                }
+                if (hex.length !== 6) {
+                    isUpdating = false;
+                    return;
+                }
+
+                const r = parseInt(hex.substring(0, 2), 16);
+                const g = parseInt(hex.substring(2, 4), 16);
+                const b = parseInt(hex.substring(4, 6), 16);
+                
+                updateUI(r, g, b, hex);
+                isUpdating = false;
+            };
+
+            const updateFromRgb = () => {
+                if (isUpdating) return;
+                isUpdating = true;
+                
+                const r = parseInt(rSlider.value, 10);
+                const g = parseInt(gSlider.value, 10);
+                const b = parseInt(bSlider.value, 10);
+
+                const toHex = c => c.toString(16).padStart(2, '0');
+                const hex = `${toHex(r)}${toHex(g)}${toHex(b)}`;
+                
+                updateUI(r, g, b, hex);
+                isUpdating = false;
+            };
+
+            const updateUI = (r, g, b, hex) => {
+                // Update sliders
+                rSlider.value = r;
+                gSlider.value = g;
+                bSlider.value = b;
+                
+                // Update number inputs
+                rInput.value = r;
+                gInput.value = g;
+                bInput.value = b;
+
+                // Update hex input
+                hexInput.value = hex;
+                
+                // Update color swatch and RGB text
+                const rgbString = `rgb(${r}, ${g}, ${b})`;
+                colorSwatch.style.backgroundColor = rgbString;
+                rgbValue.textContent = rgbString;
+            };
+
+            // --- EVENT LISTENERS ---
+            hexInput.addEventListener('input', updateFromHex);
+            [rSlider, gSlider, bSlider].forEach(slider => slider.addEventListener('input', updateFromRgb));
+
+            // Sync number inputs with sliders
+            [rInput, gInput, bInput].forEach(input => {
+                input.addEventListener('change', (e) => {
+                    const slider = document.getElementById(e.target.id.replace('-input', '-slider'));
+                    let value = parseInt(e.target.value, 10);
+                    if (isNaN(value) || value < 0) value = 0;
+                    if (value > 255) value = 255;
+                    e.target.value = value;
+                    slider.value = value;
+                    updateFromRgb();
+                });
+            });
+
+            // Copy button functionality
+            copyHexBtn.addEventListener('click', () => copyToClipboard(`#${hexInput.value}`, copyHexBtn));
+            copyRgbBtn.addEventListener('click', () => copyToClipboard(rgbValue.textContent, copyRgbBtn));
+            
+            const copyToClipboard = (text, button) => {
+                navigator.clipboard.writeText(text).then(() => {
+                    const originalText = button.textContent;
+                    button.textContent = 'Copied!';
+                    setTimeout(() => { button.textContent = originalText; }, 2000);
+                });
+            };
+
+            // --- INITIALIZATION ---
+            // Set an initial color on load (NexaTools green)
+            hexInput.value = "10b981";
+            updateFromHex();
+        });
+    </script>
+</body>
+</html>

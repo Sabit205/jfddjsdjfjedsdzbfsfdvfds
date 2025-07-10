@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan EMI Calculator - NexaTools</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js for the visual pie chart -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .header-scrolled {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .dark .header-scrolled {
+            background-color: rgba(15, 23, 42, 0.8);
+        }
+        /* Active state for unit toggle */
+        .btn-toggle-active {
+            background-color: #3b82f6 !important; /* brand-blue */
+            color: white !important;
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+        }
+    </style>
+    <script>
+        // Set theme on initial load
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+
+        // Configure Tailwind CSS
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            blue: '#3b82f6',
+                            green: '#10b981',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 transition-colors duration-300 flex flex-col min-h-screen">
+
+    <!-- =========== HEADER =========== -->
+    <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Home</a>
+                <a href="index.html#tools" class="text-brand-blue font-semibold">Tools</a>
+                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">About</a>
+                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Contact</a>
+            </nav>
+            <div class="flex items-center">
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                    <svg id="theme-toggle-dark-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                    <svg id="theme-toggle-light-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 5.05A1 1 0 003.636 6.464l.707.707a1 1 0 001.414-1.414l-.707-.707zM3 11a1 1 0 100-2H2a1 1 0 100 2h1zM6.464 16.364l.707-.707a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow pt-24 pb-12">
+        <div class="container mx-auto px-4">
+            <!-- Tool Header -->
+            <div class="text-center mb-12">
+                <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white flex items-center justify-center gap-4">
+                    <span class="text-brand-blue">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calculator-icon lucide-calculator"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></svg>
+                    </span>
+                    Loan EMI Calculator
+                </h1>
+                <p class="mt-4 text-lg md:text-xl max-w-2xl mx-auto text-slate-600 dark:text-slate-300">Plan your finances with our detailed EMI calculator, including charts and a full amortization schedule.</p>
+            </div>
+
+            <!-- Calculator Body -->
+            <div class="max-w-6xl mx-auto bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 md:p-8 space-y-8">
+                <!-- Input and Top Results -->
+                <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+                    <!-- Input Section -->
+                    <div class="lg:col-span-2 space-y-6">
+                        <div>
+                            <label for="amount-input" class="block text-sm font-medium mb-1">Loan Amount ($)</label>
+                            <input type="number" id="amount-input" placeholder="e.g., 100000" class="w-full p-3 bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg shadow-sm focus:ring-brand-blue focus:border-brand-blue">
+                        </div>
+                        <div>
+                            <label for="rate-input" class="block text-sm font-medium mb-1">Interest Rate (% p.a.)</label>
+                            <input type="number" id="rate-input" placeholder="e.g., 7.5" class="w-full p-3 bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg shadow-sm focus:ring-brand-blue focus:border-brand-blue">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Loan Tenure</label>
+                            <div class="flex items-center gap-2">
+                                <input type="number" id="tenure-input" placeholder="e.g., 20" class="w-full p-3 bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg shadow-sm focus:ring-brand-blue focus:border-brand-blue">
+                                <div class="inline-flex rounded-lg shadow-sm">
+                                    <button id="tenure-years-btn" class="btn-toggle-active px-4 py-3 text-sm font-medium bg-slate-200 dark:bg-slate-600 rounded-l-lg transition-colors">Yrs</button>
+                                    <button id="tenure-months-btn" class="px-4 py-3 text-sm font-medium bg-slate-200 dark:bg-slate-600 rounded-r-lg transition-colors">Mos</button>
+                                </div>
+                            </div>
+                        </div>
+                        <button id="calculate-btn" class="w-full bg-brand-blue text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-blue-600 transition-colors mt-2">Calculate</button>
+                    </div>
+
+                    <!-- Results Overview and Chart -->
+                    <div id="results-overview" class="lg:col-span-3 bg-slate-100 dark:bg-slate-900/50 rounded-lg p-6 hidden">
+                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                            <div>
+                                <h3 class="text-lg font-semibold text-slate-600 dark:text-slate-400">Monthly EMI</h3>
+                                <p id="emi-result" class="text-4xl font-bold text-brand-blue">$0.00</p>
+                                <div class="mt-4 space-y-2">
+                                    <div>
+                                        <h4 class="text-sm text-slate-500 dark:text-slate-400">Total Interest Payable</h4>
+                                        <p id="total-interest-result" class="text-lg font-semibold">$0.00</p>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-sm text-slate-500 dark:text-slate-400">Total Payment (Principal + Interest)</h4>
+                                        <p id="total-payment-result" class="text-lg font-semibold">$0.00</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="max-w-xs mx-auto">
+                                <canvas id="loan-pie-chart"></canvas>
+                            </div>
+                         </div>
+                    </div>
+                </div>
+
+                <!-- Amortization Schedule (hidden by default) -->
+                <div id="amortization-section" class="hidden">
+                    <h2 class="text-2xl font-bold mb-4 text-center">Amortization Schedule</h2>
+                    <div class="overflow-x-auto bg-slate-100 dark:bg-slate-900/50 rounded-lg p-4">
+                        <table class="w-full min-w-[600px] text-left">
+                            <thead class="border-b border-slate-300 dark:border-slate-600">
+                                <tr>
+                                    <th class="p-2">Year</th>
+                                    <th class="p-2 text-right">Principal Paid</th>
+                                    <th class="p-2 text-right">Interest Paid</th>
+                                    <th class="p-2 text-right">Total Payment</th>
+                                    <th class="p-2 text-right">Balance</th>
+                                </tr>
+                            </thead>
+                            <tbody id="amortization-body">
+                                <!-- Rows will be generated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <button id="reset-btn" class="w-full md:w-auto md:float-right bg-slate-500 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-slate-600 transition-colors mt-6">Calculate New Loan</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- =========== FOOTER =========== -->
+    <footer class="bg-slate-100 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700/50 mt-auto">
+        <div class="container mx-auto px-4 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left space-y-4 md:space-y-0">
+                <div>
+                    <a href="index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">Simplifying your digital life.</p>
+                </div>
+                <div class="text-sm text-slate-600 dark:text-slate-400">
+                    <p>contact@nexatools.com</p>
+                    <p class="mt-1">© 2024 NexaTools. All Rights Reserved.</p>
+                </div>
+                <div class="flex space-x-4 text-sm">
+                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
+                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // --- THEME & HEADER LOGIC ---
+    const header = document.getElementById('header');
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const darkIcon = document.getElementById('theme-toggle-dark-icon');
+    const lightIcon = document.getElementById('theme-toggle-light-icon');
+    const toggleTheme = () => { document.documentElement.classList.toggle('dark'); localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'; updateThemeIcons(); };
+    const updateThemeIcons = () => { if (document.documentElement.classList.contains('dark')) { darkIcon.classList.remove('hidden'); lightIcon.classList.add('hidden'); } else { darkIcon.classList.add('hidden'); lightIcon.classList.remove('hidden'); } };
+    themeToggleBtn.addEventListener('click', toggleTheme);
+    updateThemeIcons();
+    window.addEventListener('scroll', () => { header.classList.toggle('header-scrolled', window.scrollY > 10); });
+
+    // --- EMI CALCULATOR LOGIC ---
+    // DOM Elements
+    const amountInput = document.getElementById('amount-input');
+    const rateInput = document.getElementById('rate-input');
+    const tenureInput = document.getElementById('tenure-input');
+    const tenureYearsBtn = document.getElementById('tenure-years-btn');
+    const tenureMonthsBtn = document.getElementById('tenure-months-btn');
+    const calculateBtn = document.getElementById('calculate-btn');
+    const resetBtn = document.getElementById('reset-btn');
+
+    // Result Elements
+    const resultsOverview = document.getElementById('results-overview');
+    const amortizationSection = document.getElementById('amortization-section');
+    const emiResult = document.getElementById('emi-result');
+    const totalInterestResult = document.getElementById('total-interest-result');
+    const totalPaymentResult = document.getElementById('total-payment-result');
+    const amortizationBody = document.getElementById('amortization-body');
+    const chartCanvas = document.getElementById('loan-pie-chart');
+    
+    // State
+    let tenureType = 'years';
+    let myChart;
+
+    // --- Functions ---
+    const formatCurrency = (value) => {
+        return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
+    };
+
+    const calculateAndDisplay = () => {
+        const principal = parseFloat(amountInput.value);
+        const annualRate = parseFloat(rateInput.value);
+        const tenureValue = parseFloat(tenureInput.value);
+
+        if (isNaN(principal) || isNaN(annualRate) || isNaN(tenureValue) || principal <= 0 || annualRate <= 0 || tenureValue <= 0) {
+            alert('Please enter valid, positive numbers for all fields.');
+            return;
+        }
+
+        const monthlyRate = annualRate / 12 / 100;
+        const numberOfMonths = tenureType === 'years' ? tenureValue * 12 : tenureValue;
+
+        if (monthlyRate === 0) { // Handle zero interest case
+            emi = principal / numberOfMonths;
+        } else {
+            const power = Math.pow(1 + monthlyRate, numberOfMonths);
+            emi = (principal * monthlyRate * power) / (power - 1);
+        }
+
+        const totalPayment = emi * numberOfMonths;
+        const totalInterest = totalPayment - principal;
+
+        // Display results
+        emiResult.textContent = formatCurrency(emi);
+        totalInterestResult.textContent = formatCurrency(totalInterest);
+        totalPaymentResult.textContent = formatCurrency(totalPayment);
+
+        updateChart(principal, totalInterest);
+        generateAmortization(principal, emi, monthlyRate, numberOfMonths);
+
+        resultsOverview.classList.remove('hidden');
+        amortizationSection.classList.remove('hidden');
+    };
+
+    const updateChart = (principal, totalInterest) => {
+        if (myChart) {
+            myChart.destroy();
+        }
+        const ctx = chartCanvas.getContext('2d');
+        myChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Principal Amount', 'Total Interest'],
+                datasets: [{
+                    data: [principal, totalInterest],
+                    backgroundColor: ['#3b82f6', '#10b981'], // brand-blue, brand-green
+                    borderColor: document.documentElement.classList.contains('dark') ? '#1e293b' : '#ffffff',
+                    borderWidth: 2,
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                         labels: {
+                            color: document.documentElement.classList.contains('dark') ? '#cbd5e1' : '#475569'
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed !== null) {
+                                    label += formatCurrency(context.parsed);
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    };
+    
+    const generateAmortization = (principal, emi, monthlyRate, totalMonths) => {
+        amortizationBody.innerHTML = '';
+        let balance = principal;
+        let yearlyPrincipalPaid = 0;
+        let yearlyInterestPaid = 0;
+        const totalYears = Math.ceil(totalMonths / 12);
+
+        for (let year = 1; year <= totalYears; year++) {
+            yearlyPrincipalPaid = 0;
+            yearlyInterestPaid = 0;
+            let monthsInYear = (year === totalYears) ? totalMonths - (year - 1) * 12 : 12;
+
+            for (let month = 1; month <= monthsInYear; month++) {
+                const interestForMonth = balance * monthlyRate;
+                const principalForMonth = emi - interestForMonth;
+                balance -= principalForMonth;
+                yearlyInterestPaid += interestForMonth;
+                yearlyPrincipalPaid += principalForMonth;
+            }
+
+            // To handle floating point inaccuracies, set balance to 0 on the last payment
+            if (year === totalYears) balance = 0;
+
+            const row = document.createElement('tr');
+            row.className = 'border-b border-slate-200 dark:border-slate-700/50';
+            row.innerHTML = `
+                <td class="p-2 font-semibold">${year}</td>
+                <td class="p-2 text-right">${formatCurrency(yearlyPrincipalPaid)}</td>
+                <td class="p-2 text-right">${formatCurrency(yearlyInterestPaid)}</td>
+                <td class="p-2 text-right">${formatCurrency(yearlyPrincipalPaid + yearlyInterestPaid)}</td>
+                <td class="p-2 text-right">${formatCurrency(balance)}</td>
+            `;
+            amortizationBody.appendChild(row);
+        }
+    };
+    
+    const resetCalculator = () => {
+        amountInput.value = '';
+        rateInput.value = '';
+        tenureInput.value = '';
+        resultsOverview.classList.add('hidden');
+        amortizationSection.classList.add('hidden');
+        if (myChart) {
+            myChart.destroy();
+        }
+    };
+
+    // --- Event Listeners ---
+    calculateBtn.addEventListener('click', calculateAndDisplay);
+    resetBtn.addEventListener('click', resetCalculator);
+
+    tenureYearsBtn.addEventListener('click', () => {
+        tenureType = 'years';
+        tenureYearsBtn.classList.add('btn-toggle-active');
+        tenureMonthsBtn.classList.remove('btn-toggle-active');
+    });
+
+    tenureMonthsBtn.addEventListener('click', () => {
+        tenureType = 'months';
+        tenureMonthsBtn.classList.add('btn-toggle-active');
+        tenureYearsBtn.classList.remove('btn-toggle-active');
+    });
+});
+</script>
+
+</body>
+</html>

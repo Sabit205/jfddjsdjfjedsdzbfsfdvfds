@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Cropper - NexaTools</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Cropper.js for the cropping functionality -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+    <style>
+        .header-scrolled {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .dark .header-scrolled {
+            background-color: rgba(15, 23, 42, 0.8);
+        }
+        .drag-over {
+            border-color: #3b82f6;
+            background-color: rgb(59 130 246 / 0.05);
+        }
+        .dark .drag-over {
+            background-color: rgb(59 130 246 / 0.1);
+        }
+        /* Cropper.js overrides for dark mode */
+        .cropper-view-box, .cropper-face {
+            outline-color: #3b82f6; /* brand-blue */
+        }
+        .cropper-line {
+            background-color: #3b82f6;
+        }
+        .cropper-point {
+            background-color: #3b82f6;
+        }
+    </style>
+    <script>
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            blue: '#3b82f6',
+                            green: '#10b981',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 transition-colors duration-300 flex flex-col min-h-screen">
+
+    <!-- =========== HEADER =========== -->
+    <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Home</a>
+                <a href="index.html#tools" class="text-brand-blue font-semibold">Tools</a>
+                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">About</a>
+                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Contact</a>
+            </nav>
+            <div class="flex items-center">
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                    <svg id="theme-toggle-dark-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                    <svg id="theme-toggle-light-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 5.05A1 1 0 003.636 6.464l.707.707a1 1 0 001.414-1.414l-.707-.707zM3 11a1 1 0 100-2H2a1 1 0 100 2h1zM6.464 16.364l.707-.707a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow pt-24 pb-12">
+        <div class="container mx-auto px-4">
+            <!-- Tool Header -->
+            <div class="text-center mb-12">
+                <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white flex items-center justify-center gap-4">
+                    <span class="text-brand-blue">
+                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 3.75H6A2.25 2.25 0 003.75 6v1.5M16.5 3.75H18A2.25 2.25 0 0120.25 6v1.5m0 9V18A2.25 2.25 0 0118 20.25h-1.5m-9 0H6A2.25 2.25 0 013.75 18v-1.5" /></svg>
+                    </span>
+                    Image Cropper
+                </h1>
+                <p class="mt-4 text-lg md:text-xl max-w-2xl mx-auto text-slate-600 dark:text-slate-300">Crop images to the perfect size with our easy-to-use tool.</p>
+            </div>
+            
+            <!-- Tool UI -->
+            <div id="upload-section" class="max-w-4xl mx-auto bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 md:p-8">
+                <div id="drop-zone" class="border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-lg p-8 text-center cursor-pointer transition-all duration-300">
+                    <div class="flex flex-col items-center justify-center space-y-4 text-slate-500 dark:text-slate-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
+                        <p class="text-lg font-semibold">Drag & drop an image here</p>
+                        <p>or</p>
+                        <button id="select-file-btn" class="bg-brand-blue text-white font-bold py-2 px-6 rounded-lg shadow-md hover:bg-blue-600 transition-colors">Select Image</button>
+                        <input type="file" id="file-input" class="hidden" accept="image/*">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cropper UI (hidden by default) -->
+            <div id="cropper-section" class="hidden">
+                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Main Image Area -->
+                    <div class="lg:col-span-2 bg-slate-200 dark:bg-slate-800 rounded-lg p-4">
+                        <div class="max-w-full h-[500px]">
+                            <img id="image-to-crop" src="" alt="Image to crop">
+                        </div>
+                    </div>
+
+                    <!-- Controls Area -->
+                    <div class="lg:col-span-1 space-y-6">
+                        <!-- Preview -->
+                        <div class="bg-white dark:bg-slate-800 p-4 rounded-xl shadow-lg">
+                            <h3 class="font-bold mb-2">Preview</h3>
+                            <div class="preview-box w-full h-48 overflow-hidden rounded-md bg-slate-100 dark:bg-slate-700"></div>
+                        </div>
+                        <!-- Actions -->
+                        <div class="bg-white dark:bg-slate-800 p-4 rounded-xl shadow-lg space-y-4">
+                             <div>
+                                <h3 class="font-bold mb-2">Aspect Ratio</h3>
+                                <div id="aspect-ratio-btns" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 gap-2 text-sm">
+                                    <button data-ratio="NaN" class="bg-slate-200 dark:bg-slate-700 py-2 rounded-md hover:bg-brand-blue hover:text-white">Free</button>
+                                    <button data-ratio="1" class="bg-slate-200 dark:bg-slate-700 py-2 rounded-md hover:bg-brand-blue hover:text-white">1:1</button>
+                                    <button data-ratio="1.333" class="bg-slate-200 dark:bg-slate-700 py-2 rounded-md hover:bg-brand-blue hover:text-white">4:3</button>
+                                    <button data-ratio="1.777" class="bg-slate-200 dark:bg-slate-700 py-2 rounded-md hover:bg-brand-blue hover:text-white">16:9</button>
+                                </div>
+                             </div>
+                             <div>
+                                <h3 class="font-bold mb-2">Transform</h3>
+                                <div id="transform-btns" class="grid grid-cols-2 gap-2 text-sm">
+                                    <button id="zoom-in-btn" class="bg-slate-200 dark:bg-slate-700 py-2 rounded-md hover:bg-slate-300 dark:hover:bg-slate-600 flex items-center justify-center gap-1">Zoom In</button>
+                                    <button id="zoom-out-btn" class="bg-slate-200 dark:bg-slate-700 py-2 rounded-md hover:bg-slate-300 dark:hover:bg-slate-600 flex items-center justify-center gap-1">Zoom Out</button>
+                                    <button id="rotate-left-btn" class="bg-slate-200 dark:bg-slate-700 py-2 rounded-md hover:bg-slate-300 dark:hover:bg-slate-600 flex items-center justify-center gap-1">Rotate -90°</button>
+                                    <button id="rotate-right-btn" class="bg-slate-200 dark:bg-slate-700 py-2 rounded-md hover:bg-slate-300 dark:hover:bg-slate-600 flex items-center justify-center gap-1">Rotate +90°</button>
+                                    <button id="flip-h-btn" class="bg-slate-200 dark:bg-slate-700 py-2 rounded-md hover:bg-slate-300 dark:hover:bg-slate-600 flex items-center justify-center gap-1">Flip H</button>
+                                    <button id="flip-v-btn" class="bg-slate-200 dark:bg-slate-700 py-2 rounded-md hover:bg-slate-300 dark:hover:bg-slate-600 flex items-center justify-center gap-1">Flip V</button>
+                                </div>
+                             </div>
+                        </div>
+
+                        <!-- Output -->
+                         <div class="bg-white dark:bg-slate-800 p-4 rounded-xl shadow-lg space-y-4">
+                            <div>
+                                <label for="format-select" class="block text-sm font-medium mb-1">Output format:</label>
+                                <select id="format-select" class="w-full bg-slate-100 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-md shadow-sm focus:ring-brand-blue focus:border-brand-blue">
+                                    <option value="png">PNG</option>
+                                    <option value="jpg" selected>JPG</option>
+                                    <option value="webp">WEBP</option>
+                                </select>
+                            </div>
+                            <div id="quality-control">
+                                <label for="quality-slider" class="block text-sm font-medium mb-1">Quality: <span id="quality-value">90</span>%</label>
+                                <input id="quality-slider" type="range" min="1" max="100" value="90" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer dark:bg-slate-600">
+                            </div>
+                         </div>
+                        <button id="crop-btn" class="w-full bg-brand-green text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-green-600 transition-colors">
+                            Crop & Download Image
+                        </button>
+                         <button id="reset-btn" class="w-full bg-slate-500 text-white font-bold py-2 px-6 rounded-lg shadow-md hover:bg-slate-600 transition-colors">
+                            Upload New Image
+                        </button>
+                    </div>
+                 </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- =========== FOOTER =========== -->
+    <footer class="bg-slate-100 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700/50 mt-auto">
+        <div class="container mx-auto px-4 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left space-y-4 md:space-y-0">
+                <div>
+                    <a href="index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">Simplifying your digital life.</p>
+                </div>
+                <div class="text-sm text-slate-600 dark:text-slate-400">
+                    <p>contact@nexatools.com</p>
+                    <p class="mt-1">© 2024 NexaTools. All Rights Reserved.</p>
+                </div>
+                <div class="flex space-x-4 text-sm">
+                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
+                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // --- THEME & HEADER LOGIC ---
+    // (Identical to previous pages for consistency)
+    const header = document.getElementById('header');
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const darkIcon = document.getElementById('theme-toggle-dark-icon');
+    const lightIcon = document.getElementById('theme-toggle-light-icon');
+    const toggleTheme = () => { document.documentElement.classList.toggle('dark'); localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'; updateThemeIcons(); };
+    const updateThemeIcons = () => { if (document.documentElement.classList.contains('dark')) { darkIcon.classList.remove('hidden'); lightIcon.classList.add('hidden'); } else { darkIcon.classList.add('hidden'); lightIcon.classList.remove('hidden'); } };
+    themeToggleBtn.addEventListener('click', toggleTheme);
+    updateThemeIcons();
+    window.addEventListener('scroll', () => { header.classList.toggle('header-scrolled', window.scrollY > 10); });
+
+    // --- IMAGE CROPPER LOGIC ---
+    const uploadSection = document.getElementById('upload-section');
+    const cropperSection = document.getElementById('cropper-section');
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('file-input');
+    const selectFileBtn = document.getElementById('select-file-btn');
+    const imageToCrop = document.getElementById('image-to-crop');
+
+    const aspectRatioBtns = document.getElementById('aspect-ratio-btns');
+    const zoomInBtn = document.getElementById('zoom-in-btn');
+    const zoomOutBtn = document.getElementById('zoom-out-btn');
+    const rotateLeftBtn = document.getElementById('rotate-left-btn');
+    const rotateRightBtn = document.getElementById('rotate-right-btn');
+    const flipHBtn = document.getElementById('flip-h-btn');
+    const flipVBtn = document.getElementById('flip-v-btn');
+
+    const formatSelect = document.getElementById('format-select');
+    const qualityControl = document.getElementById('quality-control');
+    const qualitySlider = document.getElementById('quality-slider');
+    const qualityValue = document.getElementById('quality-value');
+    
+    const cropBtn = document.getElementById('crop-btn');
+    const resetBtn = document.getElementById('reset-btn');
+
+    let cropper;
+    let originalFileName = '';
+    
+    // --- Event Listeners ---
+    selectFileBtn.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', (e) => handleFile(e.target.files[0]));
+    dropZone.addEventListener('dragover', (e) => { e.preventDefault(); e.stopPropagation(); dropZone.classList.add('drag-over'); });
+    dropZone.addEventListener('dragleave', (e) => { e.preventDefault(); e.stopPropagation(); dropZone.classList.remove('drag-over'); });
+    dropZone.addEventListener('drop', (e) => { e.preventDefault(); e.stopPropagation(); dropZone.classList.remove('drag-over'); handleFile(e.dataTransfer.files[0]); });
+
+    formatSelect.addEventListener('change', () => qualityControl.style.display = ['jpg', 'webp'].includes(formatSelect.value) ? 'block' : 'none');
+    qualitySlider.addEventListener('input', () => qualityValue.textContent = qualitySlider.value);
+    
+    aspectRatioBtns.addEventListener('click', (e) => {
+        if (e.target.tagName === 'BUTTON' && cropper) {
+            cropper.setAspectRatio(parseFloat(e.target.dataset.ratio));
+        }
+    });
+
+    zoomInBtn.addEventListener('click', () => cropper && cropper.zoom(0.1));
+    zoomOutBtn.addEventListener('click', () => cropper && cropper.zoom(-0.1));
+    rotateLeftBtn.addEventListener('click', () => cropper && cropper.rotate(-90));
+    rotateRightBtn.addEventListener('click', () => cropper && cropper.rotate(90));
+    flipHBtn.addEventListener('click', () => cropper && cropper.scaleX(-cropper.getData().scaleX || -1));
+    flipVBtn.addEventListener('click', () => cropper && cropper.scaleY(-cropper.getData().scaleY || -1));
+
+    cropBtn.addEventListener('click', cropAndDownload);
+    resetBtn.addEventListener('click', resetTool);
+
+
+    function handleFile(file) {
+        if (!file || !file.type.startsWith('image/')) {
+            alert('Please select an image file.');
+            return;
+        }
+
+        originalFileName = file.name;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            imageToCrop.src = e.target.result;
+            uploadSection.classList.add('hidden');
+            cropperSection.classList.remove('hidden');
+            initializeCropper();
+        };
+        reader.readAsDataURL(file);
+    }
+    
+    function initializeCropper() {
+        if (cropper) {
+            cropper.destroy();
+        }
+        cropper = new Cropper(imageToCrop, {
+            preview: '.preview-box',
+            viewMode: 1,
+            dragMode: 'move',
+            autoCropArea: 0.8,
+            responsive: true,
+            restore: false,
+            guides: false,
+            center: false,
+            highlight: false,
+            cropBoxMovable: true,
+            cropBoxResizable: true,
+            toggleDragModeOnDblclick: false,
+        });
+    }
+
+    function cropAndDownload() {
+        if (!cropper) return;
+        
+        const format = formatSelect.value;
+        const quality = qualitySlider.value / 100;
+        const mimeType = `image/${format === 'jpg' ? 'jpeg' : format}`;
+        
+        const croppedCanvas = cropper.getCroppedCanvas();
+        
+        croppedCanvas.toBlob((blob) => {
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            
+            const nameWithoutExt = originalFileName.substring(0, originalFileName.lastIndexOf('.'));
+            link.download = `${nameWithoutExt}-cropped.${format}`;
+            
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }, mimeType, quality);
+    }
+
+    function resetTool() {
+        if (cropper) {
+            cropper.destroy();
+            cropper = null;
+        }
+        imageToCrop.src = '';
+        fileInput.value = ''; // Reset file input
+        uploadSection.classList.remove('hidden');
+        cropperSection.classList.add('hidden');
+    }
+
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word & Char Counter - NexaTools</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .header-scrolled { background-color: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
+        .dark .header-scrolled { background-color: rgba(15, 23, 42, 0.8); }
+    </style>
+    <script>
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) { document.documentElement.classList.add('dark') } else { document.documentElement.classList.remove('dark') }
+        tailwind.config = { darkMode: 'class', theme: { extend: { colors: { brand: { blue: '#3b82f6', green: '#10b981' } } } } }
+    </script>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 transition-colors duration-300 flex flex-col min-h-screen">
+
+    <!-- =========== HEADER =========== -->
+    <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Home</a>
+                <a href="index.html#tools" class="text-brand-green font-semibold">Tools</a>
+                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">About</a>
+                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Contact</a>
+            </nav>
+            <div class="flex items-center">
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700">
+                    <svg id="theme-toggle-dark-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                    <svg id="theme-toggle-light-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 5.05A1 1 0 003.636 6.464l.707.707a1 1 0 001.414-1.414l-.707-.707zM3 11a1 1 0 100-2H2a1 1 0 100 2h1zM6.464 16.364l.707-.707a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow pt-24 pb-12">
+        <div class="container mx-auto px-4">
+            <!-- Tool Header -->
+            <div class="text-center mb-12">
+                <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white flex items-center justify-center gap-4">
+                    <span class="text-brand-green">
+                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12"><path stroke-linecap="round" stroke-linejoin="round" d="M10.125 2.25h-4.5c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125v-9M10.125 2.25h.375a9 9 0 019 9v.375M10.125 2.25A3.375 3.375 0 0113.5 5.625v1.5c0 .621.504 1.125 1.125 1.125h1.5a3.375 3.375 0 013.375 3.375M9 15l2.25 2.25L15 12" /></svg>
+                    </span>
+                    Word & Char Counter
+                </h1>
+                <p class="mt-4 text-lg md:text-xl max-w-2xl mx-auto text-slate-600 dark:text-slate-300">Analyze your text with a detailed breakdown of characters, words, sentences, and more.</p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 md:p-8">
+                
+                <!-- Input Text Area -->
+                <textarea id="text-input" class="w-full h-60 p-4 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 focus:ring-2 focus:ring-brand-blue focus:outline-none resize-y" placeholder="Start typing or paste your text here to see the analysis..."></textarea>
+                
+                <!-- =========== STATS DISPLAY (FIXED) =========== -->
+                <div class="mt-6 text-slate-600 dark:text-slate-300 text-sm">
+                    <div class="flex flex-wrap -mx-2">
+                        <div class="w-1/2 sm:w-1/4 px-2 py-1"><span class="font-semibold">Words:</span> <span id="word-count" class="font-bold text-slate-800 dark:text-slate-100">0</span></div>
+                        <div class="w-1/2 sm:w-1/4 px-2 py-1"><span class="font-semibold">Characters:</span> <span id="char-count" class="font-bold text-slate-800 dark:text-slate-100">0</span></div>
+                        <div class="w-1/2 sm:w-1/4 px-2 py-1"><span class="font-semibold">Sentences:</span> <span id="sentence-count" class="font-bold text-slate-800 dark:text-slate-100">0</span></div>
+                        <div class="w-1/2 sm:w-1/4 px-2 py-1"><span class="font-semibold">Paragraphs:</span> <span id="paragraph-count" class="font-bold text-slate-800 dark:text-slate-100">0</span></div>
+                    </div>
+                    <div class="flex flex-wrap -mx-2 mt-2 pt-3 border-t border-slate-200 dark:border-slate-700">
+                        <div class="w-full sm:w-1/2 px-2 py-1"><span class="font-semibold">Reading Time:</span> <span id="reading-time" class="font-bold text-slate-800 dark:text-slate-100">~ 0 min</span></div>
+                        <div class="w-full sm:w-1/2 px-2 py-1"><span class="font-semibold">Reading Level:</span> <span id="reading-level" class="font-bold text-slate-800 dark:text-slate-100">N/A</span></div>
+                    </div>
+                </div>
+
+                <!-- Keyword Density -->
+                <div class="mt-8">
+                    <h3 class="text-xl font-bold mb-3 text-slate-800 dark:text-slate-100">Keyword Density</h3>
+                    <div class="bg-slate-100 dark:bg-slate-900/50 rounded-lg p-4 max-h-60 overflow-y-auto">
+                        <table class="w-full text-left">
+                            <thead>
+                                <tr class="border-b border-slate-300 dark:border-slate-600">
+                                    <th class="p-2 font-semibold">Keyword</th>
+                                    <th class="p-2 font-semibold">Count</th>
+                                    <th class="p-2 font-semibold">Density</th>
+                                </tr>
+                            </thead>
+                            <tbody id="keyword-table-body">
+                                <tr><td colspan="3" class="p-4 text-center text-slate-500 dark:text-slate-400">No text to analyze.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="mt-8 flex justify-end">
+                    <button id="btn-clear" class="bg-red-500 text-white font-semibold py-2 px-6 rounded-lg hover:bg-red-600 flex items-center justify-center gap-2">
+                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" /></svg>
+                        Clear Text
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- =========== FOOTER =========== -->
+    <footer class="bg-slate-100 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700/50 mt-auto">
+        <div class="container mx-auto px-4 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left space-y-4 md:space-y-0">
+                <div>
+                    <a href="index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">Simplifying your digital life.</p>
+                </div>
+                <div class="text-sm text-slate-600 dark:text-slate-400">
+                    <p>contact@nexatools.com</p>
+                    <p class="mt-1">© 2024 NexaTools. All Rights Reserved.</p>
+                </div>
+                <div class="flex space-x-4 text-sm">
+                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
+                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // UI Elements
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const textInput = document.getElementById('text-input');
+            const clearBtn = document.getElementById('btn-clear');
+            
+            // Stat Displays
+            const wordCountEl = document.getElementById('word-count');
+            const charCountEl = document.getElementById('char-count');
+            const sentenceCountEl = document.getElementById('sentence-count');
+            const paragraphCountEl = document.getElementById('paragraph-count');
+            const readingTimeEl = document.getElementById('reading-time');
+            const readingLevelEl = document.getElementById('reading-level');
+            const keywordTableBody = document.getElementById('keyword-table-body');
+
+            // --- THEME & HEADER ---
+            const toggleTheme = () => { document.documentElement.classList.toggle('dark'); localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'; updateThemeIcons(); };
+            const updateThemeIcons = () => { const isDark = document.documentElement.classList.contains('dark'); if (themeToggleBtn) { document.getElementById('theme-toggle-dark-icon').classList.toggle('hidden', !isDark); document.getElementById('theme-toggle-light-icon').classList.toggle('hidden', isDark); } };
+            const handleHeaderScroll = () => { const header = document.getElementById('header'); if (header) { window.scrollY > 10 ? header.classList.add('header-scrolled') : header.classList.remove('header-scrolled'); } };
+            
+            if (themeToggleBtn) themeToggleBtn.addEventListener('click', toggleTheme);
+            window.addEventListener('scroll', handleHeaderScroll);
+            updateThemeIcons();
+
+            // --- CORE ANALYSIS FUNCTION ---
+            const analyzeText = () => {
+                const text = textInput.value;
+                
+                // Basic counts
+                const chars = text.length;
+                const words = text.trim().split(/\s+/).filter(Boolean);
+                const sentences = text.match(/[^\.!\?]+[\.!\?]+/g) || [];
+                const paragraphs = text.split(/\n\s*\n/).filter(p => p.trim() !== '');
+                
+                charCountEl.textContent = chars;
+                wordCountEl.textContent = words.length;
+                sentenceCountEl.textContent = sentences.length;
+                paragraphCountEl.textContent = paragraphs.length;
+
+                // Reading time
+                const wpm = 200;
+                const time = Math.ceil(words.length / wpm);
+                readingTimeEl.textContent = `~ ${time} min`;
+
+                // Reading level (Coleman-Liau index)
+                if (words.length > 50) { // Only calculate for a reasonable amount of text
+                    const letters = text.replace(/[^a-zA-Z]/g, '').length;
+                    const L = (letters / words.length) * 100; // Avg letters per 100 words
+                    const S = (sentences.length / words.length) * 100; // Avg sentences per 100 words
+                    const index = 0.0588 * L - 0.296 * S - 15.8;
+                    const grade = Math.round(index);
+                    readingLevelEl.textContent = grade >= 1 ? `~ Grade ${grade}` : 'Below Grade 1';
+                } else {
+                    readingLevelEl.textContent = 'N/A';
+                }
+
+                // Keyword density
+                updateKeywordDensity(words);
+            };
+
+            const updateKeywordDensity = (words) => {
+                if (words.length < 5) {
+                    keywordTableBody.innerHTML = `<tr><td colspan="3" class="p-4 text-center text-slate-500 dark:text-slate-400">Need more text to analyze keywords.</td></tr>`;
+                    return;
+                }
+                
+                const stopWords = new Set(["a","about","above","after","again","against","all","am","an","and","any","are","as","at","be","because","been","before","being","below","between","both","but","by","can","did","do","does","doing","down","during","each","few","for","from","further","had","has","have","having","he","her","here","hers","herself","him","himself","his","how","i","if","in","into","is","it","its","itself","just","me","more","most","my","myself","no","nor","not","now","of","off","on","once","only","or","other","our","ours","ourselves","out","over","own","s","same","she","should","so","some","such","t","than","that","the","their","theirs","them","themselves","then","there","these","they","this","those","through","to","too","under","until","up","very","was","we","were","what","when","where","which","while","who","whom","why","will","with","you","your","yours","yourself","yourselves"]);
+                const frequency = {};
+
+                words.forEach(word => {
+                    const cleanWord = word.toLowerCase().replace(/[^a-z0-9]/g, '');
+                    if (cleanWord && cleanWord.length > 2 && !stopWords.has(cleanWord)) {
+                        frequency[cleanWord] = (frequency[cleanWord] || 0) + 1;
+                    }
+                });
+                
+                const sortedKeywords = Object.entries(frequency)
+                    .filter(([,count]) => count > 1) // Only show keywords that appear more than once
+                    .sort(([,a],[,b]) => b - a)
+                    .slice(0, 10); // Top 10 keywords
+
+                if (sortedKeywords.length === 0) {
+                    keywordTableBody.innerHTML = `<tr><td colspan="3" class="p-4 text-center text-slate-500 dark:text-slate-400">No repeated keywords found.</td></tr>`;
+                    return;
+                }
+                
+                keywordTableBody.innerHTML = ''; // Clear table
+                sortedKeywords.forEach(([keyword, count]) => {
+                    const density = ((count / words.length) * 100).toFixed(2);
+                    const row = document.createElement('tr');
+                    row.className = 'border-b border-slate-200 dark:border-slate-800 last:border-b-0';
+                    row.innerHTML = `
+                        <td class="p-2">${keyword}</td>
+                        <td class="p-2">${count}</td>
+                        <td class="p-2">${density}%</td>
+                    `;
+                    keywordTableBody.appendChild(row);
+                });
+            };
+
+            // --- EVENT LISTENERS ---
+            textInput.addEventListener('input', analyzeText);
+            clearBtn.addEventListener('click', () => {
+                textInput.value = '';
+                analyzeText(); // Re-run analysis to reset stats to 0
+            });
+            
+            // Initialize on load
+            analyzeText();
+        });
+    </script>
+</body>
+</html>

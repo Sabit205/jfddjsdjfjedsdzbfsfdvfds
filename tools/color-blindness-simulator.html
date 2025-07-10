@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Blindness Simulator - NexaTools</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .header-scrolled { background-color: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
+        .dark .header-scrolled { background-color: rgba(15, 23, 42, 0.8); }
+        .drag-over { border-color: #10b981; background-color: rgb(16 185 129 / 0.05); }
+        .dark .drag-over { background-color: rgb(16 185 129 / 0.1); }
+        .canvas-wrapper {
+            @apply w-full h-[500px] bg-slate-100 dark:bg-slate-900/50 rounded-lg flex items-center justify-center overflow-auto p-4;
+        }
+    </style>
+    <script>
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) { document.documentElement.classList.add('dark') } else { document.documentElement.classList.remove('dark') }
+        tailwind.config = { darkMode: 'class', theme: { extend: { colors: { brand: { blue: '#3b82f6', green: '#10b981' } } } } }
+    </script>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 transition-colors duration-300 flex flex-col min-h-screen">
+
+    <!-- =========== HEADER =========== -->
+    <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Home</a>
+                <a href="index.html#tools" class="text-brand-green font-semibold">Tools</a>
+                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">About</a>
+                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Contact</a>
+            </nav>
+            <div class="flex items-center">
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700">
+                    <svg id="theme-toggle-dark-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                    <svg id="theme-toggle-light-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 5.05A1 1 0 003.636 6.464l.707.707a1 1 0 001.414-1.414l-.707-.707zM3 11a1 1 0 100-2H2a1 1 0 100 2h1zM6.464 16.364l.707-.707a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow pt-24 pb-12">
+        <div class="container mx-auto px-4">
+            <!-- Tool Header -->
+            <div class="text-center mb-12">
+                <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white flex items-center justify-center gap-4">
+                    <span class="text-brand-green">
+                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12"><path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" /></svg>
+                    </span>
+                    Color Blindness Simulator
+                </h1>
+                <p class="mt-4 text-lg md:text-xl max-w-2xl mx-auto text-slate-600 dark:text-slate-300">Upload an image to see how it appears to people with different types of color vision deficiency.</p>
+            </div>
+            
+            <!-- ======== FIX 1: REDUCED CONTAINER WIDTH ======== -->
+            <div class="max-w-6xl mx-auto bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 md:p-8">
+                
+                 <!-- Upload Area -->
+                <div id="upload-section">
+                    <!-- ======== FIX 2: RESTORED ORIGINAL PADDING ======== -->
+                    <div id="drop-zone" class="border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-lg p-12 text-center cursor-pointer transition-all duration-300">
+                        <div class="flex flex-col items-center justify-center space-y-4 text-slate-500 dark:text-slate-400">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
+                            <p class="text-lg font-semibold">Drag & drop an image here</p>
+                            <p>or</p>
+                            <button id="select-files-btn" class="bg-brand-green text-white font-bold py-2 px-6 rounded-lg shadow-md hover:bg-green-600">Select Image</button>
+                            <input type="file" id="file-input" class="hidden" accept="image/png, image/jpeg, image/webp, image/gif">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Processing UI -->
+                <div id="processing-section" class="hidden">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div>
+                             <h3 class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-2 text-center">Original Image</h3>
+                             <div class="canvas-wrapper"><canvas id="original-canvas"></canvas></div>
+                        </div>
+                         <div>
+                             <h3 class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-2 text-center">Simulated Image</h3>
+                             <div class="canvas-wrapper"><canvas id="filtered-canvas"></canvas></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Controls -->
+                    <div class="mt-8 pt-6 border-t border-slate-200 dark:border-slate-700">
+                        <fieldset>
+                            <legend class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-2 text-center">Simulation Type</legend>
+                            <div class="flex flex-wrap justify-center gap-x-6 gap-y-2">
+                                <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="sim-type" value="protanopia" checked class="form-radio text-brand-blue focus:ring-brand-blue"> Protanopia (Red-Blind)</label>
+                                <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="sim-type" value="deuteranopia" class="form-radio text-brand-blue focus:ring-brand-blue"> Deuteranopia (Green-Blind)</label>
+                                <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="sim-type" value="tritanopia" class="form-radio text-brand-blue focus:ring-brand-blue"> Tritanopia (Blue-Blind)</label>
+                                <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="sim-type" value="achromatopsia" class="form-radio text-brand-blue focus:ring-brand-blue"> Achromatopsia (Monochrome)</label>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <div class="mt-8 flex justify-center">
+                        <button id="reset-btn" class="bg-slate-500 text-white font-semibold py-2 px-6 rounded-lg hover:bg-slate-600 flex items-center justify-center gap-2">
+                            Use Another Image
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- =========== FOOTER =========== -->
+    <footer class="bg-slate-100 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700/50 mt-auto">
+        <div class="container mx-auto px-4 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left space-y-4 md:space-y-0">
+                <div>
+                    <a href="index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">Simplifying your digital life.</p>
+                </div>
+                <div class="text-sm text-slate-600 dark:text-slate-400">
+                    <p>contact@nexatools.com</p>
+                    <p class="mt-1">© 2024 NexaTools. All Rights Reserved.</p>
+                </div>
+                <div class="flex space-x-4 text-sm">
+                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
+                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // UI Elements
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const uploadSection = document.getElementById('upload-section');
+            const dropZone = document.getElementById('drop-zone');
+            const fileInput = document.getElementById('file-input');
+            const selectFilesBtn = document.getElementById('select-files-btn');
+            const processingSection = document.getElementById('processing-section');
+            const originalCanvas = document.getElementById('original-canvas');
+            const filteredCanvas = document.getElementById('filtered-canvas');
+            const resetBtn = document.getElementById('reset-btn');
+
+            const originalCtx = originalCanvas.getContext('2d');
+            const filteredCtx = filteredCanvas.getContext('2d');
+            
+            // --- THEME & HEADER ---
+            const toggleTheme = () => { document.documentElement.classList.toggle('dark'); localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'; updateThemeIcons(); };
+            const updateThemeIcons = () => { const isDark = document.documentElement.classList.contains('dark'); if (themeToggleBtn) { document.getElementById('theme-toggle-dark-icon').classList.toggle('hidden', !isDark); document.getElementById('theme-toggle-light-icon').classList.toggle('hidden', isDark); } };
+            const handleHeaderScroll = () => { const header = document.getElementById('header'); if (header) { window.scrollY > 10 ? header.classList.add('header-scrolled') : header.classList.remove('header-scrolled'); } };
+            
+            if (themeToggleBtn) themeToggleBtn.addEventListener('click', toggleTheme);
+            window.addEventListener('scroll', handleHeaderScroll);
+            updateThemeIcons();
+            
+            // --- FILE HANDLING & IMAGE DRAWING ---
+            const handleFile = (file) => {
+                if (!file || !file.type.startsWith('image/')) {
+                    alert('Please select a valid image file.');
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        uploadSection.classList.add('hidden');
+                        processingSection.classList.remove('hidden');
+
+                        const containerWidth = originalCanvas.parentElement.clientWidth;
+                        const containerHeight = originalCanvas.parentElement.clientHeight;
+                        const ratio = Math.min(containerWidth / img.width, containerHeight / img.height, 1);
+                        const scaledWidth = img.width * ratio;
+                        const scaledHeight = img.height * ratio;
+
+                        originalCanvas.width = scaledWidth;
+                        originalCanvas.height = scaledHeight;
+                        originalCtx.drawImage(img, 0, 0, scaledWidth, scaledHeight);
+                        
+                        applyFilter();
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            };
+            
+            // --- CORE SIMULATION LOGIC ---
+            const applyFilter = () => {
+                const simType = document.querySelector('input[name="sim-type"]:checked').value;
+                
+                filteredCanvas.width = originalCanvas.width;
+                filteredCanvas.height = originalCanvas.height;
+                
+                const imageData = originalCtx.getImageData(0, 0, originalCanvas.width, originalCanvas.height);
+                const data = imageData.data;
+                
+                // Color matrix transformations for different types of color blindness
+                const matrices = {
+                    protanopia: [ 0.567, 0.433, 0, 0, 0.558, 0.442, 0, 0, 0, 0.242, 0.758, 0, 0, 0, 0, 1 ],
+                    deuteranopia: [ 0.625, 0.375, 0, 0, 0.7, 0.3, 0, 0, 0, 0.3, 0.7, 0, 0, 0, 0, 1 ],
+                    tritanopia: [ 0.95, 0.05, 0, 0, 0, 0.433, 0.567, 0, 0, 0.475, 0.525, 0, 0, 0, 0, 1 ],
+                };
+
+                for (let i = 0; i < data.length; i += 4) {
+                    const r = data[i];
+                    const g = data[i + 1];
+                    const b = data[i + 2];
+                    
+                    if (simType === 'achromatopsia') {
+                        // Grayscale based on luminance
+                        const gray = 0.299 * r + 0.587 * g + 0.114 * b;
+                        data[i] = data[i + 1] = data[i + 2] = gray;
+                    } else {
+                        const matrix = matrices[simType];
+                        data[i] = matrix[0] * r + matrix[1] * g + matrix[2] * b;
+                        data[i + 1] = matrix[4] * r + matrix[5] * g + matrix[6] * b;
+                        data[i + 2] = matrix[8] * r + matrix[9] * g + matrix[10] * b;
+                    }
+                }
+                filteredCtx.putImageData(imageData, 0, 0);
+            };
+
+            const resetTool = () => {
+                uploadSection.classList.remove('hidden');
+                processingSection.classList.add('hidden');
+                fileInput.value = '';
+                originalCtx.clearRect(0, 0, originalCanvas.width, originalCanvas.height);
+                filteredCtx.clearRect(0, 0, filteredCanvas.width, filteredCanvas.height);
+            };
+
+            // --- EVENT LISTENERS ---
+            selectFilesBtn.addEventListener('click', () => fileInput.click()); 
+            fileInput.addEventListener('change', (e) => handleFile(e.target.files[0]));
+            dropZone.addEventListener('dragover', (e) => { e.preventDefault(); e.stopPropagation(); dropZone.classList.add('drag-over'); });
+            dropZone.addEventListener('dragleave', (e) => { e.preventDefault(); e.stopPropagation(); dropZone.classList.remove('drag-over'); });
+            dropZone.addEventListener('drop', (e) => { e.preventDefault(); e.stopPropagation(); dropZone.classList.remove('drag-over'); handleFile(e.dataTransfer.files[0]); });
+            resetBtn.addEventListener('click', resetTool);
+            
+            document.querySelectorAll('input[name="sim-type"]').forEach(radio => {
+                radio.addEventListener('change', applyFilter);
+            });
+        });
+    </script>
+</body>
+</html>

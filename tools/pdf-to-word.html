@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF to Word Converter - NexaTools</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Base styles from NexaTools */
+        .header-scrolled {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .dark .header-scrolled {
+            background-color: rgba(15, 23, 42, 0.8);
+        }
+        .drag-over {
+            border-color: #10b981; /* brand-green */
+            background-color: rgb(16 185 129 / 0.05);
+        }
+        .dark .drag-over {
+            background-color: rgb(16 185 129 / 0.1);
+        }
+    </style>
+    <script>
+        // NexaTools Theme Logic
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+        tailwind.config = { darkMode: 'class', theme: { extend: { colors: { brand: { blue: '#3b82f6', green: '#10b981' } } } } }
+    </script>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 transition-colors duration-300 flex flex-col min-h-screen">
+
+    <!-- =========== HEADER (NexaTools Design) =========== -->
+    <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Home</a>
+                <a href="index.html#tools" class="text-brand-green font-semibold">Tools</a>
+                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">About</a>
+                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Contact</a>
+            </nav>
+            <div class="flex items-center">
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700">
+                    <svg id="theme-toggle-dark-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                    <svg id="theme-toggle-light-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 5.05A1 1 0 003.636 6.464l.707.707a1 1 0 001.414-1.414l-.707-.707zM3 11a1 1 0 100-2H2a1 1 0 100 2h1zM6.464 16.364l.707-.707a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow pt-24 pb-12">
+        <div class="container mx-auto px-4">
+            <!-- Tool Header (NexaTools Design) -->
+            <div class="text-center mb-12">
+                <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white flex items-center justify-center gap-4">
+                    <span class="text-brand-green">
+                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12"><path stroke-linecap="round" stroke-linejoin="round" d="M9 13.5l3 3m0 0l3-3m-3 3v-6m1.06-4.19l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" /></svg>
+                    </span>
+                    PDF to Word Converter
+                </h1>
+                <p class="mt-4 text-lg md:text-xl max-w-2xl mx-auto text-slate-600 dark:text-slate-300">Convert your PDF files into editable Microsoft Word (.docx) documents.<br><span class="text-sm text-slate-500">Note: This tool extracts text. Complex layouts and images may not be preserved perfectly.</span></p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 md:p-8">
+                <!-- Upload Area (NexaTools Design) -->
+                <div id="drop-zone" class="border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-lg p-8 text-center cursor-pointer transition-all duration-300">
+                    <div class="flex flex-col items-center justify-center space-y-4 text-slate-500 dark:text-slate-400">
+                        <div id="drop-zone-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
+                        </div>
+                        <p id="drop-zone-text" class="text-lg font-semibold">Drag & drop a PDF file here</p>
+                        <p id="drop-zone-or" class="text-slate-500 dark:text-slate-400">or</p>
+                        <button id="select-files-btn" class="bg-brand-green text-white font-bold py-2 px-6 rounded-lg shadow-md hover:bg-green-600 transition-colors">Select PDF</button>
+                        <input type="file" id="file-input" class="hidden" accept="application/pdf">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- =========== FOOTER (NexaTools Design) =========== -->
+    <footer class="bg-slate-100 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700/50 mt-auto">
+        <div class="container mx-auto px-4 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left space-y-4 md:space-y-0">
+                <div>
+                    <a href="index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">Simplifying your digital life.</p>
+                </div>
+                <div class="text-sm text-slate-600 dark:text-slate-400">
+                    <p>contact@nexatools.com</p>
+                    <p class="mt-1">© 2024 NexaTools. All Rights Reserved.</p>
+                </div>
+                <div class="flex space-x-4 text-sm">
+                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
+                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Libraries -->
+    <script src="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.min.js"></script>
+    <script src="https://unpkg.com/docx@7.3.0/build/index.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
+    <script>
+        // YOUR WORKING JAVASCRIPT, INTEGRATED WITH NEXATOOLS ELEMENTS
+        document.addEventListener('DOMContentLoaded', function() {
+            // Theme & Header Logic from NexaTools
+            const header = document.getElementById('header');
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const toggleTheme = () => { document.documentElement.classList.toggle('dark'); localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'; updateThemeIcons(); };
+            const updateThemeIcons = () => { const isDark = document.documentElement.classList.contains('dark'); document.getElementById('theme-toggle-dark-icon').classList.toggle('hidden', !isDark); document.getElementById('theme-toggle-light-icon').classList.toggle('hidden', isDark); };
+            themeToggleBtn.addEventListener('click', toggleTheme); updateThemeIcons();
+            window.addEventListener('scroll', () => { header.classList.toggle('header-scrolled', window.scrollY > 10); });
+
+            // Your working tool logic, adapted to NexaTools element IDs
+            pdfjsLib.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js`;
+
+            const dropZone = document.getElementById('drop-zone');
+            const fileInput = document.getElementById('file-input');
+            const selectBtn = document.getElementById('select-files-btn');
+            const dropZoneText = document.getElementById('drop-zone-text');
+            const originalText = dropZoneText.textContent;
+            const dropZoneOr = document.getElementById('drop-zone-or');
+            const dropZoneIcon = document.getElementById('drop-zone-icon');
+
+            // --- Event Listeners (Your working implementation) ---
+            selectBtn.addEventListener('click', () => fileInput.click());
+            
+            fileInput.addEventListener('change', () => {
+                if (fileInput.files.length > 0) {
+                    handleFile(fileInput.files[0]);
+                }
+            });
+
+            // --- Drag and Drop ---
+            dropZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropZone.classList.add('drag-over');
+            });
+
+            dropZone.addEventListener('dragleave', (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('drag-over');
+            });
+
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('drag-over');
+                const files = e.dataTransfer.files;
+                if (files.length > 0 && files[0].type === 'application/pdf') {
+                    handleFile(files[0]);
+                } else {
+                    alert("Please drop a valid PDF file.");
+                }
+            });
+            
+            // --- Core Logic (Your working implementation) ---
+            const handleFile = (file) => {
+                if (file.type !== 'application/pdf') {
+                    updateUIForError('Error: Please select a PDF file.');
+                    return;
+                }
+                
+                updateUIForProcessing(file.name);
+                
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const pdfData = event.target.result;
+                    convertPdfToDocx(pdfData, file.name);
+                };
+                reader.onerror = function() {
+                    updateUIForError('Error reading file.');
+                };
+                reader.readAsArrayBuffer(file);
+            };
+
+            const convertPdfToDocx = async (pdfData, originalFileName) => {
+                try {
+                    const loadingTask = pdfjsLib.getDocument({ data: pdfData });
+                    const pdf = await loadingTask.promise;
+                    
+                    const paragraphs = [];
+                    for (let i = 1; i <= pdf.numPages; i++) {
+                        const page = await pdf.getPage(i);
+                        const textContent = await page.getTextContent();
+                        
+                        const pageText = textContent.items.map(item => item.str).join(' ');
+                        
+                        paragraphs.push(
+                            new docx.Paragraph({
+                                children: [new docx.TextRun(pageText)],
+                            })
+                        );
+                    }
+
+                    const doc = new docx.Document({
+                        sections: [{ children: paragraphs }],
+                    });
+
+                    const blob = await docx.Packer.toBlob(doc);
+                    const docxFileName = originalFileName.replace(/\.pdf$/i, '.docx');
+                    saveAs(blob, docxFileName);
+                    
+                    updateUIForSuccess();
+
+                } catch (error) {
+                    console.error('Conversion Error:', error);
+                    updateUIForError('Failed to convert file.');
+                }
+            };
+            
+            // --- UI Update Functions (Adapted for NexaTools) ---
+            function updateUIForProcessing(fileName) {
+                dropZoneText.textContent = `Processing: ${fileName}...`;
+                selectBtn.style.display = 'none';
+                dropZoneOr.style.display = 'none';
+                dropZoneIcon.innerHTML = `<svg class="animate-spin h-16 w-16" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>`;
+                dropZone.style.cursor = 'default';
+            }
+
+            function updateUIForError(message) {
+                dropZoneText.textContent = message;
+                dropZoneText.classList.add('text-red-500');
+                selectBtn.style.display = 'none';
+                dropZoneOr.style.display = 'none';
+                dropZoneIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`;
+                setTimeout(resetUI, 4000);
+            }
+
+             function updateUIForSuccess() {
+                dropZoneText.textContent = 'Success! Your download has started.';
+                dropZoneText.classList.add('text-green-500');
+                dropZoneIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`;
+                setTimeout(resetUI, 4000);
+            }
+
+            function resetUI() {
+                dropZoneText.textContent = originalText;
+                dropZoneText.classList.remove('text-red-500', 'text-green-500');
+                selectBtn.style.display = 'block';
+                dropZoneOr.style.display = 'block';
+                dropZoneIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>`;
+                dropZone.style.cursor = 'pointer';
+                fileInput.value = ''; // Reset file input
+            }
+        });
+    </script>
+</body>
+</html>

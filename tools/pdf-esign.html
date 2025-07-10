@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF eSign Tool - NexaTools</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for Signature Styles -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat&family=Dancing+Script&family=Pacifico&family=Kalam&display=swap" rel="stylesheet">
+    <!-- Libraries -->
+    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+    <script src="https://unpkg.com/downloadjs@1.4.7/download.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fontfaceobserver@2.1.0/fontfaceobserver.standalone.js"></script>
+
+    <style>
+        /* Base styles from NexaTools */
+        .header-scrolled {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .dark .header-scrolled {
+            background-color: rgba(15, 23, 42, 0.8);
+        }
+        .drag-over {
+            border-color: #10b981; /* brand-green */
+            background-color: rgb(16 185 129 / 0.05);
+        }
+        .dark .drag-over {
+            background-color: rgb(16 185 129 / 0.1);
+        }
+        /* Custom styles for draggable items and interactions */
+        .draggable-item { cursor: move; touch-action: none; }
+        .interactive-element {
+            position: absolute;
+            border: 1px dashed transparent;
+            cursor: move;
+        }
+        .interactive-element:hover {
+            border-color: #3b82f6; /* brand-blue */
+        }
+        .interactive-element .delete-btn {
+            position: absolute; top: -8px; right: -8px;
+            width: 16px; height: 16px; border-radius: 9999px;
+            background-color: #ef4444; color: white;
+            display: none; align-items: center; justify-content: center;
+            font-size: 12px; line-height: 1; cursor: pointer;
+        }
+        .interactive-element:hover .delete-btn { display: flex; }
+        .interactive-element .resize-handle {
+            position: absolute; bottom: -5px; right: -5px;
+            width: 10px; height: 10px;
+            background-color: #3b82f6; border: 1px solid white;
+            cursor: se-resize; display: none;
+        }
+        .interactive-element:hover .resize-handle { display: block; }
+        #pdf-viewer-container {
+            position: relative;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        /* Style for selected font */
+        .font-option.selected {
+            outline: 2px solid #10b981; /* brand-green */
+        }
+    </style>
+    <script>
+        // NexaTools Theme Logic
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+        tailwind.config = { darkMode: 'class', theme: { extend: { colors: { brand: { blue: '#3b82f6', green: '#10b981' } } } } }
+    </script>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 transition-colors duration-300 flex flex-col min-h-screen">
+
+    <!-- =========== HEADER (NexaTools Design) =========== -->
+    <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Home</a>
+                <a href="index.html#tools" class="text-brand-green font-semibold">Tools</a>
+                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">About</a>
+                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Contact</a>
+            </nav>
+            <div class="flex items-center">
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700">
+                    <svg id="theme-toggle-dark-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                    <svg id="theme-toggle-light-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 5.05A1 1 0 003.636 6.464l.707.707a1 1 0 001.414-1.414l-.707-.707zM3 11a1 1 0 100-2H2a1 1 0 100 2h1zM6.464 16.364l.707-.707a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow pt-24 pb-12">
+        <div class="container mx-auto px-4">
+            
+            <!-- Upload View -->
+            <div id="upload-view">
+                 <div class="text-center mb-12">
+                    <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white flex items-center justify-center gap-4">
+                        <span class="text-brand-green">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </span>
+                        PDF eSign
+                    </h1>
+                    <p class="mt-4 text-lg md:text-xl max-w-2xl mx-auto text-slate-600 dark:text-slate-300">Sign your PDF documents securely in your browser.
+                        <br><span class="text-sm text-slate-500">Your files are never uploaded to a server.</span>
+                    </p>
+                </div>
+            
+                <div class="max-w-4xl mx-auto bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 md:p-8">
+                    <!-- Upload Area (NexaTools Design) -->
+                    <div id="drop-zone" class="border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-lg p-8 text-center cursor-pointer transition-all duration-300">
+                        <div class="flex flex-col items-center justify-center space-y-4 text-slate-500 dark:text-slate-400">
+                            <div id="drop-zone-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
+                            </div>
+                            <p id="drop-zone-text" class="text-lg font-semibold">Drag & drop a PDF file here</p>
+                            <p id="drop-zone-or" class="text-slate-500 dark:text-slate-400">or</p>
+                            <button id="select-files-btn" class="bg-brand-green text-white font-bold py-2 px-6 rounded-lg shadow-md hover:bg-green-600 transition-colors">Select PDF</button>
+                            <input type="file" id="file-input" class="hidden" accept="application/pdf">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Editor View -->
+            <div id="editor-view" class="hidden">
+                <div class="flex flex-col md:flex-row gap-6">
+                    <!-- Left Column: PDF Viewer -->
+                    <div class="w-full md:w-2/3 lg:w-3/4">
+                        <div id="pdf-viewer-container" class="bg-white dark:bg-slate-800 rounded-lg overflow-auto">
+                            <canvas id="pdf-canvas"></canvas>
+                        </div>
+                        <div class="mt-4 flex justify-center items-center gap-4">
+                            <button id="prev-page" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed">< Prev</button>
+                            <span id="page-num" class="text-slate-700 dark:text-slate-300"></span>
+                            <button id="next-page" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed">Next ></button>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Tools Panel -->
+                    <div class="w-full md:w-1/3 lg:w-1/4">
+                        <div class="bg-white dark:bg-slate-800/50 p-4 rounded-lg shadow-md space-y-6 sticky top-24">
+                            <div>
+                                <h3 class="font-bold text-lg mb-2 border-b border-slate-200 dark:border-slate-700 pb-2">Signature Fields</h3>
+                                <div class="space-y-4 pt-2">
+                                    <div id="signature-tool" draggable="true" class="p-2 border border-slate-300 dark:border-slate-600 rounded-md draggable-item flex items-center gap-2">
+                                        <span class="font-semibold text-sm">Signature</span>
+                                        <img id="signature-tool-img" class="max-h-8 ml-auto bg-white p-1 rounded-sm">
+                                    </div>
+                                    <div id="initials-tool" draggable="true" class="p-2 border border-slate-300 dark:border-slate-600 rounded-md draggable-item flex items-center gap-2">
+                                        <span class="font-semibold text-sm">Initials</span>
+                                        <img id="initials-tool-img" class="max-h-8 ml-auto bg-white p-1 rounded-sm">
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg mb-2 border-b border-slate-200 dark:border-slate-700 pb-2">Standard Fields</h3>
+                                <div class="space-y-4 pt-2">
+                                    <div id="text-tool" draggable="true" class="p-2 border border-slate-300 dark:border-slate-600 rounded-md draggable-item">Text</div>
+                                    <div id="date-tool" draggable="true" class="p-2 border border-slate-300 dark:border-slate-600 rounded-md draggable-item">Date</div>
+                                </div>
+                            </div>
+                            <button id="download-btn" class="w-full bg-brand-blue text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-600 transition-colors flex items-center justify-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                                Apply & Download
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- MODALS -->
+    <!-- Signature Setup Modal -->
+    <div id="setup-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center">
+        <div class="bg-white dark:bg-slate-800 rounded-lg shadow-2xl p-6 w-full max-w-lg mx-4">
+            <h2 class="text-2xl font-bold mb-4">Set your signature details</h2>
+            <div class="space-y-4">
+                <div>
+                    <label for="full-name" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Full name</label>
+                    <input type="text" id="full-name" class="p-2 mt-2 block w-full rounded-md border-slate-300 dark:border-slate-600 shadow-sm focus:border-brand-blue focus:ring focus:ring-brand-blue focus:ring-opacity-50 bg-white dark:bg-slate-700">
+                </div>
+                <div>
+                    <label for="initials" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Initials</label>
+                    <input type="text" id="initials" class="p-2 mt-2 block w-full rounded-md border-slate-300 dark:border-slate-600 shadow-sm focus:border-brand-blue focus:ring focus:ring-brand-blue focus:ring-opacity-50 bg-white dark:bg-slate-700">
+                </div>
+            </div>
+
+            <div class="mt-6">
+                <div class="border-b border-gray-200 dark:border-gray-700">
+                    <nav id="signature-tabs" class="-mb-px flex space-x-4" aria-label="Tabs">
+                        <button data-tab="signature" class="tab-btn whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm border-brand-green text-brand-green">Signature</button>
+                        <button data-tab="initials" class="tab-btn whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300">Initials</button>
+                    </nav>
+                </div>
+                <div class="mt-4 p-4 bg-slate-100 dark:bg-slate-700/50 rounded-md h-32 flex items-center justify-center">
+                    <canvas id="signature-preview-canvas" class=""></canvas>
+                    <canvas id="initials-preview-canvas" class="hidden"></canvas>
+                </div>
+            </div>
+            
+            <div class="mt-4">
+                <p class="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Choose a style</p>
+                <div id="font-options" class="grid grid-cols-2 md:grid-cols-4 gap-2"></div>
+            </div>
+            
+            <button id="open-draw-modal-btn" class="mt-6 w-full text-center text-sm text-brand-blue hover:underline">Draw or Upload Instead</button>
+
+            <div class="mt-6 flex justify-end">
+                <button id="apply-signature-btn" disabled class="bg-brand-green text-white font-bold py-2 px-6 rounded-lg hover:bg-green-500 transition-colors disabled:bg-slate-400 disabled:cursor-not-allowed">Apply</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Draw/Upload Modal -->
+    <div id="draw-modal" class="fixed inset-0 bg-black bg-opacity-60 z-[60] hidden items-center justify-center">
+        <div class="bg-white dark:bg-slate-800 rounded-lg shadow-2xl p-6 w-full max-w-md mx-4 relative">
+            <button id="close-draw-modal-btn" class="absolute top-2 right-2 p-1 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700">×</button>
+            <h2 class="text-xl font-bold mb-4">Create Your <span id="draw-modal-type">Signature</span></h2>
+            <div class="border-b border-gray-200 dark:border-gray-700">
+                <nav id="draw-upload-tabs" class="-mb-px flex space-x-4" aria-label="Tabs">
+                    <button data-tab="draw" class="draw-tab-btn whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm border-brand-green text-brand-green">Draw</button>
+                    <button data-tab="upload" class="draw-tab-btn whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300">Upload</button>
+                </nav>
+            </div>
+            <div id="draw-panel" class="mt-4">
+                <canvas id="draw-canvas" class="border border-slate-300 dark:border-slate-600 rounded-md w-full"></canvas>
+                <div class="mt-2 flex justify-between items-center">
+                    <button id="clear-draw-btn" class="text-sm text-brand-blue hover:underline">Clear</button>
+                    <button id="save-draw-btn" class="bg-brand-green text-white font-bold py-1 px-4 rounded-lg hover:bg-green-500 transition-colors">Save Drawing</button>
+                </div>
+            </div>
+            <div id="upload-panel" class="mt-4 hidden">
+                <input type="file" id="upload-image-input" accept="image/png, image/jpeg, image/svg+xml" class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-brand-blue/10 file:text-brand-blue hover:file:bg-brand-blue/20"/>
+                <div id="upload-preview" class="mt-2 h-32 border border-dashed rounded-md hidden items-center justify-center p-2"><img></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========== FOOTER (NexaTools Design) =========== -->
+    <footer class="bg-slate-100 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700/50 mt-auto">
+        <div class="container mx-auto px-4 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left space-y-4 md:space-y-0">
+                <div>
+                    <a href="index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">Simplifying your digital life.</p>
+                </div>
+                <div class="text-sm text-slate-600 dark:text-slate-400">
+                    <p>contact@nexatools.com</p>
+                    <p class="mt-1">© 2024 NexaTools. All Rights Reserved.</p>
+                </div>
+                <div class="flex space-x-4 text-sm">
+                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
+                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    // --- LIBRARY INITIALIZATION ---
+    const { PDFDocument, rgb, StandardFonts } = PDFLib;
+    pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js`;
+
+    // --- GLOBAL STATE ---
+    let pdfDoc = null;
+    let originalPdfBytes = null;
+    let currentPageNum = 1;
+    let scale = 1.5; 
+    let addedElements = []; 
+    let signatureData = {
+        signature: { type: 'typed', data: null, font: 'Dancing Script' },
+        initials: { type: 'typed', data: null, font: 'Dancing Script' }
+    };
+    const SIGNATURE_FONTS = [
+        { name: 'Stylish', family: 'Dancing Script' },
+        { name: 'Casual', family: 'Kalam' },
+        { name: 'Friendly', family: 'Caveat' },
+        { name: 'Elegant', family: 'Pacifico' },
+    ];
+
+    // --- DOM ELEMENT REFERENCES ---
+    const uploadView = document.getElementById('upload-view');
+    const editorView = document.getElementById('editor-view');
+    const dropZone = document.getElementById('drop-zone');
+    const pdfInput = document.getElementById('file-input');
+    const selectPdfBtn = document.getElementById('select-files-btn');
+    const pdfCanvas = document.getElementById('pdf-canvas');
+    const pdfViewerContainer = document.getElementById('pdf-viewer-container');
+    const pageNumDisplay = document.getElementById('page-num');
+    const prevPageBtn = document.getElementById('prev-page');
+    const nextPageBtn = document.getElementById('next-page');
+    const downloadBtn = document.getElementById('download-btn');
+    const setupModal = document.getElementById('setup-modal');
+    const fullNameInput = document.getElementById('full-name');
+    const initialsInput = document.getElementById('initials');
+    const applySignatureBtn = document.getElementById('apply-signature-btn');
+    const signatureTabs = document.getElementById('signature-tabs');
+    const sigPreviewCanvas = document.getElementById('signature-preview-canvas');
+    const iniPreviewCanvas = document.getElementById('initials-preview-canvas');
+    const fontOptionsContainer = document.getElementById('font-options');
+    let currentSetupTab = 'signature';
+    const drawModal = document.getElementById('draw-modal');
+    const openDrawModalBtn = document.getElementById('open-draw-modal-btn');
+    const closeDrawModalBtn = document.getElementById('close-draw-modal-btn');
+    const drawCanvas = document.getElementById('draw-canvas');
+    const drawModalType = document.getElementById('draw-modal-type');
+    const clearDrawBtn = document.getElementById('clear-draw-btn');
+    const saveDrawBtn = document.getElementById('save-draw-btn');
+    const drawUploadTabs = document.getElementById('draw-upload-tabs');
+    const drawPanel = document.getElementById('draw-panel');
+    const uploadPanel = document.getElementById('upload-panel');
+    const uploadImageInput = document.getElementById('upload-image-input');
+    const uploadPreview = document.getElementById('upload-preview');
+    let signaturePad = null;
+
+    // --- THEME LOGIC ---
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+
+    // **FIXED**: Icon logic inverted per user request.
+    const updateThemeIcons = () => {
+        const isDark = document.documentElement.classList.contains('dark');
+        // Show moon icon when in dark mode
+        themeToggleDarkIcon.classList.toggle('hidden', !isDark);
+        // Show sun icon when in light mode
+        themeToggleLightIcon.classList.toggle('hidden', isDark);
+    };
+    
+    updateThemeIcons(); 
+
+    themeToggleBtn.addEventListener('click', () => {
+        document.documentElement.classList.toggle('dark');
+        localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+        updateThemeIcons();
+        if (!setupModal.classList.contains('hidden')) {
+            updateSignaturePreview();
+        }
+    });
+
+    window.addEventListener('scroll', () => {
+        const header = document.getElementById('header');
+        header.classList.toggle('header-scrolled', window.scrollY > 10);
+    });
+
+    // --- FILE UPLOAD HANDLING ---
+    const handleFileSelect = (file) => {
+        if (!file || file.type !== 'application/pdf') {
+            alert('Please select a valid PDF file.');
+            return;
+        }
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+            originalPdfBytes = new Uint8Array(e.target.result);
+            try {
+                pdfDoc = await pdfjsLib.getDocument({ data: originalPdfBytes }).promise;
+                showSetupModal();
+            } catch (error) {
+                console.error("Error loading PDF:", error);
+                alert("Could not load the PDF file. It might be corrupted or protected.");
+            }
+        };
+        reader.readAsArrayBuffer(file);
+    };
+
+    selectPdfBtn.addEventListener('click', () => pdfInput.click());
+    pdfInput.addEventListener('change', (e) => handleFileSelect(e.target.files[0]));
+    
+    dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+    dropZone.addEventListener('dragleave', (e) => { e.preventDefault(); dropZone.classList.remove('drag-over'); });
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('drag-over');
+        if (e.dataTransfer.files.length) handleFileSelect(e.dataTransfer.files[0]);
+    });
+
+    // --- SIGNATURE SETUP MODAL ---
+    const showSetupModal = () => {
+        setupModal.classList.remove('hidden');
+        setupModal.classList.add('flex');
+        initializeFontOptions();
+        updateSignaturePreview();
+    };
+    const hideSetupModal = () => { setupModal.classList.add('hidden'); setupModal.classList.remove('flex'); };
+    const checkApplyButtonState = () => { applySignatureBtn.disabled = !(fullNameInput.value.trim() && initialsInput.value.trim()); };
+
+    fullNameInput.addEventListener('input', () => {
+        const name = fullNameInput.value.trim();
+        const initials = name.split(' ').map(n => n[0]).join('').toUpperCase();
+        initialsInput.value = initials;
+        updateSignaturePreview();
+        checkApplyButtonState();
+    });
+    initialsInput.addEventListener('input', () => { updateSignaturePreview(); checkApplyButtonState(); });
+
+    const initializeFontOptions = () => {
+        fontOptionsContainer.innerHTML = '';
+        SIGNATURE_FONTS.forEach((font, index) => {
+            const button = document.createElement('button');
+            button.className = 'font-option p-2 rounded-md border text-lg';
+            button.style.fontFamily = font.family;
+            button.textContent = font.name;
+            button.dataset.fontFamily = font.family;
+            if (index === 0) button.classList.add('selected');
+            button.addEventListener('click', () => {
+                fontOptionsContainer.querySelectorAll('.font-option').forEach(btn => btn.classList.remove('selected'));
+                button.classList.add('selected');
+                signatureData[currentSetupTab].font = font.family;
+                updateSignaturePreview();
+            });
+            fontOptionsContainer.appendChild(button);
+        });
+    };
+    
+    const updateSignaturePreview = () => {
+        const text = currentSetupTab === 'signature' ? fullNameInput.value.trim() || "Your Name" : initialsInput.value.trim() || "YN";
+        const canvas = currentSetupTab === 'signature' ? sigPreviewCanvas : iniPreviewCanvas;
+        const font = signatureData[currentSetupTab].font;
+        const color = document.documentElement.classList.contains('dark') ? '#e2e8f0' : '#1f2937';
+        const f = new FontFaceObserver(font);
+        f.load().then(() => { drawTextToCanvas(canvas, text, font, color); }, () => { drawTextToCanvas(canvas, text, 'serif', color); });
+    };
+
+    const drawTextToCanvas = (canvas, text, font, color) => {
+        const ctx = canvas.getContext('2d');
+        const dpr = window.devicePixelRatio || 1;
+        canvas.style.width = 'auto'; canvas.style.height = '100px';
+        ctx.font = `60px ${font}`;
+        const canvasWidth = ctx.measureText(text).width + 40;
+        canvas.width = canvasWidth * dpr; canvas.height = 100 * dpr;
+        ctx.scale(dpr, dpr);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.font = `60px ${font}`; ctx.fillStyle = color;
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText(text, canvasWidth / 2, 50);
+    };
+
+    signatureTabs.addEventListener('click', (e) => {
+        if (e.target.matches('.tab-btn')) {
+            currentSetupTab = e.target.dataset.tab;
+            signatureTabs.querySelectorAll('.tab-btn').forEach(btn => { btn.classList.remove('border-brand-green', 'text-brand-green'); });
+            e.target.classList.add('border-brand-green', 'text-brand-green');
+            sigPreviewCanvas.classList.toggle('hidden', currentSetupTab !== 'signature');
+            iniPreviewCanvas.classList.toggle('hidden', currentSetupTab !== 'initials');
+            updateSignaturePreview();
+        }
+    });
+
+    applySignatureBtn.addEventListener('click', () => {
+        const blackColor = '#1f2937';
+        if (signatureData.signature.type === 'typed') {
+            drawTextToCanvas(sigPreviewCanvas, fullNameInput.value, signatureData.signature.font, blackColor);
+            signatureData.signature.data = sigPreviewCanvas.toDataURL('image/png');
+        }
+        if (signatureData.initials.type === 'typed') {
+            drawTextToCanvas(iniPreviewCanvas, initialsInput.value, signatureData.initials.font, blackColor);
+            signatureData.initials.data = iniPreviewCanvas.toDataURL('image/png');
+        }
+        hideSetupModal();
+        transitionToEditor();
+    });
+
+    // --- DRAW/UPLOAD MODAL ---
+    openDrawModalBtn.addEventListener('click', () => {
+        drawModal.classList.remove('hidden'); drawModal.classList.add('flex');
+        drawModalType.textContent = currentSetupTab.charAt(0).toUpperCase() + currentSetupTab.slice(1);
+        if (!signaturePad) { signaturePad = new SignaturePad(drawCanvas, { penColor: 'rgb(0, 0, 0)' }); }
+        resizeCanvas(drawCanvas); signaturePad.clear();
+    });
+    closeDrawModalBtn.addEventListener('click', () => { drawModal.classList.add('hidden'); });
+    clearDrawBtn.addEventListener('click', () => signaturePad.clear());
+    saveDrawBtn.addEventListener('click', () => {
+        if (signaturePad.isEmpty()) { alert("Please provide a signature first."); return; }
+        signatureData[currentSetupTab] = { type: 'drawn', data: signaturePad.toDataURL('image/png') };
+        updateSignaturePreview(); closeDrawModalBtn.click();
+    });
+    uploadImageInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                signatureData[currentSetupTab] = { type: 'uploaded', data: event.target.result };
+                updateSignaturePreview(); closeDrawModalBtn.click();
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+    function resizeCanvas(canvas) {
+        const ratio = Math.max(window.devicePixelRatio || 1, 1);
+        canvas.width = canvas.offsetWidth * ratio; canvas.height = canvas.offsetHeight * ratio;
+        canvas.getContext("2d").scale(ratio, ratio);
+        if (signaturePad) signaturePad.clear();
+    }
+    window.addEventListener("resize", () => { if (signaturePad) resizeCanvas(drawCanvas); });
+
+    // --- EDITOR VIEW ---
+    const transitionToEditor = () => {
+        uploadView.classList.add('hidden');
+        editorView.classList.remove('hidden');
+        document.getElementById('signature-tool-img').src = signatureData.signature.data;
+        document.getElementById('initials-tool-img').src = signatureData.initials.data;
+        renderPage(currentPageNum);
+    };
+
+    const renderPage = async (num) => {
+        pdfDoc.getPage(num).then(page => {
+            const viewport = page.getViewport({ scale });
+            pdfCanvas.height = viewport.height; pdfCanvas.width = viewport.width;
+            pdfViewerContainer.style.width = `${viewport.width}px`; pdfViewerContainer.style.height = `${viewport.height}px`;
+            page.render({ canvasContext: pdfCanvas.getContext('2d'), viewport }).promise.then(() => drawAllElementsForPage(num));
+            pageNumDisplay.textContent = `Page ${num} of ${pdfDoc.numPages}`;
+            currentPageNum = num;
+            prevPageBtn.disabled = num <= 1; nextPageBtn.disabled = num >= pdfDoc.numPages;
+        });
+    };
+    
+    const drawAllElementsForPage = (pageNum) => {
+        pdfViewerContainer.querySelectorAll('.interactive-element').forEach(el => el.remove());
+        addedElements.filter(el => el.page === pageNum).forEach(elData => createInteractiveElement(elData, false));
+    };
+
+    prevPageBtn.addEventListener('click', () => { if (currentPageNum > 1) renderPage(currentPageNum - 1); });
+    nextPageBtn.addEventListener('click', () => { if (currentPageNum < pdfDoc.numPages) renderPage(currentPageNum + 1); });
+
+    // --- DRAG, DROP, AND MANIPULATE ELEMENTS ---
+    ['signature-tool', 'initials-tool', 'text-tool', 'date-tool'].forEach(id => {
+        document.getElementById(id).addEventListener('dragstart', (e) => { e.dataTransfer.setData('text/plain', id); });
+    });
+    pdfViewerContainer.addEventListener('dragover', (e) => e.preventDefault());
+    pdfViewerContainer.addEventListener('drop', (e) => {
+        e.preventDefault();
+        const id = e.dataTransfer.getData('text/plain');
+        const rect = pdfViewerContainer.getBoundingClientRect();
+        const x = e.clientX - rect.left; const y = e.clientY - rect.top;
+        const newElement = { id: 'el-' + Date.now(), page: currentPageNum, type: id.replace('-tool', ''), x, y };
+        if (newElement.type.includes('sign') || newElement.type.includes('initials')) {
+            newElement.imageData = signatureData[newElement.type].data;
+            const img = new Image();
+            img.onload = () => {
+                newElement.width = 150; newElement.height = (150 / img.width) * img.height;
+                addedElements.push(newElement); createInteractiveElement(newElement, true);
+            };
+            img.src = newElement.imageData;
+        } else {
+            newElement.width = newElement.type === 'text' ? 100 : 120; newElement.height = 25;
+            newElement.content = newElement.type === 'text' ? "Sample Text" : new Date().toLocaleDateString();
+            addedElements.push(newElement); createInteractiveElement(newElement, true);
+        }
+    });
+
+    const createInteractiveElement = (elData, isNew) => {
+        const el = document.createElement('div');
+        el.id = elData.id; el.className = 'interactive-element';
+        el.style.left = `${elData.x}px`; el.style.top = `${elData.y}px`;
+        el.style.width = `${elData.width}px`; el.style.height = `${elData.height}px`;
+        if (elData.imageData) {
+            const img = document.createElement('img');
+            img.src = elData.imageData;
+            img.style.width = '100%'; img.style.height = '100%'; img.style.pointerEvents = 'none';
+            el.appendChild(img);
+        } else {
+            const textSpan = document.createElement('span');
+            textSpan.textContent = elData.content;
+            textSpan.style.pointerEvents = 'none'; textSpan.style.whiteSpace = 'nowrap';
+            textSpan.style.fontSize = `${elData.height * 0.7}px`;
+            textSpan.style.color = '#1e293b';
+            el.appendChild(textSpan);
+            el.style.display = 'flex'; el.style.alignItems = 'center';
+            el.addEventListener('dblclick', () => {
+                const newText = prompt('Enter new text:', elData.content);
+                if (newText !== null) { elData.content = newText; textSpan.textContent = newText; }
+            });
+        }
+        const deleteBtn = document.createElement('div');
+        deleteBtn.className = 'delete-btn'; deleteBtn.innerHTML = '×';
+        deleteBtn.addEventListener('click', (e) => { e.stopPropagation(); el.remove(); addedElements = addedElements.filter(item => item.id !== elData.id); });
+        const resizeHandle = document.createElement('div');
+        resizeHandle.className = 'resize-handle';
+        el.appendChild(deleteBtn); el.appendChild(resizeHandle);
+        pdfViewerContainer.appendChild(el);
+        makeDraggable(el, elData); makeResizable(el, resizeHandle, elData);
+        if (isNew) {
+            el.style.left = `${elData.x - elData.width / 2}px`;
+            el.style.top = `${elData.y - elData.height / 2}px`;
+            elData.x -= elData.width / 2; elData.y -= elData.height / 2;
+        }
+    };
+    
+    const makeDraggable = (element, elData) => {
+        let offsetX, offsetY;
+        const move = (e) => {
+            e.preventDefault();
+            const containerRect = pdfViewerContainer.getBoundingClientRect();
+            element.style.left = (e.clientX - offsetX - containerRect.left) + 'px';
+            element.style.top = (e.clientY - offsetY - containerRect.top) + 'px';
+        };
+        const stopMove = () => {
+            document.removeEventListener('mousemove', move); document.removeEventListener('mouseup', stopMove);
+            elData.x = parseFloat(element.style.left); elData.y = parseFloat(element.style.top);
+        };
+        element.addEventListener('mousedown', (e) => {
+            if (e.target.classList.contains('resize-handle')) return;
+            offsetX = e.clientX - element.getBoundingClientRect().left;
+            offsetY = e.clientY - element.getBoundingClientRect().top;
+            document.addEventListener('mousemove', move); document.addEventListener('mouseup', stopMove);
+        });
+    };
+    
+    const makeResizable = (element, handle, elData) => {
+        let startX, startY, startWidth, startHeight;
+        const resize = (e) => {
+            e.preventDefault();
+            const newWidth = startWidth + (e.clientX - startX); const newHeight = startHeight + (e.clientY - startY);
+            if (newWidth > 20 && newHeight > 10) {
+                element.style.width = `${newWidth}px`; element.style.height = `${newHeight}px`;
+                const textSpan = element.querySelector('span');
+                if (textSpan) textSpan.style.fontSize = `${newHeight * 0.7}px`;
+            }
+        };
+        const stopResize = () => {
+            document.removeEventListener('mousemove', resize); document.removeEventListener('mouseup', stopResize);
+            elData.width = parseFloat(element.style.width); elData.height = parseFloat(element.style.height);
+        };
+        handle.addEventListener('mousedown', (e) => {
+            e.preventDefault(); e.stopPropagation();
+            startX = e.clientX; startY = e.clientY;
+            startWidth = parseFloat(getComputedStyle(element).width); startHeight = parseFloat(getComputedStyle(element).height);
+            document.addEventListener('mousemove', resize); document.addEventListener('mouseup', stopResize);
+        });
+    };
+
+    // --- FINAL PDF GENERATION & DOWNLOAD ---
+    downloadBtn.addEventListener('click', async () => {
+        downloadBtn.disabled = true; downloadBtn.innerHTML = 'Processing...';
+        try {
+            const finalPdfDoc = await PDFDocument.load(originalPdfBytes);
+            const helveticaFont = await finalPdfDoc.embedFont(StandardFonts.Helvetica);
+            const pages = finalPdfDoc.getPages();
+            for (let i = 0; i < pages.length; i++) {
+                const page = pages[i]; const pageNum = i + 1;
+                const { width: pdfWidth, height: pdfHeight } = page.getSize();
+                page.drawText(`Page ${pageNum} of ${pages.length}`, { x: pdfWidth - 70, y: 15, size: 8, font: helveticaFont, color: rgb(0.5, 0.5, 0.5) });
+                const elementsOnPage = addedElements.filter(el => el.page === pageNum);
+                for (const el of elementsOnPage) {
+                    const pdfX = el.x / scale; const pdfY = pdfHeight - (el.y / scale);
+                    const pdfElWidth = el.width / scale; const pdfElHeight = el.height / scale;
+                    if (el.imageData) {
+                        const img = el.imageData.startsWith('data:image/png') ? await finalPdfDoc.embedPng(el.imageData) : await finalPdfDoc.embedJpg(el.imageData);
+                        page.drawImage(img, { x: pdfX, y: pdfY - pdfElHeight, width: pdfElWidth, height: pdfElHeight });
+                    } else {
+                        page.drawText(el.content, { x: pdfX, y: pdfY - pdfElHeight, font: helveticaFont, size: pdfElHeight * 0.8, color: rgb(0, 0, 0) });
+                    }
+                }
+            }
+            const pdfBytes = await finalPdfDoc.save();
+            download(pdfBytes, "signed-document.pdf", "application/pdf");
+        } catch (err) {
+            console.error(err); alert('An error occurred while generating the PDF.');
+        } finally {
+            downloadBtn.disabled = false;
+            downloadBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" /></svg> Apply & Download';
+        }
+    });
+});
+</script>
+</body>
+</html>

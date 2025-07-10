@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image to Text Extractor - NexaTools</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tesseract.js for Optical Character Recognition (OCR) -->
+    <script src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js'></script>
+    <style>
+        .header-scrolled {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .dark .header-scrolled {
+            background-color: rgba(15, 23, 42, 0.8);
+        }
+        .drag-over {
+            border-color: #3b82f6;
+            background-color: rgb(59 130 246 / 0.05);
+        }
+        .dark .drag-over {
+            background-color: rgb(59 130 246 / 0.1);
+        }
+        /* Custom progress bar to match theme */
+        progress {
+            accent-color: #10b981; /* brand-green */
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            border: none;
+            height: 8px;
+            border-radius: 9999px;
+        }
+        progress::-webkit-progress-bar {
+            background-color: #e5e7eb; /* slate-200 */
+        }
+        .dark progress::-webkit-progress-bar {
+             background-color: #334155; /* slate-700 */
+        }
+        progress::-webkit-progress-value {
+            background-color: #10b981; /* brand-green */
+            border-radius: 9999px;
+        }
+        progress::-moz-progress-bar {
+            background-color: #10b981; /* brand-green */
+            border-radius: 9999px;
+        }
+    </style>
+    <script>
+        // Set theme on initial load
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+
+        // Configure Tailwind CSS
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            blue: '#3b82f6',
+                            green: '#10b981',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 transition-colors duration-300 flex flex-col min-h-screen">
+
+    <!-- =========== HEADER =========== -->
+    <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Home</a>
+                <a href="index.html#tools" class="text-brand-blue font-semibold">Tools</a>
+                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">About</a>
+                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Contact</a>
+            </nav>
+            <div class="flex items-center">
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                    <svg id="theme-toggle-dark-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                    <svg id="theme-toggle-light-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 5.05A1 1 0 003.636 6.464l.707.707a1 1 0 001.414-1.414l-.707-.707zM3 11a1 1 0 100-2H2a1 1 0 100 2h1zM6.464 16.364l.707-.707a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow pt-24 pb-12">
+        <div class="container mx-auto px-4">
+            <!-- Tool Header -->
+            <div class="text-center mb-12">
+                <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white flex items-center justify-center gap-4">
+                    <span class="text-brand-blue">
+                       <svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-scan-text-icon lucide-scan-text"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 8h8"/><path d="M7 12h10"/><path d="M7 16h6"/></svg>
+                    </span>
+                    Image to Text Extractor
+                </h1>
+                <p class="mt-4 text-lg md:text-xl max-w-2xl mx-auto text-slate-600 dark:text-slate-300">Extract text from any image using advanced optical character recognition (OCR).</p>
+            </div>
+
+            <!-- Upload UI -->
+            <div id="upload-section" class="max-w-4xl mx-auto bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 md:p-8">
+                <div id="drop-zone" class="border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-lg p-8 text-center cursor-pointer transition-all duration-300">
+                    <div class="flex flex-col items-center justify-center space-y-4 text-slate-500 dark:text-slate-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
+                        <p class="text-lg font-semibold">Drag & drop an image here</p>
+                        <p>or</p>
+                        <button id="select-file-btn" class="bg-brand-blue text-white font-bold py-2 px-6 rounded-lg shadow-md hover:bg-blue-600 transition-colors">Select Image</button>
+                        <input type="file" id="file-input" class="hidden" accept="image/*">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Result UI (Hidden by default) -->
+            <div id="result-section" class="hidden max-w-6xl mx-auto">
+                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Image Preview -->
+                    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-4 flex flex-col items-center justify-center">
+                        <h3 class="font-bold text-lg mb-4 self-start">Your Image</h3>
+                        <img id="image-preview" src="" alt="Uploaded image preview" class="max-w-full max-h-[500px] rounded-md object-contain">
+                    </div>
+
+                    <!-- Extracted Text & Controls -->
+                    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 flex flex-col space-y-6">
+                        
+                        <!-- Controls Section -->
+                        <div id="controls-section" class="space-y-4">
+                            <div>
+                                <label for="language-select" class="block text-sm font-medium mb-1">Language in Image:</label>
+                                <select id="language-select" class="w-full bg-slate-100 dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded-md shadow-sm focus:ring-brand-blue focus:border-brand-blue"></select>
+                            </div>
+                            <button id="extract-btn" class="w-full bg-brand-blue text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-blue-600 transition-colors disabled:bg-slate-400 disabled:cursor-not-allowed">
+                                Extract Text
+                            </button>
+                        </div>
+                        
+                        <!-- Progress Indicator -->
+                        <div id="progress-indicator" class="hidden text-center space-y-2">
+                             <p id="progress-status" class="text-2xl font-bold text-brand-green">0%</p>
+                             <progress id="progress-bar" class="w-full" max="1" value="0"></progress>
+                        </div>
+                        
+                        <!-- Text Result Area -->
+                        <div id="result-text-area" class="hidden flex-grow flex flex-col">
+                            <h3 class="font-bold text-lg mb-2">Extracted Text</h3>
+                            <textarea id="extracted-text" class="w-full flex-grow bg-slate-100 dark:bg-slate-700 rounded-md p-3 resize-none border border-slate-300 dark:border-slate-600 focus:ring-brand-blue focus:border-brand-blue" readonly></textarea>
+                            <button id="copy-btn" class="mt-4 w-full bg-brand-green text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-green-600 transition-colors">
+                                Copy Text
+                            </button>
+                        </div>
+                        
+                        <button id="reset-btn" class="w-full bg-slate-500 text-white font-bold py-2 px-6 rounded-lg shadow-md hover:bg-slate-600 transition-colors disabled:bg-slate-400 disabled:cursor-not-allowed">
+                            Extract from New Image
+                        </button>
+                    </div>
+                 </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- =========== FOOTER =========== -->
+    <footer class="bg-slate-100 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700/50 mt-auto">
+        <div class="container mx-auto px-4 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left space-y-4 md:space-y-0">
+                <div>
+                    <a href="index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">Simplifying your digital life.</p>
+                </div>
+                <div class="text-sm text-slate-600 dark:text-slate-400">
+                    <p>contact@nexatools.com</p>
+                    <p class="mt-1">© 2024 NexaTools. All Rights Reserved.</p>
+                </div>
+                <div class="flex space-x-4 text-sm">
+                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
+                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // --- THEME & HEADER LOGIC ---
+    const header = document.getElementById('header');
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const darkIcon = document.getElementById('theme-toggle-dark-icon');
+    const lightIcon = document.getElementById('theme-toggle-light-icon');
+    const toggleTheme = () => { document.documentElement.classList.toggle('dark'); localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'; updateThemeIcons(); };
+    const updateThemeIcons = () => { if (document.documentElement.classList.contains('dark')) { darkIcon.classList.remove('hidden'); lightIcon.classList.add('hidden'); } else { darkIcon.classList.add('hidden'); lightIcon.classList.remove('hidden'); } };
+    themeToggleBtn.addEventListener('click', toggleTheme);
+    updateThemeIcons();
+    window.addEventListener('scroll', () => { header.classList.toggle('header-scrolled', window.scrollY > 10); });
+
+    // --- IMAGE TO TEXT (OCR) LOGIC ---
+    // DOM Elements
+    const uploadSection = document.getElementById('upload-section');
+    const resultSection = document.getElementById('result-section');
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('file-input');
+    const selectFileBtn = document.getElementById('select-file-btn');
+    
+    const imagePreview = document.getElementById('image-preview');
+    const controlsSection = document.getElementById('controls-section');
+    const languageSelect = document.getElementById('language-select');
+    const extractBtn = document.getElementById('extract-btn');
+    
+    const progressIndicator = document.getElementById('progress-indicator');
+    const progressBar = document.getElementById('progress-bar');
+    const progressStatus = document.getElementById('progress-status');
+
+    const resultTextArea = document.getElementById('result-text-area');
+    const extractedText = document.getElementById('extracted-text');
+    const copyBtn = document.getElementById('copy-btn');
+    const resetBtn = document.getElementById('reset-btn');
+
+    // State
+    let currentFile = null;
+    // Tesseract.js supported languages (v5) - Source: Tesseract.js GitHub
+    const languages = {
+        'afr': 'Afrikaans', 'amh': 'Amharic', 'ara': 'Arabic', 'asm': 'Assamese', 'aze': 'Azerbaijani', 'aze_cyrl': 'Azerbaijani - Cyrillic',
+        'bel': 'Belarusian', 'ben': 'Bengali', 'bod': 'Tibetan', 'bos': 'Bosnian', 'bre': 'Breton', 'bul': 'Bulgarian', 'cat': 'Catalan; Valencian',
+        'ceb': 'Cebuano', 'ces': 'Czech', 'chi_sim': 'Chinese - Simplified', 'chi_tra': 'Chinese - Traditional', 'chr': 'Cherokee', 'cos': 'Corsican',
+        'cym': 'Welsh', 'dan': 'Danish', 'deu': 'German', 'dzo': 'Dzongkha', 'ell': 'Greek, Modern (1453-)', 'eng': 'English', 'enm': 'English, Middle (1100-1500)',
+        'epo': 'Esperanto', 'est': 'Estonian', 'eus': 'Basque', 'fao': 'Faroese', 'fas': 'Persian', 'fil': 'Filipino', 'fin': 'Finnish',
+        'fra': 'French', 'frk': 'German Fraktur', 'frm': 'French, Middle (ca. 1400-1600)', 'fry': 'Western Frisian', 'gla': 'Scottish Gaelic', 'gle': 'Irish',
+        'glg': 'Galician', 'grc': 'Greek, Ancient (-1453)', 'guj': 'Gujarati', 'hat': 'Haitian; Haitian Creole', 'heb': 'Hebrew', 'hin': 'Hindi',
+        'hrv': 'Croatian', 'hun': 'Hungarian', 'hye': 'Armenian', 'iku': 'Inuktitut', 'ind': 'Indonesian', 'isl': 'Icelandic', 'ita': 'Italian',
+        'ita_old': 'Italian - Old', 'jav': 'Javanese', 'jpn': 'Japanese', 'kan': 'Kannada', 'kat': 'Georgian', 'kat_old': 'Georgian - Old', 'kaz': 'Kazakh',
+        'khm': 'Central Khmer', 'kir': 'Kirghiz; Kyrgyz', 'kmr': 'Kurmanji (Kurdish - Latin)', 'kor': 'Korean', 'kor_vert': 'Korean (vertical)', 'lao': 'Lao', 'lat': 'Latin', 'lav': 'Latvian', 'lit': 'Lithuanian',
+        'ltz': 'Luxembourgish', 'mal': 'Malayalam', 'mar': 'Marathi', 'mkd': 'Macedonian', 'mlt': 'Maltese', 'mon': 'Mongolian', 'mri': 'Maori', 'msa': 'Malay',
+        'mya': 'Burmese', 'nep': 'Nepali', 'nld': 'Dutch; Flemish', 'nor': 'Norwegian', 'oci': 'Occitan (post 1500)', 'ori': 'Oriya', 'osd': 'Sindhi',
+        'pan': 'Panjabi; Punjabi', 'pol': 'Polish', 'por': 'Portuguese', 'pus': 'Pushto; Pashto', 'que': 'Quechua', 'ron': 'Romanian; Moldavian; Moldovan',
+        'rus': 'Russian', 'san': 'Sanskrit', 'sin': 'Sinhala; Sinhalese', 'slk': 'Slovak', 'slv': 'Slovenian', 'snd': 'Sindhi', 'spa': 'Spanish; Castilian',
+        'spa_old': 'Spanish; Castilian - Old', 'sqi': 'Albanian', 'srp': 'Serbian', 'srp_latn': 'Serbian - Latin', 'sun': 'Sundanese', 'swa': 'Swahili',
+        'swe': 'Swedish', 'syr': 'Syriac', 'tam': 'Tamil', 'tat': 'Tatar', 'tel': 'Telugu', 'tgk': 'Tajik', 'tha': 'Thai', 'tir': 'Tigrinya', 'ton': 'Tonga',
+        'tur': 'Turkish', 'uig': 'Uighur; Uyghur', 'ukr': 'Ukrainian', 'urd': 'Urdu', 'uzb': 'Uzbek', 'uzb_cyrl': 'Uzbek - Cyrillic', 'vie': 'Vietnamese',
+        'yid': 'Yiddish', 'yor': 'Yoruba'
+    };
+
+    // --- Functions ---
+    function populateLanguages() {
+        for (const [code, name] of Object.entries(languages)) {
+            const option = document.createElement('option');
+            option.value = code;
+            option.textContent = name;
+            if (code === 'eng') {
+                option.selected = true;
+            }
+            languageSelect.appendChild(option);
+        }
+    }
+
+    function handleFile(file) {
+        if (!file || !file.type.startsWith('image/')) {
+            alert('Please select a valid image file.');
+            return;
+        }
+
+        currentFile = file;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            imagePreview.src = e.target.result;
+            // Switch UI views
+            uploadSection.classList.add('hidden');
+            resultSection.classList.remove('hidden');
+            controlsSection.classList.remove('hidden');
+            progressIndicator.classList.add('hidden');
+            resultTextArea.classList.add('hidden');
+        };
+        reader.readAsDataURL(file);
+    }
+
+    async function extractTextFromImage(imageFile, langCode) {
+        // Update UI for processing state
+        controlsSection.classList.add('hidden');
+        progressIndicator.classList.remove('hidden');
+        resetBtn.disabled = true;
+        
+        progressStatus.textContent = '0%';
+        progressBar.value = 0;
+
+        const worker = await Tesseract.createWorker(langCode, 1, {
+            logger: m => {
+                if (m.status === 'recognizing text') {
+                    const progress = m.progress;
+                    progressBar.value = progress;
+                    progressStatus.textContent = `${Math.round(progress * 100)}%`;
+                }
+            }
+        });
+        
+        try {
+            const { data: { text } } = await worker.recognize(imageFile);
+            extractedText.value = text || "No text could be extracted. Please try another image or language.";
+        } catch(err) {
+            console.error(err);
+            extractedText.value = "An unexpected error occurred during text extraction.";
+        } finally {
+            progressIndicator.classList.add('hidden');
+            resultTextArea.classList.remove('hidden');
+            resetBtn.disabled = false;
+            await worker.terminate();
+        }
+    }
+
+    function copyToClipboard() {
+        if (!extractedText.value) return;
+        navigator.clipboard.writeText(extractedText.value).then(() => {
+            const originalText = copyBtn.textContent;
+            copyBtn.textContent = 'Copied!';
+            setTimeout(() => { copyBtn.textContent = originalText; }, 2000);
+        }).catch(err => {
+            console.error('Failed to copy text: ', err);
+        });
+    }
+
+    function resetTool() {
+        uploadSection.classList.remove('hidden');
+        resultSection.classList.add('hidden');
+        currentFile = null;
+        fileInput.value = '';
+        imagePreview.src = '';
+        extractedText.value = '';
+        progressStatus.textContent = '0%';
+        progressBar.value = 0;
+    }
+
+    // --- Event Listeners ---
+    selectFileBtn.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', (e) => handleFile(e.target.files[0]));
+    dropZone.addEventListener('dragover', (e) => { e.preventDefault(); e.stopPropagation(); dropZone.classList.add('drag-over'); });
+    dropZone.addEventListener('dragleave', (e) => { e.preventDefault(); e.stopPropagation(); dropZone.classList.remove('drag-over'); });
+    dropZone.addEventListener('drop', (e) => { e.preventDefault(); e.stopPropagation(); dropZone.classList.remove('drag-over'); handleFile(e.dataTransfer.files[0]); });
+
+    extractBtn.addEventListener('click', () => {
+        if (currentFile) {
+            extractTextFromImage(currentFile, languageSelect.value);
+        }
+    });
+
+    copyBtn.addEventListener('click', copyToClipboard);
+    resetBtn.addEventListener('click', resetTool);
+
+    // --- Initial Setup ---
+    populateLanguages();
+});
+</script>
+
+</body>
+</html>
