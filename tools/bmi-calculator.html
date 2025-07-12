@@ -3,7 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BMI Calculator - NexaTools</title>
+    <title>BMI Calculator - Check Your Body Mass Index - NexaTools</title>
+    
+    <!-- ========= High SEO Meta Tags ========= -->
+    <meta name="description" content="Use our free BMI Calculator to check your Body Mass Index. Get instant results with a visual gauge, see your healthy weight range, and understand your BMI category.">
+    <meta name="keywords" content="bmi calculator, body mass index, calculate bmi, healthy weight, bmi chart, bmi formula, metric bmi, imperial bmi, nexatools">
+    <link rel="canonical" href="https://www.nexatools.pro/bmi-calculator.html">
+    <meta name="robots" content="index, follow">
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.nexatools.pro/bmi-calculator.html">
+    <meta property="og:title" content="BMI Calculator - Check Your Body Mass Index - NexaTools">
+    <meta property="og:description" content="Use our free BMI Calculator to check your Body Mass Index. Get instant results with a visual gauge and see your healthy weight range.">
+    <meta property="og:image" content="https://www.nexatools.pro/assets/images/og-image-bmi.png"> <!-- Create and host a relevant image for social sharing -->
+    <meta property="og:site_name" content="NexaTools">
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.nexatools.pro/bmi-calculator.html">
+    <meta property="twitter:title" content="BMI Calculator - Check Your Body Mass Index - NexaTools">
+    <meta property="twitter:description" content="Use our free BMI Calculator to check your Body Mass Index. Get instant results with a visual gauge and see your healthy weight range.">
+    <meta property="twitter:image" content="https://www.nexatools.pro/assets/images/og-image-bmi.png"> <!-- Use the same image as OG -->
+
+    <!-- ========= Favicon ========= -->
+    <link rel="icon" href="/assets/images/favicon.ico" sizes="any">
+    <link rel="icon" href="/assets/images/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
+    <link rel="manifest" href="/assets/site.webmanifest">
+
+    <!-- ========= JSON-LD Schema Markup ========= -->
+    <script type="application/ld+json">
+    [
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "BMI Calculator",
+        "description": "A free online tool to calculate Body Mass Index (BMI) using either metric or imperial units. The tool provides a BMI score, a visual category gauge, and a healthy weight range.",
+        "url": "https://www.nexatools.pro/bmi-calculator.html",
+        "applicationCategory": "HealthApplication",
+        "operatingSystem": "Web",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "creator": {
+            "@type": "Organization",
+            "url": "https://www.nexatools.pro",
+            "name": "NexaTools",
+            "logo": "https://www.nexatools.pro/assets/images/logo.png"
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is BMI (Body Mass Index)?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Body Mass Index (BMI) is a measure that uses your height and weight to work out if your weight is healthy. The BMI calculation divides an adult's weight in kilograms by their height in metres squared. The resulting number is used to categorize you as underweight, normal weight, overweight, or obese."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is the BMI calculator accurate for everyone?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "BMI is a useful population-level measure but has limitations for individuals. It does not distinguish between fat and muscle mass, which means very muscular people (like athletes) may have a high BMI despite having low body fat. It's also not the best measure for children, pregnant women, or the elderly. Always consult a healthcare professional for personalized health advice."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is a healthy BMI range?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "For most adults, a healthy BMI is in the 18.5 to 24.9 range. A BMI below 18.5 is considered underweight, 25 to 29.9 is overweight, and 30 or above is categorized as obesity."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is my height and weight data safe?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. All calculations on this BMI Calculator are performed in your browser using JavaScript. None of your personal data is sent to or stored on our servers, ensuring your privacy is protected."
+            }
+          }
+        ]
+      }
+    ]
+    </script>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .header-scrolled {
@@ -54,12 +144,12 @@
     <!-- =========== HEADER =========== -->
     <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+            <a href="/index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
             <nav class="hidden md:flex items-center space-x-8">
-                <a href="index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Home</a>
-                <a href="index.html#tools" class="text-brand-blue font-semibold">Tools</a>
-                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">About</a>
-                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Contact</a>
+                <a href="/index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Home</a>
+                <a href="/index.html#tools" class="text-brand-blue font-semibold">Tools</a>
+                <a href="/about-us.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">About</a>
+                <a href="/contact-us.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Contact</a>
             </nav>
             <div class="flex items-center">
                 <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
@@ -76,7 +166,7 @@
             <div class="text-center mb-12">
                 <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white flex items-center justify-center gap-4">
                     <span class="text-brand-blue">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-person-standing-icon lucide-person-standing"><circle cx="12" cy="5" r="1"/><path d="m9 20 3-6 3 6"/><path d="m6 8 6 2 6-2"/><path d="M12 10v4"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-person-standing-icon lucide-person-standing"><circle cx="12" cy="5" r="1"/><path d="m9 20 3-6 3 6"/><path d="m6 8 6 2 6-2"/><path d="M12 10v4"/></svg>
                     </span>
                     BMI Calculator
                 </h1>
@@ -173,21 +263,72 @@
         </div>
     </main>
 
+    <!-- =========== NEW: FAQ Section =========== -->
+    <section class="py-16 bg-slate-100 dark:bg-slate-900">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto">
+                <h2 class="text-3xl font-bold text-center mb-8 text-slate-900 dark:text-white">Frequently Asked Questions</h2>
+                <div class="space-y-4">
+                    <!-- FAQ Item 1 -->
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg cursor-pointer shadow-sm">
+                        <summary class="flex justify-between items-center font-semibold text-slate-800 dark:text-slate-100 list-none">
+                            What is BMI (Body Mass Index)?
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </summary>
+                        <div class="mt-4 text-slate-600 dark:text-slate-400">
+                            <p>Body Mass Index (BMI) is a measure that uses your height and weight to work out if your weight is healthy. The BMI calculation divides an adult's weight in kilograms by their height in metres squared. The resulting number is used to categorize you as underweight, normal weight, overweight, or obese.</p>
+                        </div>
+                    </details>
+                    <!-- FAQ Item 2 -->
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg cursor-pointer shadow-sm">
+                        <summary class="flex justify-between items-center font-semibold text-slate-800 dark:text-slate-100 list-none">
+                            Is the BMI calculator accurate for everyone?
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </summary>
+                        <div class="mt-4 text-slate-600 dark:text-slate-400">
+                            <p>BMI is a useful population-level measure but has limitations for individuals. It does not distinguish between fat and muscle mass, which means very muscular people (like athletes) may have a high BMI despite having low body fat. It's also not the best measure for children, pregnant women, or the elderly. Always consult a healthcare professional for personalized health advice.</p>
+                        </div>
+                    </details>
+                    <!-- FAQ Item 3 -->
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg cursor-pointer shadow-sm">
+                        <summary class="flex justify-between items-center font-semibold text-slate-800 dark:text-slate-100 list-none">
+                            What is a healthy BMI range?
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </summary>
+                        <div class="mt-4 text-slate-600 dark:text-slate-400">
+                            <p>For most adults, a healthy BMI is in the 18.5 to 24.9 range. A BMI below 18.5 is considered underweight, 25 to 29.9 is overweight, and 30 or above is categorized as obesity.</p>
+                        </div>
+                    </details>
+                    <!-- FAQ Item 4 -->
+                     <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg cursor-pointer shadow-sm">
+                        <summary class="flex justify-between items-center font-semibold text-slate-800 dark:text-slate-100 list-none">
+                            Is my height and weight data safe?
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </summary>
+                        <div class="mt-4 text-slate-600 dark:text-slate-400">
+                            <p>Yes. All calculations on this BMI Calculator are performed in your browser using JavaScript. None of your personal data is sent to or stored on our servers, ensuring your privacy is protected.</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- =========== FOOTER =========== -->
     <footer class="bg-slate-100 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700/50 mt-auto">
         <div class="container mx-auto px-4 py-8">
             <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left space-y-4 md:space-y-0">
                 <div>
-                    <a href="index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+                    <a href="/index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
                     <p class="text-sm text-slate-500 dark:text-slate-400">Simplifying your digital life.</p>
                 </div>
                 <div class="text-sm text-slate-600 dark:text-slate-400">
-                    <p>contact@nexatools.com</p>
-                    <p class="mt-1">© 2024 NexaTools. All Rights Reserved.</p>
+                    <p>contact@nexatools.pro</p>
+                    <p class="mt-1">© 2025 NexaTools. All Rights Reserved.</p>
                 </div>
                 <div class="flex space-x-4 text-sm">
-                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
-                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
+                    <a href="/privacy-policy.html" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
+                    <a href="/terms-of-use.html" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
                 </div>
             </div>
         </div>
@@ -270,21 +411,27 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Update BMI Category and color
         const bmiCategoryEl = document.getElementById('bmi-category');
+        const bmiResultEl = document.getElementById('bmi-result');
         let category = '';
+        let categoryColor = '';
+
         if (bmi < 18.5) {
             category = 'Underweight';
-            bmiCategoryEl.style.color = '#3b82f6'; // Blue
+            categoryColor = '#3b82f6'; // brand-blue
         } else if (bmi < 25) {
             category = 'Normal weight';
-            bmiCategoryEl.style.color = '#10b981'; // Green
+            categoryColor = '#10b981'; // brand-green
         } else if (bmi < 30) {
             category = 'Overweight';
-            bmiCategoryEl.style.color = '#f97316'; // Orange
+            categoryColor = '#f97316'; // orange-500
         } else {
             category = 'Obesity';
-            bmiCategoryEl.style.color = '#ef4444'; // Red
+            categoryColor = '#ef4444'; // red-500
         }
         bmiCategoryEl.textContent = category;
+        bmiCategoryEl.style.color = categoryColor;
+        bmiResultEl.style.color = categoryColor;
+
 
         // Update Healthy Weight Range
         const minWeight = 18.5 * (heightM * heightM);

@@ -3,10 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loan EMI Calculator - NexaTools</title>
+    <title>Free Loan EMI Calculator - Calculate Your Monthly Payments - NexaTools</title>
+    
+    <!-- ========= High SEO Meta Tags ========= -->
+    <meta name="description" content="Calculate your Equated Monthly Installment (EMI) for any loan with our free online calculator. Get a detailed amortization schedule and a visual breakdown of principal vs. interest.">
+    <meta name="keywords" content="emi calculator, loan calculator, amortization schedule, loan payment calculator, home loan emi, car loan emi, personal loan emi, nexatools">
+    <link rel="canonical" href="https://www.nexatools.pro/loan-emi-calculator.html">
+    <meta name="robots" content="index, follow">
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.nexatools.pro/loan-emi-calculator.html">
+    <meta property="og:title" content="Free Loan EMI Calculator - Calculate Your Monthly Payments - NexaTools">
+    <meta property="og:description" content="Calculate your Equated Monthly Installment (EMI) for any loan with our free online calculator. Get a detailed amortization schedule and a visual breakdown of principal vs. interest.">
+    <meta property="og:image" content="https://www.nexatools.pro/assets/images/og-image-emi-calculator.png"> <!-- Create and host a relevant image for social sharing -->
+    <meta property="og:site_name" content="NexaTools">
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.nexatools.pro/loan-emi-calculator.html">
+    <meta property="twitter:title" content="Free Loan EMI Calculator - Calculate Your Monthly Payments - NexaTools">
+    <meta property="twitter:description" content="Calculate your Equated Monthly Installment (EMI) for any loan with our free online calculator. Get a detailed amortization schedule and a visual breakdown of principal vs. interest.">
+    <meta property="twitter:image" content="https://www.nexatools.pro/assets/images/og-image-emi-calculator.png"> <!-- Use the same image as OG -->
+
+    <!-- ========= Favicon ========= -->
+    <link rel="icon" href="/assets/images/favicon.ico" sizes="any">
+    <link rel="icon" href="/assets/images/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
+    <link rel="manifest" href="/assets/site.webmanifest">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chart.js for the visual pie chart -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- ========= JSON-LD Schema Markup ========= -->
+    <script type="application/ld+json">
+    [
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Loan EMI Calculator",
+        "description": "A free online financial calculator to determine the Equated Monthly Installment (EMI) for a loan. It provides a detailed amortization schedule and visual charts.",
+        "url": "https://www.nexatools.pro/loan-emi-calculator.html",
+        "applicationCategory": "FinancialApplication",
+        "operatingSystem": "Web",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "creator": {
+            "@type": "Organization",
+            "url": "https://www.nexatools.pro",
+            "name": "NexaTools",
+            "logo": "https://www.nexatools.pro/assets/images/logo.png"
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is a Loan EMI?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "EMI stands for Equated Monthly Installment. It is a fixed payment amount made by a borrower to a lender at a specified date each calendar month. EMIs are used to pay off both interest and principal each month so that over a specified number of years, the loan is paid off in full."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How is the EMI calculated?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The EMI is calculated using the formula: EMI = P × r × (1 + r)^n / ((1 + r)^n - 1), where P is the principal loan amount, r is the monthly interest rate (annual rate divided by 12), and n is the number of monthly installments (loan tenure in months). Our calculator performs this computation for you instantly."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is my financial data safe with this calculator?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes, absolutely. This EMI calculator performs all calculations directly in your browser. The loan amount, interest rate, and tenure you enter are never sent to our servers, ensuring your financial information remains private and secure."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is an amortization schedule?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "An amortization schedule is a table detailing each periodic payment on a loan. It shows how much of each payment is applied to the interest and how much is applied to the principal balance. Our calculator generates a year-by-year schedule to help you understand your loan's repayment journey."
+            }
+          }
+        ]
+      }
+    ]
+    </script>
     <style>
         .header-scrolled {
             background-color: rgba(255, 255, 255, 0.8);
@@ -16,9 +106,8 @@
         .dark .header-scrolled {
             background-color: rgba(15, 23, 42, 0.8);
         }
-        /* Active state for unit toggle */
         .btn-toggle-active {
-            background-color: #3b82f6 !important; /* brand-blue */
+            background-color: #3b82f6 !important;
             color: white !important;
             box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
         }
@@ -52,12 +141,12 @@
     <!-- =========== HEADER =========== -->
     <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+            <a href="/index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
             <nav class="hidden md:flex items-center space-x-8">
-                <a href="index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Home</a>
-                <a href="index.html#tools" class="text-brand-blue font-semibold">Tools</a>
-                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">About</a>
-                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Contact</a>
+                <a href="/index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Home</a>
+                <a href="/index.html#tools" class="text-brand-blue font-semibold">Tools</a>
+                <a href="/about-us.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">About</a>
+                <a href="/contact-us.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Contact</a>
             </nav>
             <div class="flex items-center">
                 <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
@@ -156,22 +245,73 @@
             </div>
         </div>
     </main>
+    
+    <!-- =========== NEW: FAQ Section =========== -->
+    <section class="py-16 bg-slate-100 dark:bg-slate-900">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto">
+                <h2 class="text-3xl font-bold text-center mb-8 text-slate-900 dark:text-white">Frequently Asked Questions</h2>
+                <div class="space-y-4">
+                    <!-- FAQ Item 1 -->
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg cursor-pointer shadow-sm">
+                        <summary class="flex justify-between items-center font-semibold text-slate-800 dark:text-slate-100 list-none">
+                            What is a Loan EMI?
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </summary>
+                        <div class="mt-4 text-slate-600 dark:text-slate-400">
+                            <p>EMI stands for Equated Monthly Installment. It is a fixed payment amount made by a borrower to a lender at a specified date each calendar month. EMIs are used to pay off both interest and principal each month so that over a specified number of years, the loan is paid off in full.</p>
+                        </div>
+                    </details>
+                    <!-- FAQ Item 2 -->
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg cursor-pointer shadow-sm">
+                        <summary class="flex justify-between items-center font-semibold text-slate-800 dark:text-slate-100 list-none">
+                            How is the EMI calculated?
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </summary>
+                        <div class="mt-4 text-slate-600 dark:text-slate-400">
+                           <p>The EMI is calculated using the formula: EMI = P × r × (1 + r)^n / ((1 + r)^n - 1), where P is the principal loan amount, r is the monthly interest rate (annual rate divided by 12), and n is the number of monthly installments (loan tenure in months). Our calculator performs this computation for you instantly.</p>
+                        </div>
+                    </details>
+                    <!-- FAQ Item 3 -->
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg cursor-pointer shadow-sm">
+                        <summary class="flex justify-between items-center font-semibold text-slate-800 dark:text-slate-100 list-none">
+                            Is my financial data safe with this calculator?
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </summary>
+                        <div class="mt-4 text-slate-600 dark:text-slate-400">
+                           <p>Yes, absolutely. This EMI calculator performs all calculations directly in your browser. The loan amount, interest rate, and tenure you enter are never sent to our servers, ensuring your financial information remains private and secure.</p>
+                        </div>
+                    </details>
+                    <!-- FAQ Item 4 -->
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg cursor-pointer shadow-sm">
+                        <summary class="flex justify-between items-center font-semibold text-slate-800 dark:text-slate-100 list-none">
+                            What is an amortization schedule?
+                           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </summary>
+                        <div class="mt-4 text-slate-600 dark:text-slate-400">
+                           <p>An amortization schedule is a table detailing each periodic payment on a loan. It shows how much of each payment is applied to the interest and how much is applied to the principal balance. Our calculator generates a year-by-year schedule to help you understand your loan's repayment journey.</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- =========== FOOTER =========== -->
     <footer class="bg-slate-100 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700/50 mt-auto">
         <div class="container mx-auto px-4 py-8">
             <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left space-y-4 md:space-y-0">
                 <div>
-                    <a href="index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+                    <a href="/index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
                     <p class="text-sm text-slate-500 dark:text-slate-400">Simplifying your digital life.</p>
                 </div>
                 <div class="text-sm text-slate-600 dark:text-slate-400">
-                    <p>contact@nexatools.com</p>
-                    <p class="mt-1">© 2024 NexaTools. All Rights Reserved.</p>
+                    <p>contact@nexatools.pro</p>
+                    <p class="mt-1">© 2025 NexaTools. All Rights Reserved.</p>
                 </div>
                 <div class="flex space-x-4 text-sm">
-                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
-                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
+                    <a href="/privacy-policy.html" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
+                    <a href="/terms-of-use.html" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
                 </div>
             </div>
         </div>
@@ -185,14 +325,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const themeToggleBtn = document.getElementById('theme-toggle');
     const darkIcon = document.getElementById('theme-toggle-dark-icon');
     const lightIcon = document.getElementById('theme-toggle-light-icon');
-    const toggleTheme = () => { document.documentElement.classList.toggle('dark'); localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'; updateThemeIcons(); };
+    const toggleTheme = () => { document.documentElement.classList.toggle('dark'); localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'; updateThemeIcons(); if (myChart) { myChart.options.plugins.legend.labels.color = document.documentElement.classList.contains('dark') ? '#cbd5e1' : '#475569'; myChart.options.borderColor = document.documentElement.classList.contains('dark') ? '#1e293b' : '#ffffff'; myChart.update(); } };
     const updateThemeIcons = () => { if (document.documentElement.classList.contains('dark')) { darkIcon.classList.remove('hidden'); lightIcon.classList.add('hidden'); } else { darkIcon.classList.add('hidden'); lightIcon.classList.remove('hidden'); } };
     themeToggleBtn.addEventListener('click', toggleTheme);
     updateThemeIcons();
     window.addEventListener('scroll', () => { header.classList.toggle('header-scrolled', window.scrollY > 10); });
 
     // --- EMI CALCULATOR LOGIC ---
-    // DOM Elements
     const amountInput = document.getElementById('amount-input');
     const rateInput = document.getElementById('rate-input');
     const tenureInput = document.getElementById('tenure-input');
@@ -200,8 +339,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const tenureMonthsBtn = document.getElementById('tenure-months-btn');
     const calculateBtn = document.getElementById('calculate-btn');
     const resetBtn = document.getElementById('reset-btn');
-
-    // Result Elements
     const resultsOverview = document.getElementById('results-overview');
     const amortizationSection = document.getElementById('amortization-section');
     const emiResult = document.getElementById('emi-result');
@@ -210,11 +347,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const amortizationBody = document.getElementById('amortization-body');
     const chartCanvas = document.getElementById('loan-pie-chart');
     
-    // State
     let tenureType = 'years';
     let myChart;
 
-    // --- Functions ---
     const formatCurrency = (value) => {
         return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
     };
@@ -232,7 +367,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const monthlyRate = annualRate / 12 / 100;
         const numberOfMonths = tenureType === 'years' ? tenureValue * 12 : tenureValue;
 
-        if (monthlyRate === 0) { // Handle zero interest case
+        let emi;
+        if (monthlyRate === 0) {
             emi = principal / numberOfMonths;
         } else {
             const power = Math.pow(1 + monthlyRate, numberOfMonths);
@@ -242,7 +378,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const totalPayment = emi * numberOfMonths;
         const totalInterest = totalPayment - principal;
 
-        // Display results
         emiResult.textContent = formatCurrency(emi);
         totalInterestResult.textContent = formatCurrency(totalInterest);
         totalPaymentResult.textContent = formatCurrency(totalPayment);
@@ -308,7 +443,7 @@ document.addEventListener('DOMContentLoaded', function() {
         for (let year = 1; year <= totalYears; year++) {
             yearlyPrincipalPaid = 0;
             yearlyInterestPaid = 0;
-            let monthsInYear = (year === totalYears) ? totalMonths - (year - 1) * 12 : 12;
+            let monthsInYear = (year === totalYears && totalMonths % 12 !== 0) ? totalMonths % 12 : 12;
 
             for (let month = 1; month <= monthsInYear; month++) {
                 const interestForMonth = balance * monthlyRate;
@@ -318,7 +453,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 yearlyPrincipalPaid += principalForMonth;
             }
 
-            // To handle floating point inaccuracies, set balance to 0 on the last payment
             if (year === totalYears) balance = 0;
 
             const row = document.createElement('tr');
@@ -345,7 +479,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 
-    // --- Event Listeners ---
     calculateBtn.addEventListener('click', calculateAndDisplay);
     resetBtn.addEventListener('click', resetCalculator);
 

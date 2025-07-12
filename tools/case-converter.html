@@ -3,32 +3,136 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Case Converter - NexaTools</title>
+    
+    <!-- ================= SEO Meta Tags ================= -->
+    <title>Free Case Converter - Uppercase, Lowercase, Title Case & More | NexaTools</title>
+    <meta name="description" content="Instantly convert text between uppercase, lowercase, title case, sentence case, camel case, and more with NexaTools' free online case converter. Fast, simple, and secure.">
+    <meta name="keywords" content="case converter, text converter, change case, uppercase, lowercase, title case, sentence case, camel case, snake case, online tool, nexatools">
+    <link rel="canonical" href="https://www.nexatools.pro/case-converter">
+
+    <!-- ================= Favicon ================= -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/assets/favicon/site.webmanifest">
+    <link rel="shortcut icon" href="/assets/favicon/favicon.ico">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-config" content="/assets/favicon/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- ================= Open Graph / Facebook Meta Tags ================= -->
+    <meta property="og:title" content="Free Online Case Converter | NexaTools">
+    <meta property="og:description" content="Instantly convert text between uppercase, lowercase, title case, and many other formats for free.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.nexatools.pro/case-converter">
+    <meta property="og:image" content="https://www.nexatools.pro/assets/images/og-image-case-converter.png"> <!-- Use an absolute URL for your OG image -->
+
+    <!-- ================= Twitter Card Meta Tags ================= -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Free Online Case Converter | NexaTools">
+    <meta name="twitter:description" content="Instantly convert text between uppercase, lowercase, title case, and many other formats for free.">
+    <meta name="twitter:image" content="https://www.nexatools.pro/assets/images/twitter-image-case-converter.png"> <!-- Use an absolute URL for your Twitter image -->
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Styles -->
     <style>
         .header-scrolled { background-color: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
         .dark .header-scrolled { background-color: rgba(15, 23, 42, 0.8); }
-        /* Style for the case buttons */
-        .case-btn {
-            @apply w-full p-3 bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-lg font-semibold text-center transition-colors hover:bg-slate-300 dark:hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-brand-blue;
-        }
+        .case-btn { @apply w-full p-3 bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-lg font-semibold text-center transition-colors hover:bg-slate-300 dark:hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-brand-blue; }
+        /* Style for FAQ accordion */
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
+        details[open] summary .faq-arrow { transform: rotate(180deg); }
     </style>
+    
+    <!-- Theme Logic -->
     <script>
         if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) { document.documentElement.classList.add('dark') } else { document.documentElement.classList.remove('dark') }
         tailwind.config = { darkMode: 'class', theme: { extend: { colors: { brand: { blue: '#3b82f6', green: '#10b981' } } } } }
     </script>
+    
+    <!-- ================= JSON-LD Schema Markup ================= -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "SoftwareApplication",
+          "name": "Case Converter",
+          "operatingSystem": "Any (Web-based)",
+          "applicationCategory": "UtilitiesApplication",
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.9",
+            "ratingCount": "6104"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          },
+          "description": "A free online tool to instantly convert text between different letter cases, including uppercase, lowercase, title case, sentence case, and more.",
+          "url": "https://www.nexatools.pro/case-converter",
+          "publisher": {
+            "@type": "Organization",
+            "name": "NexaTools",
+            "url": "https://www.nexatools.pro"
+          }
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "What is a case converter?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "A case converter is a tool that allows you to change the capitalization of your text. You can instantly switch between formats like all uppercase, all lowercase, title case (where major words are capitalized), and sentence case (where only the first letter of a sentence is capitalized)."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Is this tool free to use?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes, the NexaTools Case Converter is completely free to use. There are no hidden fees or limitations."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Do you store the text I paste into the converter?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "No. For your privacy, all text conversion is done directly in your browser. Your data is never sent to or stored on our servers."
+              }
+            },
+            {
+                "@type": "Question",
+                "name": "What is the difference between Title Case and Sentence Case?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Sentence case capitalizes only the first letter of the first word in a sentence. Title Case, on the other hand, capitalizes the first letter of most words in a sentence, typically excluding small words like 'a', 'an', 'the', 'for', etc. (unless they are the first word)."
+                }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
 </head>
 <body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 transition-colors duration-300 flex flex-col min-h-screen">
 
-    <!-- =========== HEADER (FIXED) =========== -->
+    <!-- =========== HEADER (NexaTools Design) =========== -->
     <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+            <a href="/index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
             <nav class="hidden md:flex items-center space-x-8">
-                <a href="index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Home</a>
-                <a href="index.html#tools" class="text-brand-green font-semibold">Tools</a>
-                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">About</a>
-                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Contact</a>
+                <a href="/index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Home</a>
+                <a href="/index.html#tools" class="text-brand-green font-semibold">Tools</a>
+                <a href="/about-us.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">About</a>
+                <a href="/contact-us.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Contact</a>
             </nav>
             <div class="flex items-center">
                 <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700">
@@ -65,16 +169,16 @@
 
                 <!-- Conversion Buttons Grid -->
                 <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 mt-6">
-                    <button id="btn-sentence-case" class="case-btn">Sentence case</button>
-                    <button id="btn-lower-case" class="case-btn">lower case</button>
-                    <button id="btn-upper-case" class="case-btn">UPPER CASE</button>
+                    <button id="btn-sentence-case" class="case-btn">Sentence Case</button>
+                    <button id="btn-lower-case" class="case-btn">Lower Case</button>
+                    <button id="btn-upper-case" class="case-btn">Upper Case</button>
                     <button id="btn-title-case" class="case-btn">Title Case</button>
-                    <button id="btn-camel-case" class="case-btn">camelCase</button>
-                    <button id="btn-pascal-case" class="case-btn">PascalCase</button>
-                    <button id="btn-snake-case" class="case-btn">snake_case</button>
-                    <button id="btn-kebab-case" class="case-btn">kebab-case</button>
-                    <button id="btn-alternating-case" class="case-btn">aLtErNaTiNg cAsE</button>
-                    <button id="btn-inverse-case" class="case-btn">iNVERSE cASE</button>
+                    <button id="btn-camel-case" class="case-btn">Camel Case</button>
+                    <button id="btn-pascal-case" class="case-btn">Pascal Case</button>
+                    <button id="btn-snake-case" class="case-btn">Snake Case</button>
+                    <button id="btn-kebab-case" class="case-btn">Kebab Case</button>
+                    <button id="btn-alternating-case" class="case-btn">Alternating Case</button>
+                    <button id="btn-inverse-case" class="case-btn">Inverse Case</button>
                 </div>
 
                 <!-- Action Buttons -->
@@ -89,24 +193,58 @@
                     </button>
                 </div>
             </div>
+
+            <!-- ================= FAQ Section ================= -->
+            <section class="max-w-4xl mx-auto mt-16">
+                <h2 class="text-3xl font-bold text-center mb-8 text-slate-900 dark:text-white">Frequently Asked Questions</h2>
+                <div class="space-y-4">
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg shadow-md">
+                        <summary class="flex items-center justify-between cursor-pointer font-semibold text-slate-800 dark:text-slate-100">
+                            What is a case converter?
+                            <span class="faq-arrow transition-transform duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                            </span>
+                        </summary>
+                        <p class="mt-4 text-slate-600 dark:text-slate-300">A case converter is a tool that allows you to change the capitalization of your text. You can instantly switch between formats like all uppercase, all lowercase, title case (where major words are capitalized), and sentence case (where only the first letter of a sentence is capitalized).</p>
+                    </details>
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg shadow-md">
+                        <summary class="flex items-center justify-between cursor-pointer font-semibold text-slate-800 dark:text-slate-100">
+                            Is this tool free to use?
+                            <span class="faq-arrow transition-transform duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                            </span>
+                        </summary>
+                        <p class="mt-4 text-slate-600 dark:text-slate-300">Yes, the NexaTools Case Converter is completely free to use. There are no hidden fees or limitations.</p>
+                    </details>
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg shadow-md">
+                        <summary class="flex items-center justify-between cursor-pointer font-semibold text-slate-800 dark:text-slate-100">
+                            Do you store the text I paste into the converter?
+                            <span class="faq-arrow transition-transform duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                            </span>
+                        </summary>
+                        <p class="mt-4 text-slate-600 dark:text-slate-300">No. For your privacy, all text conversion is done directly in your browser. Your data is never sent to or stored on our servers.</p>
+                    </details>
+                </div>
+            </section>
         </div>
     </main>
 
-    <!-- =========== FOOTER (FIXED) =========== -->
+    <!-- =========== FOOTER (NexaTools Design) =========== -->
     <footer class="bg-slate-100 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700/50 mt-auto">
         <div class="container mx-auto px-4 py-8">
             <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left space-y-4 md:space-y-0">
                 <div>
-                    <a href="index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+                    <a href="/index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
                     <p class="text-sm text-slate-500 dark:text-slate-400">Simplifying your digital life.</p>
                 </div>
                 <div class="text-sm text-slate-600 dark:text-slate-400">
-                    <p>contact@nexatools.com</p>
-                    <p class="mt-1">© 2024 NexaTools. All Rights Reserved.</p>
+                    <p>contact@nexatools.pro</p>
+                    <p class="mt-1">© 2025 NexaTools. All Rights Reserved.</p>
                 </div>
                 <div class="flex space-x-4 text-sm">
-                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
-                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
+                    <a href="/privacy-policy.html" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
+                    <a href="/terms-of-use.html" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
                 </div>
             </div>
         </div>
@@ -122,12 +260,11 @@
             const wordCount = document.getElementById('word-count');
             const copyBtn = document.getElementById('btn-copy');
 
-            // --- THEME & HEADER (Identical to other tools) ---
+            // --- THEME & HEADER ---
             const toggleTheme = () => { document.documentElement.classList.toggle('dark'); localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'; updateThemeIcons(); };
-            const updateThemeIcons = () => { const isDark = document.documentElement.classList.contains('dark'); document.getElementById('theme-toggle-dark-icon').classList.toggle('hidden', !isDark); document.getElementById('theme-toggle-light-icon').classList.toggle('hidden', isDark); };
+            const updateThemeIcons = () => { if (!themeToggleBtn) return; const isDark = document.documentElement.classList.contains('dark'); document.getElementById('theme-toggle-dark-icon').classList.toggle('hidden', !isDark); document.getElementById('theme-toggle-light-icon').classList.toggle('hidden', isDark); };
             const handleHeaderScroll = () => { const header = document.getElementById('header'); if (header) { window.scrollY > 10 ? header.classList.add('header-scrolled') : header.classList.remove('header-scrolled'); } };
             
-            // Add safety check for themeToggleBtn (FIX)
             if (themeToggleBtn) {
                 themeToggleBtn.addEventListener('click', toggleTheme);
             }

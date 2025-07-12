@@ -3,11 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Cropper - NexaTools</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Free Online Image Cropper - Crop JPG, PNG & WEBP - NexaTools</title>
+    
+    <!-- ========= High SEO Meta Tags ========= -->
+    <meta name="description" content="Crop your images to the perfect size with our free online tool. Easily crop JPG, PNG, and WEBP files with custom aspect ratios. Secure and client-side.">
+    <meta name="keywords" content="image cropper, crop image, online image cropper, photo cropper, crop jpg, crop png, free cropper tool, aspect ratio, nexatools">
+    <link rel="canonical" href="https://www.nexatools.pro/image-cropper.html">
+    <meta name="robots" content="index, follow">
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.nexatools.pro/image-cropper.html">
+    <meta property="og:title" content="Free Online Image Cropper - Crop JPG, PNG & WEBP - NexaTools">
+    <meta property="og:description" content="Crop your images to the perfect size with our free online tool. Easily crop JPG, PNG, and WEBP files with custom aspect ratios. Secure and client-side.">
+    <meta property="og:image" content="https://www.nexatools.pro/assets/images/og-image-cropper.png"> <!-- Create and host a relevant image for social sharing -->
+    <meta property="og:site_name" content="NexaTools">
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.nexatools.pro/image-cropper.html">
+    <meta property="twitter:title" content="Free Online Image Cropper - Crop JPG, PNG & WEBP - NexaTools">
+    <meta property="twitter:description" content="Crop your images to the perfect size with our free online tool. Easily crop JPG, PNG, and WEBP files with custom aspect ratios. Secure and client-side.">
+    <meta property="twitter:image" content="https://www.nexatools.pro/assets/images/og-image-cropper.png"> <!-- Use the same image as OG -->
+    
+    <!-- ========= Favicon ========= -->
+    <link rel="icon" href="/assets/images/favicon.ico" sizes="any">
+    <link rel="icon" href="/assets/images/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
+    <link rel="manifest" href="/assets/site.webmanifest">
+
     <!-- Cropper.js for the cropping functionality -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+
+    <!-- ========= JSON-LD Schema Markup ========= -->
+    <script type="application/ld+json">
+    [
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Image Cropper",
+        "description": "A free, client-side online tool to crop images. Supports various aspect ratios, transformations like rotate and flip, and multiple output formats including JPG, PNG, and WEBP.",
+        "url": "https://www.nexatools.pro/image-cropper.html",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "Web",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "creator": {
+            "@type": "Organization",
+            "url": "https://www.nexatools.pro",
+            "name": "NexaTools",
+            "logo": "https://www.nexatools.pro/assets/images/logo.png"
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How does the image cropper work?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Our Image Cropper uses the popular Cropper.js library to perform all operations directly in your web browser. When you select an image, it's loaded into the tool but never leaves your computer. You can then adjust the crop box and download the result. Your files are never sent to a server."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is it safe to use my personal images here?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes, it is completely safe. Since the entire cropping process happens on your computer (client-side), your images are never uploaded to our servers. Your privacy is fully protected."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What are aspect ratios like 16:9 or 1:1?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "An aspect ratio describes the proportional relationship between an image's width and its height. For example, a 1:1 ratio is a perfect square, while 16:9 is a standard widescreen format used for videos and presentations. Using these presets helps you crop your image to fit specific requirements perfectly."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do I download the cropped image?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "After you are happy with the crop area, select your desired output format (JPG, PNG, or WEBP) and quality. Then, simply click the 'Crop & Download Image' button. The cropped image will be generated and downloaded directly to your computer."
+            }
+          }
+        ]
+      }
+    ]
+    </script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .header-scrolled {
             background-color: rgba(255, 255, 255, 0.8);
@@ -24,7 +115,6 @@
         .dark .drag-over {
             background-color: rgb(59 130 246 / 0.1);
         }
-        /* Cropper.js overrides for dark mode */
         .cropper-view-box, .cropper-face {
             outline-color: #3b82f6; /* brand-blue */
         }
@@ -62,12 +152,12 @@
     <!-- =========== HEADER =========== -->
     <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+            <a href="/index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
             <nav class="hidden md:flex items-center space-x-8">
-                <a href="index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Home</a>
-                <a href="index.html#tools" class="text-brand-blue font-semibold">Tools</a>
-                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">About</a>
-                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Contact</a>
+                <a href="/index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Home</a>
+                <a href="/index.html#tools" class="text-brand-blue font-semibold">Tools</a>
+                <a href="/about-us.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">About</a>
+                <a href="/contact-us.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Contact</a>
             </nav>
             <div class="flex items-center">
                 <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
@@ -128,8 +218,8 @@
                                 <div id="aspect-ratio-btns" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 gap-2 text-sm">
                                     <button data-ratio="NaN" class="bg-slate-200 dark:bg-slate-700 py-2 rounded-md hover:bg-brand-blue hover:text-white">Free</button>
                                     <button data-ratio="1" class="bg-slate-200 dark:bg-slate-700 py-2 rounded-md hover:bg-brand-blue hover:text-white">1:1</button>
-                                    <button data-ratio="1.333" class="bg-slate-200 dark:bg-slate-700 py-2 rounded-md hover:bg-brand-blue hover:text-white">4:3</button>
-                                    <button data-ratio="1.777" class="bg-slate-200 dark:bg-slate-700 py-2 rounded-md hover:bg-brand-blue hover:text-white">16:9</button>
+                                    <button data-ratio="1.33333" class="bg-slate-200 dark:bg-slate-700 py-2 rounded-md hover:bg-brand-blue hover:text-white">4:3</button>
+                                    <button data-ratio="1.77777" class="bg-slate-200 dark:bg-slate-700 py-2 rounded-md hover:bg-brand-blue hover:text-white">16:9</button>
                                 </div>
                              </div>
                              <div>
@@ -172,21 +262,72 @@
         </div>
     </main>
 
+    <!-- =========== NEW: FAQ Section =========== -->
+    <section class="py-16 bg-slate-100 dark:bg-slate-900">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto">
+                <h2 class="text-3xl font-bold text-center mb-8 text-slate-900 dark:text-white">Frequently Asked Questions</h2>
+                <div class="space-y-4">
+                    <!-- FAQ Item 1 -->
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg cursor-pointer shadow-sm">
+                        <summary class="flex justify-between items-center font-semibold text-slate-800 dark:text-slate-100 list-none">
+                            How does the image cropper work?
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </summary>
+                        <div class="mt-4 text-slate-600 dark:text-slate-400">
+                            <p>Our Image Cropper uses the popular Cropper.js library to perform all operations directly in your web browser. When you select an image, it's loaded into the tool but never leaves your computer. You can then adjust the crop box and download the result. Your files are never sent to a server.</p>
+                        </div>
+                    </details>
+                    <!-- FAQ Item 2 -->
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg cursor-pointer shadow-sm">
+                        <summary class="flex justify-between items-center font-semibold text-slate-800 dark:text-slate-100 list-none">
+                            Is it safe to use my personal images here?
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </summary>
+                        <div class="mt-4 text-slate-600 dark:text-slate-400">
+                           <p>Yes, it is completely safe. Since the entire cropping process happens on your computer (client-side), your images are never uploaded to our servers. Your privacy is fully protected.</p>
+                        </div>
+                    </details>
+                    <!-- FAQ Item 3 -->
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg cursor-pointer shadow-sm">
+                        <summary class="flex justify-between items-center font-semibold text-slate-800 dark:text-slate-100 list-none">
+                            What are aspect ratios like 16:9 or 1:1?
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </summary>
+                        <div class="mt-4 text-slate-600 dark:text-slate-400">
+                           <p>An aspect ratio describes the proportional relationship between an image's width and its height. For example, a 1:1 ratio is a perfect square, while 16:9 is a standard widescreen format used for videos and presentations. Using these presets helps you crop your image to fit specific requirements perfectly.</p>
+                        </div>
+                    </details>
+                    <!-- FAQ Item 4 -->
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg cursor-pointer shadow-sm">
+                        <summary class="flex justify-between items-center font-semibold text-slate-800 dark:text-slate-100 list-none">
+                            How do I download the cropped image?
+                           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </summary>
+                        <div class="mt-4 text-slate-600 dark:text-slate-400">
+                           <p>After you are happy with the crop area, select your desired output format (JPG, PNG, or WEBP) and quality. Then, simply click the 'Crop & Download Image' button. The cropped image will be generated and downloaded directly to your computer.</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- =========== FOOTER =========== -->
     <footer class="bg-slate-100 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700/50 mt-auto">
         <div class="container mx-auto px-4 py-8">
             <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left space-y-4 md:space-y-0">
                 <div>
-                    <a href="index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+                    <a href="/index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
                     <p class="text-sm text-slate-500 dark:text-slate-400">Simplifying your digital life.</p>
                 </div>
                 <div class="text-sm text-slate-600 dark:text-slate-400">
-                    <p>contact@nexatools.com</p>
-                    <p class="mt-1">© 2024 NexaTools. All Rights Reserved.</p>
+                    <p>contact@nexatools.pro</p>
+                    <p class="mt-1">© 2025 NexaTools. All Rights Reserved.</p>
                 </div>
                 <div class="flex space-x-4 text-sm">
-                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
-                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
+                    <a href="/privacy-policy.html" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
+                    <a href="/terms-of-use.html" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
                 </div>
             </div>
         </div>
@@ -196,7 +337,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     
     // --- THEME & HEADER LOGIC ---
-    // (Identical to previous pages for consistency)
     const header = document.getElementById('header');
     const themeToggleBtn = document.getElementById('theme-toggle');
     const darkIcon = document.getElementById('theme-toggle-dark-icon');
@@ -307,17 +447,32 @@ document.addEventListener('DOMContentLoaded', function() {
         
         const croppedCanvas = cropper.getCroppedCanvas();
         
-        croppedCanvas.toBlob((blob) => {
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
+        // Fill background for JPG if the original was transparent PNG
+        if (format === 'jpg') {
+            const canvas = document.createElement('canvas');
+            canvas.width = croppedCanvas.width;
+            canvas.height = croppedCanvas.height;
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(croppedCanvas, 0, 0);
             
-            const nameWithoutExt = originalFileName.substring(0, originalFileName.lastIndexOf('.'));
-            link.download = `${nameWithoutExt}-cropped.${format}`;
-            
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }, mimeType, quality);
+            canvas.toBlob((blob) => downloadBlob(blob, format), mimeType, quality);
+        } else {
+            croppedCanvas.toBlob((blob) => downloadBlob(blob, format), mimeType, quality);
+        }
+    }
+
+    function downloadBlob(blob, format) {
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        
+        const nameWithoutExt = originalFileName.substring(0, originalFileName.lastIndexOf('.'));
+        link.download = `${nameWithoutExt}-cropped.${format}`;
+        
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     }
 
     function resetTool() {

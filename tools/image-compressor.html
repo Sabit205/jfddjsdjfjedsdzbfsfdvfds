@@ -3,12 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Compressor - NexaTools</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Free Image Compressor - Optimize JPG, PNG & WEBP Files - NexaTools</title>
+    
+    <!-- ========= High SEO Meta Tags ========= -->
+    <meta name="description" content="Reduce the file size of your JPG, PNG, and WEBP images online for free. Our client-side image compressor helps you optimize images without losing significant quality.">
+    <meta name="keywords" content="image compressor, compress image, reduce image size, optimize jpg, optimize png, image optimizer, batch image compression, nexatools">
+    <link rel="canonical" href="https://www.nexatools.pro/image-compressor.html">
+    <meta name="robots" content="index, follow">
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.nexatools.pro/image-compressor.html">
+    <meta property="og:title" content="Free Image Compressor - Optimize JPG, PNG & WEBP Files - NexaTools">
+    <meta property="og:description" content="Reduce the file size of your JPG, PNG, and WEBP images online for free. Our client-side image compressor helps you optimize images without losing significant quality.">
+    <meta property="og:image" content="https://www.nexatools.pro/assets/images/og-image-compressor.png"> <!-- Create and host a relevant image for social sharing -->
+    <meta property="og:site_name" content="NexaTools">
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.nexatools.pro/image-compressor.html">
+    <meta property="twitter:title" content="Free Image Compressor - Optimize JPG, PNG & WEBP Files - NexaTools">
+    <meta property="twitter:description" content="Reduce the file size of your JPG, PNG, and WEBP images online for free. Our client-side image compressor helps you optimize images without losing significant quality.">
+    <meta property="twitter:image" content="https://www.nexatools.pro/assets/images/og-image-compressor.png"> <!-- Use the same image as OG -->
+
+    <!-- ========= Favicon ========= -->
+    <link rel="icon" href="/assets/images/favicon.ico" sizes="any">
+    <link rel="icon" href="/assets/images/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
+    <link rel="manifest" href="/assets/site.webmanifest">
+
     <!-- JSZip for creating zip files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+    <!-- ========= JSON-LD Schema Markup ========= -->
+    <script type="application/ld+json">
+    [
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Image Compressor",
+        "description": "A free, client-side online tool to compress multiple image files (JPG, PNG, WEBP). Features include batch processing, adjustable quality control, and a 'Download All' as a .zip file option.",
+        "url": "https://www.nexatools.pro/image-compressor.html",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "Web",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "creator": {
+            "@type": "Organization",
+            "url": "https://www.nexatools.pro",
+            "name": "NexaTools",
+            "logo": "https://www.nexatools.pro/assets/images/logo.png"
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How does this image compressor work?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "This tool uses your browser's built-in capabilities to re-process your images at a lower quality level that you control with the slider. For JPG and WEBP files, it applies lossy compression. For PNG files, it effectively converts them to a compressed JPG to reduce size, as PNG itself is lossless. All of this happens on your computer, not on our servers."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Are my uploaded images secure?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes, absolutely. Our Image Compressor tool processes all your files directly in your web browser. Your images are never uploaded or sent to any server, ensuring your data remains 100% private and secure on your own device."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is a good compression level to choose?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A quality level between 70% and 85% is generally a good starting point. It offers a significant reduction in file size with very little noticeable loss in quality. For web use, this is often the ideal balance. You can experiment with lower values for even smaller files if a slight quality reduction is acceptable."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Will compressing a PNG make it smaller?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Although PNG is a lossless format, our tool compresses PNG files by converting them into the highly efficient JPG format. This can result in a dramatic reduction in file size, especially for photographic images. However, this process will remove any transparency the original PNG file had."
+            }
+          }
+        ]
+      }
+    ]
+    </script>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Re-using styles for consistency */
         .header-scrolled {
             background-color: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(10px);
@@ -56,12 +146,12 @@
     <!-- =========== HEADER =========== -->
     <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+            <a href="/index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
             <nav class="hidden md:flex items-center space-x-8">
-                <a href="index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Home</a>
-                <a href="index.html#tools" class="text-brand-blue font-semibold">Tools</a>
-                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">About</a>
-                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Contact</a>
+                <a href="/index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Home</a>
+                <a href="/index.html#tools" class="text-brand-blue font-semibold">Tools</a>
+                <a href="/about-us.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">About</a>
+                <a href="/contact-us.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Contact</a>
             </nav>
             <div class="flex items-center">
                 <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
@@ -130,21 +220,72 @@
         </div>
     </main>
 
+    <!-- =========== NEW: FAQ Section =========== -->
+    <section class="py-16 bg-slate-100 dark:bg-slate-900">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto">
+                <h2 class="text-3xl font-bold text-center mb-8 text-slate-900 dark:text-white">Frequently Asked Questions</h2>
+                <div class="space-y-4">
+                    <!-- FAQ Item 1 -->
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg cursor-pointer shadow-sm">
+                        <summary class="flex justify-between items-center font-semibold text-slate-800 dark:text-slate-100 list-none">
+                            How does this image compressor work?
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </summary>
+                        <div class="mt-4 text-slate-600 dark:text-slate-400">
+                            <p>This tool uses your browser's built-in capabilities to re-process your images at a lower quality level that you control with the slider. For JPG and WEBP files, it applies lossy compression. For PNG files, it effectively converts them to a compressed JPG to reduce size, as PNG itself is lossless. All of this happens on your computer, not on our servers.</p>
+                        </div>
+                    </details>
+                    <!-- FAQ Item 2 -->
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg cursor-pointer shadow-sm">
+                        <summary class="flex justify-between items-center font-semibold text-slate-800 dark:text-slate-100 list-none">
+                            Are my uploaded images secure?
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </summary>
+                        <div class="mt-4 text-slate-600 dark:text-slate-400">
+                           <p>Yes, absolutely. Our Image Compressor tool processes all your files directly in your web browser. Your images are never uploaded or sent to any server, ensuring your data remains 100% private and secure on your own device.</p>
+                        </div>
+                    </details>
+                    <!-- FAQ Item 3 -->
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg cursor-pointer shadow-sm">
+                        <summary class="flex justify-between items-center font-semibold text-slate-800 dark:text-slate-100 list-none">
+                            What is a good compression level to choose?
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </summary>
+                        <div class="mt-4 text-slate-600 dark:text-slate-400">
+                           <p>A quality level between 70% and 85% is generally a good starting point. It offers a significant reduction in file size with very little noticeable loss in quality. For web use, this is often the ideal balance. You can experiment with lower values for even smaller files if a slight quality reduction is acceptable.</p>
+                        </div>
+                    </details>
+                    <!-- FAQ Item 4 -->
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg cursor-pointer shadow-sm">
+                        <summary class="flex justify-between items-center font-semibold text-slate-800 dark:text-slate-100 list-none">
+                           Will compressing a PNG make it smaller?
+                           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </summary>
+                        <div class="mt-4 text-slate-600 dark:text-slate-400">
+                            <p>Yes. Although PNG is a lossless format, our tool compresses PNG files by converting them into the highly efficient JPG format. This can result in a dramatic reduction in file size, especially for photographic images. However, this process will remove any transparency the original PNG file had.</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- =========== FOOTER =========== -->
     <footer class="bg-slate-100 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700/50 mt-auto">
         <div class="container mx-auto px-4 py-8">
             <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left space-y-4 md:space-y-0">
                 <div>
-                    <a href="index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+                    <a href="/index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
                     <p class="text-sm text-slate-500 dark:text-slate-400">Simplifying your digital life.</p>
                 </div>
                 <div class="text-sm text-slate-600 dark:text-slate-400">
-                    <p>contact@nexatools.com</p>
-                    <p class="mt-1">© 2024 NexaTools. All Rights Reserved.</p>
+                    <p>contact@nexatools.pro</p>
+                    <p class="mt-1">© 2025 NexaTools. All Rights Reserved.</p>
                 </div>
                 <div class="flex space-x-4 text-sm">
-                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
-                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
+                    <a href="/privacy-policy.html" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
+                    <a href="/terms-of-use.html" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
                 </div>
             </div>
         </div>
@@ -252,7 +393,6 @@ document.addEventListener('DOMContentLoaded', function() {
         filesToProcess.forEach((file, index) => {
             const fileItem = document.createElement('div');
             fileItem.className = 'file-list-item bg-slate-50 dark:bg-slate-700/60 p-3 rounded-lg flex items-center justify-between gap-2';
-            fileItem.dataset.index = index;
             
             const thumbnailUrl = URL.createObjectURL(file);
 
@@ -272,12 +412,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             fileItem.querySelector('.remove-btn').addEventListener('click', (e) => {
                 e.stopPropagation();
-                // Find the correct index to remove, as the data-index might be stale
-                const itemToRemove = filesToProcess.find(f => f.name === file.name && f.size === file.size);
-                const itemIndex = filesToProcess.indexOf(itemToRemove);
-                if (itemIndex > -1) {
-                    filesToProcess.splice(itemIndex, 1);
-                }
+                filesToProcess.splice(index, 1);
                 updateFileList();
                 if (filesToProcess.length === 0) {
                     processingSection.classList.add('hidden');
@@ -293,7 +428,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     function resetCompressButton() {
         compressBtn.disabled = filesToProcess.length === 0;
-        compressBtn.innerHTML = `Compress`;
+        compressBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" transform="scale(0.8) translate(2.5, 2.5)"/></svg> Compress`;
     }
 
     async function processCompression() {
@@ -302,8 +437,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const quality = qualitySlider.value / 100;
 
-        const compressionPromises = filesToProcess.map((file, index) => {
-            const fileItem = fileListElem.querySelector(`[data-index='${index}']`);
+        const compressionPromises = Array.from(fileListElem.children).map((fileItem, index) => {
+            const file = filesToProcess[index];
             const statusElem = fileItem.querySelector('.file-status');
             statusElem.innerHTML = `<span class="text-xs text-slate-500">Processing...</span>`;
             
@@ -318,7 +453,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         const ctx = canvas.getContext('2d');
                         ctx.drawImage(img, 0, 0);
 
-                        // Use image/jpeg for compression. For PNGs, this effectively converts them.
+                        // Use image/jpeg for compression. For PNGs, this effectively converts them and removes transparency.
                         const mimeType = 'image/jpeg';
 
                         canvas.toBlob((blob) => {
@@ -333,11 +468,13 @@ document.addEventListener('DOMContentLoaded', function() {
                             
                             const downloadUrl = URL.createObjectURL(blob);
                             statusElem.innerHTML = `
-                                <div>
-                                    <p class="font-semibold text-green-600 dark:text-green-400">${formatFileSize(blob.size)}</p>
-                                    <p class="text-xs text-slate-500 dark:text-slate-400">(-${reduction.toFixed(1)}%)</p>
+                                <div class="flex items-center gap-3">
+                                    <div>
+                                        <p class="font-semibold text-green-600 dark:text-green-400">${formatFileSize(blob.size)}</p>
+                                        <p class="text-xs text-slate-500 dark:text-slate-400">(-${reduction.toFixed(1)}%)</p>
+                                    </div>
+                                    <a href="${downloadUrl}" download="${newFileName}" class="ml-3 bg-blue-100 dark:bg-blue-900/50 text-brand-blue text-xs font-bold py-1 px-3 rounded-full hover:bg-blue-200 dark:hover:bg-blue-800/80">Download</a>
                                 </div>
-                                <a href="${downloadUrl}" download="${newFileName}" class="ml-3 bg-blue-100 dark:bg-blue-900/50 text-brand-blue text-xs font-bold py-1 px-3 rounded-full hover:bg-blue-200 dark:hover:bg-blue-800/80">Download</a>
                             `;
                             resolve({ blob, fileName: newFileName });
                         }, mimeType, quality);

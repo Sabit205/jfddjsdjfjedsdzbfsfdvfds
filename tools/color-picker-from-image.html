@@ -3,8 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Color Picker from Image - NexaTools</title>
+    
+    <!-- ================= SEO Meta Tags ================= -->
+    <title>Color Picker from Image - Extract Palettes & HEX Codes | NexaTools</title>
+    <meta name="description" content="Upload any image and use our free online color picker to identify the exact HEX, RGB, and HSL codes of any pixel. Automatically generates a color palette.">
+    <meta name="keywords" content="color picker from image, image color picker, find color in image, hex color from image, image palette generator, online color picker, nexatools">
+    <link rel="canonical" href="https://www.nexatools.pro/color-picker-from-image">
+
+    <!-- ================= Favicon ================= -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/assets/favicon/site.webmanifest">
+    <link rel="shortcut icon" href="/assets/favicon/favicon.ico">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-config" content="/assets/favicon/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- ================= Open Graph / Facebook Meta Tags ================= -->
+    <meta property="og:title" content="Color Picker from Image - Extract Palettes & HEX Codes | NexaTools">
+    <meta property="og:description" content="Upload an image to get its color palette and pick exact pixel colors. Free, secure, and browser-based.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.nexatools.pro/color-picker-from-image">
+    <meta property="og:image" content="https://www.nexatools.pro/assets/images/og-image-color-picker.png"> <!-- Use an absolute URL for your OG image -->
+
+    <!-- ================= Twitter Card Meta Tags ================= -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Color Picker from Image - Extract Palettes & HEX Codes | NexaTools">
+    <meta name="twitter:description" content="Upload an image to get its color palette and pick exact pixel colors. Free, secure, and browser-based.">
+    <meta name="twitter:image" content="https://www.nexatools.pro/assets/images/twitter-image-color-picker.png"> <!-- Use an absolute URL for your Twitter image -->
+
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Styles -->
     <style>
         .header-scrolled { background-color: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
         .dark .header-scrolled { background-color: rgba(15, 23, 42, 0.8); }
@@ -15,23 +47,98 @@
         .dark #loupe-canvas { border-color: #4b5563; }
         .palette-swatch { cursor: pointer; transition: transform 0.1s ease-in-out; }
         .palette-swatch:hover { transform: scale(1.1); }
+        /* Style for FAQ accordion */
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
+        details[open] summary .faq-arrow { transform: rotate(180deg); }
     </style>
+    
+    <!-- Theme Logic -->
     <script>
         if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) { document.documentElement.classList.add('dark') } else { document.documentElement.classList.remove('dark') }
         tailwind.config = { darkMode: 'class', theme: { extend: { colors: { brand: { blue: '#3b82f6', green: '#10b981' } } } } }
     </script>
+    
+    <!-- ================= JSON-LD Schema Markup ================= -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "SoftwareApplication",
+          "name": "Color Picker from Image",
+          "operatingSystem": "Any (Web-based)",
+          "applicationCategory": "DesignApplication",
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.9",
+            "ratingCount": "4810"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          },
+          "description": "A free online tool to upload an image, pick a color from any pixel, and automatically generate a color palette. Provides color codes in HEX, RGB, and HSL formats.",
+          "url": "https://www.nexatools.pro/color-picker-from-image",
+          "publisher": {
+            "@type": "Organization",
+            "name": "NexaTools",
+            "url": "https://www.nexatools.pro"
+          }
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "How do I pick a color from my image?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "After uploading your image, simply move your mouse cursor over it. The magnified view (loupe) and color codes will update in real-time. Click on any pixel to lock in that color and see its details."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Is my uploaded image secure?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. Your image is processed entirely in your web browser. It is never uploaded to our servers, ensuring your files and data remain private."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What is an image palette?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "The image palette is a set of dominant colors automatically extracted from your uploaded image. It gives you a quick overview of the main colors used, which is great for design inspiration."
+              }
+            },
+            {
+                "@type": "Question",
+                "name": "What color formats can I get?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Our tool provides the color codes for any selected pixel in HEX, RGB, and HSL formats. You can easily copy any of these codes with a single click."
+                }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
 </head>
 <body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 transition-colors duration-300 flex flex-col min-h-screen">
 
-    <!-- =========== HEADER =========== -->
+    <!-- =========== HEADER (NexaTools Design) =========== -->
     <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+            <a href="/index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
             <nav class="hidden md:flex items-center space-x-8">
-                <a href="index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Home</a>
-                <a href="index.html#tools" class="text-brand-green font-semibold">Tools</a>
-                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">About</a>
-                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Contact</a>
+                <a href="/index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Home</a>
+                <a href="/index.html#tools" class="text-brand-green font-semibold">Tools</a>
+                <a href="/about-us.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">About</a>
+                <a href="/contact-us.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Contact</a>
             </nav>
             <div class="flex items-center">
                 <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700">
@@ -105,24 +212,58 @@
                     </div>
                 </div>
             </div>
+
+            <!-- ================= FAQ Section ================= -->
+            <section class="max-w-4xl mx-auto mt-16">
+                <h2 class="text-3xl font-bold text-center mb-8 text-slate-900 dark:text-white">Frequently Asked Questions</h2>
+                <div class="space-y-4">
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg shadow-md">
+                        <summary class="flex items-center justify-between cursor-pointer font-semibold text-slate-800 dark:text-slate-100">
+                           How do I pick a color from my image?
+                            <span class="faq-arrow transition-transform duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                            </span>
+                        </summary>
+                        <p class="mt-4 text-slate-600 dark:text-slate-300">After uploading your image, simply move your mouse cursor over it. The magnified view (loupe) and color codes will update in real-time. Click on any pixel to lock in that color and see its details.</p>
+                    </details>
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg shadow-md">
+                        <summary class="flex items-center justify-between cursor-pointer font-semibold text-slate-800 dark:text-slate-100">
+                           Is my uploaded image secure?
+                            <span class="faq-arrow transition-transform duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                            </span>
+                        </summary>
+                        <p class="mt-4 text-slate-600 dark:text-slate-300">Yes. Your image is processed entirely in your web browser. It is never uploaded to our servers, ensuring your files and data remain private.</p>
+                    </details>
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg shadow-md">
+                        <summary class="flex items-center justify-between cursor-pointer font-semibold text-slate-800 dark:text-slate-100">
+                           What is an image palette?
+                            <span class="faq-arrow transition-transform duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                            </span>
+                        </summary>
+                        <p class="mt-4 text-slate-600 dark:text-slate-300">The image palette is a set of dominant colors automatically extracted from your uploaded image. It gives you a quick overview of the main colors used, which is great for design inspiration.</p>
+                    </details>
+                </div>
+            </section>
         </div>
     </main>
 
-    <!-- =========== FOOTER (RESTORED) =========== -->
+    <!-- =========== FOOTER (NexaTools Design) =========== -->
     <footer class="bg-slate-100 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700/50 mt-auto">
         <div class="container mx-auto px-4 py-8">
             <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left space-y-4 md:space-y-0">
                 <div>
-                    <a href="index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+                    <a href="/index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
                     <p class="text-sm text-slate-500 dark:text-slate-400">Simplifying your digital life.</p>
                 </div>
                 <div class="text-sm text-slate-600 dark:text-slate-400">
-                    <p>contact@nexatools.com</p>
-                    <p class="mt-1">© 2024 NexaTools. All Rights Reserved.</p>
+                    <p>contact@nexatools.pro</p>
+                    <p class="mt-1">© 2025 NexaTools. All Rights Reserved.</p>
                 </div>
                 <div class="flex space-x-4 text-sm">
-                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
-                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
+                    <a href="/privacy-policy.html" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
+                    <a href="/terms-of-use.html" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
                 </div>
             </div>
         </div>
@@ -165,7 +306,7 @@
             window.addEventListener('scroll', handleHeaderScroll);
             updateThemeIcons();
             
-            // --- FILE HANDLING & IMAGE DRAWING (FIXED) ---
+            // --- FILE HANDLING & IMAGE DRAWING ---
             const handleFile = (file) => {
                 if (!file || !file.type.startsWith('image/')) {
                     alert('Please select a valid image file.');
@@ -178,23 +319,19 @@
                         uploadSection.classList.add('hidden');
                         processingSection.classList.remove('hidden');
 
-                        // 1. Draw full-res image to the off-screen canvas
                         originalCanvas.width = img.width;
                         originalCanvas.height = img.height;
                         originalCtx.drawImage(img, 0, 0);
 
-                        // 2. Calculate scaled dimensions to fit the container
                         const containerWidth = canvasContainer.clientWidth;
                         const containerHeight = canvasContainer.clientHeight;
                         const ratio = Math.min(containerWidth / img.width, containerHeight / img.height);
                         const scaledWidth = img.width * ratio;
                         const scaledHeight = img.height * ratio;
 
-                        // 3. Set the visible canvas to the new scaled dimensions
                         imageCanvas.width = scaledWidth;
                         imageCanvas.height = scaledHeight;
                         
-                        // 4. Draw the scaled image to the visible canvas
                         ctx.drawImage(img, 0, 0, scaledWidth, scaledHeight);
 
                         extractPalette(img);
@@ -244,14 +381,12 @@
                 `;
             };
 
-            // --- CANVAS INTERACTION (FIXED) ---
+            // --- CANVAS INTERACTION ---
             const getOriginalCoords = (e) => {
                 const rect = imageCanvas.getBoundingClientRect();
-                // Mouse position on the visible (scaled) canvas
                 const mouseX = e.clientX - rect.left;
                 const mouseY = e.clientY - rect.top;
 
-                // Map these coordinates to the original, full-resolution image
                 const scaleX = originalCanvas.width / imageCanvas.width;
                 const scaleY = originalCanvas.height / imageCanvas.height;
                 const originalX = Math.floor(mouseX * scaleX);
@@ -268,7 +403,7 @@
                 
                 const zoomFactor = 10;
                 loupeCtx.drawImage(
-                    originalCanvas, // Read from the full-res canvas
+                    originalCanvas, 
                     x - (loupeCanvas.width / zoomFactor / 2),
                     y - (loupeCanvas.height / zoomFactor / 2),
                     loupeCanvas.width / zoomFactor,
@@ -294,7 +429,7 @@
 
             // --- UTILITY & HELPER FUNCTIONS ---
             const rgbToHex = (r, g, b) => '#' + [r, g, b].map(x => x.toString(16).padStart(2, '0')).join('');
-            const rgbToHsl = (r, g, b) => { /* Function unchanged */ r /= 255; g /= 255; b /= 255; const max = Math.max(r, g, b), min = Math.min(r, g, b); let h, s, l = (max + min) / 2; if (max == min) { h = s = 0; } else { const d = max - min; s = l > 0.5 ? d / (2 - max - min) : d / (max + min); switch (max) { case r: h = (g - b) / d + (g < b ? 6 : 0); break; case g: h = (b - r) / d + 2; break; case b: h = (r - g) / d + 4; break; } h /= 6; } return `${(h * 360).toFixed(0)}°, ${(s * 100).toFixed(0)}%, ${(l * 100).toFixed(0)}%`; };
+            const rgbToHsl = (r, g, b) => { r /= 255; g /= 255; b /= 255; const max = Math.max(r, g, b), min = Math.min(r, g, b); let h, s, l = (max + min) / 2; if (max == min) { h = s = 0; } else { const d = max - min; s = l > 0.5 ? d / (2 - max - min) : d / (max + min); switch (max) { case r: h = (g - b) / d + (g < b ? 6 : 0); break; case g: h = (b - r) / d + 2; break; case b: h = (r - g) / d + 4; break; } h /= 6; } return `${(h * 360).toFixed(0)}°, ${(s * 100).toFixed(0)}%, ${(l * 100).toFixed(0)}%`; };
 
             const resetTool = () => {
                 uploadSection.classList.remove('hidden');

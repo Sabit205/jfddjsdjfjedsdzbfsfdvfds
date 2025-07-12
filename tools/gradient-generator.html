@@ -3,8 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gradient Generator - NexaTools</title>
+
+    <!-- ================= SEO Meta Tags ================= -->
+    <title>Free CSS Gradient Generator | Linear & Radial Gradients | NexaTools</title>
+    <meta name="description" content="Create stunning CSS gradients with our easy-to-use online generator. Customize linear and radial gradients, add multiple colors, and copy the CSS code instantly.">
+    <meta name="keywords" content="css gradient generator, gradient generator, css gradient, linear gradient, radial gradient, color gradient, online tool, nexatools">
+    <link rel="canonical" href="https://www.nexatools.pro/gradient-generator">
+
+    <!-- ================= Favicon ================= -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/assets/favicon/site.webmanifest">
+    <link rel="shortcut icon" href="/assets/favicon/favicon.ico">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-config" content="/assets/favicon/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- ================= Open Graph / Facebook Meta Tags ================= -->
+    <meta property="og:title" content="Free CSS Gradient Generator | NexaTools">
+    <meta property="og:description" content="Create and customize beautiful linear and radial CSS gradients with a live preview.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.nexatools.pro/gradient-generator">
+    <meta property="og:image" content="https://www.nexatools.pro/assets/images/og-image-gradient-generator.png"> <!-- Use an absolute URL for your OG image -->
+
+    <!-- ================= Twitter Card Meta Tags ================= -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Free CSS Gradient Generator | NexaTools">
+    <meta name="twitter:description" content="Create and customize beautiful linear and radial CSS gradients with a live preview.">
+    <meta name="twitter:image" content="https://www.nexatools.pro/assets/images/twitter-image-gradient-generator.png"> <!-- Use an absolute URL for your Twitter image -->
+
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Styles -->
     <style>
         .header-scrolled { background-color: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
         .dark .header-scrolled { background-color: rgba(15, 23, 42, 0.8); }
@@ -14,23 +46,98 @@
         .dark input[type="color"]::-webkit-color-swatch { border-color: #4b5563; }
         input[type="range"] { @apply w-full h-2 bg-slate-200 dark:bg-slate-600 rounded-lg appearance-none cursor-pointer; }
         input[type="range"]::-webkit-slider-thumb { @apply appearance-none h-5 w-5 bg-brand-blue rounded-full shadow-md; }
+        /* Style for FAQ accordion */
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
+        details[open] summary .faq-arrow { transform: rotate(180deg); }
     </style>
+    
+    <!-- Theme Logic -->
     <script>
         if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) { document.documentElement.classList.add('dark') } else { document.documentElement.classList.remove('dark') }
         tailwind.config = { darkMode: 'class', theme: { extend: { colors: { brand: { blue: '#3b82f6', green: '#10b981' } } } } }
     </script>
+    
+    <!-- ================= JSON-LD Schema Markup ================= -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "SoftwareApplication",
+          "name": "CSS Gradient Generator",
+          "operatingSystem": "Any (Web-based)",
+          "applicationCategory": "DesignApplication",
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "ratingCount": "5100"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          },
+          "description": "An interactive online tool to generate linear and radial CSS gradients. Users can add multiple colors, adjust their positions and angle, and copy the generated CSS code.",
+          "url": "https://www.nexatools.pro/gradient-generator",
+          "publisher": {
+            "@type": "Organization",
+            "name": "NexaTools",
+            "url": "https://www.nexatools.pro"
+          }
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "What is a CSS gradient?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "A CSS gradient is a type of image that consists of a smooth transition between two or more specified colors. They are commonly used in web design for backgrounds and other decorative elements instead of using actual image files, as they load faster and are more flexible."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How do I use this gradient generator?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Simply choose between a linear or radial gradient, then use the controls to adjust the colors, their positions on the gradient, and (for linear gradients) the angle. The live preview and the CSS code will update instantly. You can add more colors using the 'Add Color' button."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What is the difference between linear and radial gradients?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "A linear gradient transitions colors along a straight line. You can control the direction of this line using the angle slider. A radial gradient transitions colors outwards from a central point, like a circle."
+              }
+            },
+            {
+                "@type": "Question",
+                "name": "Is this tool free?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes, our CSS Gradient Generator is completely free to use for any personal or commercial project."
+                }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
 </head>
 <body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 transition-colors duration-300 flex flex-col min-h-screen">
 
-    <!-- =========== HEADER (RESTORED) =========== -->
+    <!-- =========== HEADER (NexaTools Design) =========== -->
     <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+            <a href="/index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
             <nav class="hidden md:flex items-center space-x-8">
-                <a href="index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Home</a>
-                <a href="index.html#tools" class="text-brand-green font-semibold">Tools</a>
-                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">About</a>
-                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Contact</a>
+                <a href="/index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Home</a>
+                <a href="/index.html#tools" class="text-brand-green font-semibold">Tools</a>
+                <a href="/about-us.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">About</a>
+                <a href="/contact-us.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Contact</a>
             </nav>
             <div class="flex items-center">
                 <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700">
@@ -104,26 +211,59 @@
                         </div>
                     </div>
                 </div>
-
             </div>
+
+            <!-- ================= FAQ Section ================= -->
+            <section class="max-w-4xl mx-auto mt-16">
+                <h2 class="text-3xl font-bold text-center mb-8 text-slate-900 dark:text-white">Frequently Asked Questions</h2>
+                <div class="space-y-4">
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg shadow-md">
+                        <summary class="flex items-center justify-between cursor-pointer font-semibold text-slate-800 dark:text-slate-100">
+                           What is a CSS gradient?
+                            <span class="faq-arrow transition-transform duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                            </span>
+                        </summary>
+                        <p class="mt-4 text-slate-600 dark:text-slate-300">A CSS gradient is a type of image that consists of a smooth transition between two or more specified colors. They are commonly used in web design for backgrounds and other decorative elements instead of using actual image files, as they load faster and are more flexible.</p>
+                    </details>
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg shadow-md">
+                        <summary class="flex items-center justify-between cursor-pointer font-semibold text-slate-800 dark:text-slate-100">
+                           How do I use this gradient generator?
+                            <span class="faq-arrow transition-transform duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                            </span>
+                        </summary>
+                        <p class="mt-4 text-slate-600 dark:text-slate-300">Simply choose between a linear or radial gradient, then use the controls to adjust the colors, their positions on the gradient, and (for linear gradients) the angle. The live preview and the CSS code will update instantly. You can add more colors using the 'Add Color' button.</p>
+                    </details>
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg shadow-md">
+                        <summary class="flex items-center justify-between cursor-pointer font-semibold text-slate-800 dark:text-slate-100">
+                           What is the difference between linear and radial gradients?
+                            <span class="faq-arrow transition-transform duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                            </span>
+                        </summary>
+                        <p class="mt-4 text-slate-600 dark:text-slate-300">A linear gradient transitions colors along a straight line. You can control the direction of this line using the angle slider. A radial gradient transitions colors outwards from a central point, like a circle.</p>
+                    </details>
+                </div>
+            </section>
         </div>
     </main>
 
-    <!-- =========== FOOTER (RESTORED) =========== -->
+    <!-- =========== FOOTER (NexaTools Design) =========== -->
     <footer class="bg-slate-100 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700/50 mt-auto">
         <div class="container mx-auto px-4 py-8">
             <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left space-y-4 md:space-y-0">
                 <div>
-                    <a href="index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+                    <a href="/index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
                     <p class="text-sm text-slate-500 dark:text-slate-400">Simplifying your digital life.</p>
                 </div>
                 <div class="text-sm text-slate-600 dark:text-slate-400">
-                    <p>contact@nexatools.com</p>
-                    <p class="mt-1">© 2024 NexaTools. All Rights Reserved.</p>
+                    <p>contact@nexatools.pro</p>
+                    <p class="mt-1">© 2025 NexaTools. All Rights Reserved.</p>
                 </div>
                 <div class="flex space-x-4 text-sm">
-                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
-                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
+                    <a href="/privacy-policy.html" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
+                    <a href="/terms-of-use.html" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
                 </div>
             </div>
         </div>

@@ -3,10 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UUID Generator - NexaTools</title>
+    <title>Free Online UUID Generator (v1 & v4) - NexaTools</title>
+    
+    <!-- ========= High SEO Meta Tags ========= -->
+    <meta name="description" content="Generate universally unique identifiers (UUIDs) online. Create version 1 (timestamp-based) or version 4 (random) UUIDs with formatting options like uppercase and no hyphens.">
+    <meta name="keywords" content="uuid generator, guid generator, uuid v4, uuid v1, online uuid, universally unique identifier, generate guid, nexatools">
+    <link rel="canonical" href="https://www.nexatools.pro/uuid-generator.html">
+    <meta name="robots" content="index, follow">
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.nexatools.pro/uuid-generator.html">
+    <meta property="og:title" content="Free Online UUID Generator (v1 & v4) - NexaTools">
+    <meta property="og:description" content="Generate universally unique identifiers (UUIDs) online. Create version 1 (timestamp-based) or version 4 (random) UUIDs with formatting options.">
+    <meta property="og:image" content="https://www.nexatools.pro/assets/images/og-image-uuid-generator.png"> <!-- Create and host a relevant image for social sharing -->
+    <meta property="og:site_name" content="NexaTools">
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.nexatools.pro/uuid-generator.html">
+    <meta property="twitter:title" content="Free Online UUID Generator (v1 & v4) - NexaTools">
+    <meta property="twitter:description" content="Generate universally unique identifiers (UUIDs) online. Create version 1 (timestamp-based) or version 4 (random) UUIDs with formatting options.">
+    <meta property="twitter:image" content="https://www.nexatools.pro/assets/images/og-image-uuid-generator.png"> <!-- Use the same image as OG -->
+
+    <!-- ========= Favicon ========= -->
+    <link rel="icon" href="/assets/images/favicon.ico" sizes="any">
+    <link rel="icon" href="/assets/images/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
+    <link rel="manifest" href="/assets/site.webmanifest">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- The official 'uuid' library for robust generation -->
     <script src="https://cdn.jsdelivr.net/npm/uuid@latest/dist/umd/uuid.min.js"></script>
+
+    <!-- ========= JSON-LD Schema Markup ========= -->
+    <script type="application/ld+json">
+    [
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "UUID Generator",
+        "description": "A free, client-side online tool to generate Universally Unique Identifiers (UUIDs). Supports version 1 (timestamp-based) and version 4 (random), with formatting options.",
+        "url": "https://www.nexatools.pro/uuid-generator.html",
+        "applicationCategory": "DeveloperTool",
+        "operatingSystem": "Web",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "creator": {
+            "@type": "Organization",
+            "url": "https://www.nexatools.pro",
+            "name": "NexaTools",
+            "logo": "https://www.nexatools.pro/assets/images/logo.png"
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is a UUID?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A UUID (Universally Unique Identifier) is a 128-bit number used to uniquely identify information in computer systems. Because the number of possible UUIDs is so vast, the probability of two independently generated UUIDs being the same is practically zero."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is the difference between UUID v1 and v4?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "UUID v1 is generated based on a timestamp and the MAC address of the computer, making it time-ordered but potentially less private. UUID v4 is generated using random or pseudo-random numbers, making it the most common and recommended choice for ensuring uniqueness without leaking information."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is this UUID generator secure?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. This tool uses the standard 'uuid' JavaScript library to generate UUIDs entirely within your browser. No data is sent to our servers, ensuring your activity is private and secure."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I use these UUIDs in my projects?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Absolutely. The UUIDs generated by this tool conform to the RFC 4122 standard and are safe to use as unique identifiers in your databases, applications, and any other projects."
+            }
+          }
+        ]
+      }
+    ]
+    </script>
     <style>
         .header-scrolled {
             background-color: rgba(255, 255, 255, 0.8);
@@ -16,22 +106,21 @@
         .dark .header-scrolled {
             background-color: rgba(15, 23, 42, 0.8);
         }
-        /* Custom scrollbar for textareas */
         textarea::-webkit-scrollbar {
             width: 8px;
         }
         textarea::-webkit-scrollbar-track {
-            background: #f1f5f9; /* slate-100 */
+            background: #f1f5f9;
         }
         .dark textarea::-webkit-scrollbar-track {
-            background: #1e293b; /* slate-800 */
+            background: #1e293b;
         }
         textarea::-webkit-scrollbar-thumb {
-            background: #94a3b8; /* slate-400 */
+            background: #94a3b8;
             border-radius: 4px;
         }
         textarea::-webkit-scrollbar-thumb:hover {
-            background: #64748b; /* slate-500 */
+            background: #64748b;
         }
     </style>
     <script>
@@ -66,12 +155,12 @@
     <!-- =========== HEADER =========== -->
     <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+            <a href="/index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
             <nav class="hidden md:flex items-center space-x-8">
-                <a href="index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Home</a>
-                <a href="index.html#tools" class="text-brand-blue font-semibold">Tools</a>
-                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">About</a>
-                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Contact</a>
+                <a href="/index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Home</a>
+                <a href="/index.html#tools" class="text-brand-blue font-semibold">Tools</a>
+                <a href="/about-us.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">About</a>
+                <a href="/contact-us.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Contact</a>
             </nav>
             <div class="flex items-center">
                 <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
@@ -129,27 +218,77 @@
         </div>
     </main>
 
+    <!-- =========== NEW: FAQ Section =========== -->
+    <section class="py-16 bg-slate-100 dark:bg-slate-900">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto">
+                <h2 class="text-3xl font-bold text-center mb-8 text-slate-900 dark:text-white">Frequently Asked Questions</h2>
+                <div class="space-y-4">
+                    <!-- FAQ Item 1 -->
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg cursor-pointer shadow-sm">
+                        <summary class="flex justify-between items-center font-semibold text-slate-800 dark:text-slate-100 list-none">
+                            What is a UUID?
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </summary>
+                        <div class="mt-4 text-slate-600 dark:text-slate-400">
+                            <p>A UUID (Universally Unique Identifier) is a 128-bit number used to uniquely identify information in computer systems. Because the number of possible UUIDs is so vast, the probability of two independently generated UUIDs being the same is practically zero.</p>
+                        </div>
+                    </details>
+                    <!-- FAQ Item 2 -->
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg cursor-pointer shadow-sm">
+                        <summary class="flex justify-between items-center font-semibold text-slate-800 dark:text-slate-100 list-none">
+                            What is the difference between UUID v1 and v4?
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </summary>
+                        <div class="mt-4 text-slate-600 dark:text-slate-400">
+                           <p>UUID v1 is generated based on a timestamp and the MAC address of the computer, making it time-ordered but potentially less private. UUID v4 is generated using random or pseudo-random numbers, making it the most common and recommended choice for ensuring uniqueness without leaking information.</p>
+                        </div>
+                    </details>
+                    <!-- FAQ Item 3 -->
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg cursor-pointer shadow-sm">
+                        <summary class="flex justify-between items-center font-semibold text-slate-800 dark:text-slate-100 list-none">
+                            Is this UUID generator secure?
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </summary>
+                        <div class="mt-4 text-slate-600 dark:text-slate-400">
+                           <p>Yes. This tool uses the standard 'uuid' JavaScript library to generate UUIDs entirely within your browser. No data is sent to our servers, ensuring your activity is private and secure.</p>
+                        </div>
+                    </details>
+                    <!-- FAQ Item 4 -->
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg cursor-pointer shadow-sm">
+                        <summary class="flex justify-between items-center font-semibold text-slate-800 dark:text-slate-100 list-none">
+                            Can I use these UUIDs in my projects?
+                           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </summary>
+                        <div class="mt-4 text-slate-600 dark:text-slate-400">
+                           <p>Absolutely. The UUIDs generated by this tool conform to the RFC 4122 standard and are safe to use as unique identifiers in your databases, applications, and any other projects.</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- =========== FOOTER =========== -->
     <footer class="bg-slate-100 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700/50 mt-auto">
         <div class="container mx-auto px-4 py-8">
             <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left space-y-4 md:space-y-0">
                 <div>
-                    <a href="index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+                    <a href="/index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
                     <p class="text-sm text-slate-500 dark:text-slate-400">Simplifying your digital life.</p>
                 </div>
                 <div class="text-sm text-slate-600 dark:text-slate-400">
-                    <p>contact@nexatools.com</p>
-                    <p class="mt-1">© 2024 NexaTools. All Rights Reserved.</p>
+                    <p>contact@nexatools.pro</p>
+                    <p class="mt-1">© 2025 NexaTools. All Rights Reserved.</p>
                 </div>
                 <div class="flex space-x-4 text-sm">
-                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
-                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
+                    <a href="/privacy-policy.html" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
+                    <a href="/terms-of-use.html" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
                 </div>
             </div>
         </div>
     </footer>
 
-    <!-- Our custom script is moved to the end of the body to ensure libraries are loaded first. -->
     <script>
         // --- THEME & HEADER LOGIC ---
         const header = document.getElementById('header');
@@ -163,7 +302,6 @@
         window.addEventListener('scroll', () => { header.classList.toggle('header-scrolled', window.scrollY > 10); });
 
         // --- UUID GENERATOR LOGIC ---
-        // DOM Elements
         const generateBtn = document.getElementById('generate-btn');
         const copyBtn = document.getElementById('copy-btn');
         const resultArea = document.getElementById('result-area');
@@ -171,9 +309,12 @@
         const uppercaseCheck = document.getElementById('uppercase-check');
         const hyphensCheck = document.getElementById('hyphens-check');
         
-        // --- Functions ---
         const generateUUIDs = () => {
-            const count = parseInt(countInput.value, 10) || 1;
+            let count = parseInt(countInput.value, 10);
+            if(isNaN(count) || count < 1) count = 1;
+            if(count > 1000) count = 1000;
+            countInput.value = count;
+
             const version = document.querySelector('input[name="uuid-version"]:checked').value;
             const isUppercase = uppercaseCheck.checked;
             const noHyphens = hyphensCheck.checked;

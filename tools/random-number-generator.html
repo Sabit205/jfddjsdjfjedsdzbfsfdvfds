@@ -3,8 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Random Number Generator - NexaTools</title>
+    <title>Free Random Number Generator (Min/Max, Decimals) - NexaTools</title>
+    
+    <!-- ========= High SEO Meta Tags ========= -->
+    <meta name="description" content="Generate secure random numbers with our free online tool. Customize the range (min/max), quantity, and choose to allow decimals or unique numbers only.">
+    <meta name="keywords" content="random number generator, generate random numbers, randomizer, min max random, unique number generator, random number list, nexatools">
+    <link rel="canonical" href="https://www.nexatools.pro/random-number-generator.html">
+    <meta name="robots" content="index, follow">
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.nexatools.pro/random-number-generator.html">
+    <meta property="og:title" content="Free Random Number Generator (Min/Max, Decimals) - NexaTools">
+    <meta property="og:description" content="Generate secure random numbers with our free online tool. Customize the range (min/max), quantity, and choose to allow decimals or unique numbers only.">
+    <meta property="og:image" content="https://www.nexatools.pro/assets/images/og-image-random-number.png"> <!-- Create and host a relevant image for social sharing -->
+    <meta property="og:site_name" content="NexaTools">
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.nexatools.pro/random-number-generator.html">
+    <meta property="twitter:title" content="Free Random Number Generator (Min/Max, Decimals) - NexaTools">
+    <meta property="twitter:description" content="Generate secure random numbers with our free online tool. Customize the range (min/max), quantity, and choose to allow decimals or unique numbers only.">
+    <meta property="twitter:image" content="https://www.nexatools.pro/assets/images/og-image-random-number.png"> <!-- Use the same image as OG -->
+
+    <!-- ========= Favicon ========= -->
+    <link rel="icon" href="/assets/images/favicon.ico" sizes="any">
+    <link rel="icon" href="/assets/images/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
+    <link rel="manifest" href="/assets/site.webmanifest">
+    
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- ========= JSON-LD Schema Markup ========= -->
+    <script type="application/ld+json">
+    [
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Random Number Generator",
+        "description": "A free online tool to generate one or more random numbers within a specified range, with options for decimals, duplicates, and sorting.",
+        "url": "https://www.nexatools.pro/random-number-generator.html",
+        "applicationCategory": "Utilities",
+        "operatingSystem": "Web",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "creator": {
+            "@type": "Organization",
+            "url": "https://www.nexatools.pro",
+            "name": "NexaTools",
+            "logo": "https://www.nexatools.pro/assets/images/logo.png"
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How 'random' are these numbers?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "This tool uses the browser's built-in `Math.random()` function, which generates pseudo-random numbers. This is sufficient for most everyday purposes like games, simulations, or picking a random winner. However, it is not suitable for cryptographic applications that require a higher level of security."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What does 'Allow Duplicates' mean?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "When 'Allow Duplicates' is checked, each number is generated independently, so the same number can appear more than once in the results. If you uncheck it, the tool will ensure that every number in the generated list is unique. Note that you cannot generate more unique numbers than are available in the specified range."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I generate random numbers with decimals?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Check the 'Allow Decimals' box, and the tool will generate floating-point numbers within your specified range instead of just whole numbers (integers)."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is my data safe?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Absolutely. All number generation happens locally in your browser. No settings or generated numbers are sent to our servers, ensuring your privacy."
+            }
+          }
+        ]
+      }
+    ]
+    </script>
     <style>
         .header-scrolled {
             background-color: rgba(255, 255, 255, 0.8);
@@ -14,22 +104,21 @@
         .dark .header-scrolled {
             background-color: rgba(15, 23, 42, 0.8);
         }
-        /* Custom scrollbar for textareas */
         textarea::-webkit-scrollbar {
             width: 8px;
         }
         textarea::-webkit-scrollbar-track {
-            background: #f1f5f9; /* slate-100 */
+            background: #f1f5f9;
         }
         .dark textarea::-webkit-scrollbar-track {
-            background: #1e293b; /* slate-800 */
+            background: #1e293b;
         }
         textarea::-webkit-scrollbar-thumb {
-            background: #94a3b8; /* slate-400 */
+            background: #94a3b8;
             border-radius: 4px;
         }
         textarea::-webkit-scrollbar-thumb:hover {
-            background: #64748b; /* slate-500 */
+            background: #64748b;
         }
     </style>
     <script>
@@ -64,12 +153,12 @@
     <!-- =========== HEADER =========== -->
     <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+            <a href="/index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
             <nav class="hidden md:flex items-center space-x-8">
-                <a href="index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Home</a>
-                <a href="index.html#tools" class="text-brand-blue font-semibold">Tools</a>
-                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">About</a>
-                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Contact</a>
+                <a href="/index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Home</a>
+                <a href="/index.html#tools" class="text-brand-blue font-semibold">Tools</a>
+                <a href="/about-us.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">About</a>
+                <a href="/contact-us.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Contact</a>
             </nav>
             <div class="flex items-center">
                 <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
@@ -133,28 +222,78 @@
             </div>
         </div>
     </main>
+    
+    <!-- =========== NEW: FAQ Section =========== -->
+    <section class="py-16 bg-slate-100 dark:bg-slate-900">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto">
+                <h2 class="text-3xl font-bold text-center mb-8 text-slate-900 dark:text-white">Frequently Asked Questions</h2>
+                <div class="space-y-4">
+                    <!-- FAQ Item 1 -->
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg cursor-pointer shadow-sm">
+                        <summary class="flex justify-between items-center font-semibold text-slate-800 dark:text-slate-100 list-none">
+                            How "random" are these numbers?
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </summary>
+                        <div class="mt-4 text-slate-600 dark:text-slate-400">
+                            <p>This tool uses the browser's built-in <code>Math.random()</code> function, which generates pseudo-random numbers. This is sufficient for most everyday purposes like games, simulations, or picking a random winner. However, it is not suitable for cryptographic applications that require a higher level of security.</p>
+                        </div>
+                    </details>
+                    <!-- FAQ Item 2 -->
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg cursor-pointer shadow-sm">
+                        <summary class="flex justify-between items-center font-semibold text-slate-800 dark:text-slate-100 list-none">
+                            What does 'Allow Duplicates' mean?
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </summary>
+                        <div class="mt-4 text-slate-600 dark:text-slate-400">
+                           <p>When 'Allow Duplicates' is checked, each number is generated independently, so the same number can appear more than once in the results. If you uncheck it, the tool will ensure that every number in the generated list is unique. Note that you cannot generate more unique numbers than are available in the specified range.</p>
+                        </div>
+                    </details>
+                    <!-- FAQ Item 3 -->
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg cursor-pointer shadow-sm">
+                        <summary class="flex justify-between items-center font-semibold text-slate-800 dark:text-slate-100 list-none">
+                            Can I generate random numbers with decimals?
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </summary>
+                        <div class="mt-4 text-slate-600 dark:text-slate-400">
+                           <p>Yes. Check the 'Allow Decimals' box, and the tool will generate floating-point numbers within your specified range instead of just whole numbers (integers).</p>
+                        </div>
+                    </details>
+                    <!-- FAQ Item 4 -->
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg cursor-pointer shadow-sm">
+                        <summary class="flex justify-between items-center font-semibold text-slate-800 dark:text-slate-100 list-none">
+                            Is my data safe?
+                           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </summary>
+                        <div class="mt-4 text-slate-600 dark:text-slate-400">
+                           <p>Absolutely. All number generation happens locally in your browser. No settings or generated numbers are sent to our servers, ensuring your privacy.</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- =========== FOOTER =========== -->
     <footer class="bg-slate-100 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700/50 mt-auto">
         <div class="container mx-auto px-4 py-8">
             <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left space-y-4 md:space-y-0">
                 <div>
-                    <a href="index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+                    <a href="/index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
                     <p class="text-sm text-slate-500 dark:text-slate-400">Simplifying your digital life.</p>
                 </div>
                 <div class="text-sm text-slate-600 dark:text-slate-400">
-                    <p>contact@nexatools.com</p>
-                    <p class="mt-1">© 2024 NexaTools. All Rights Reserved.</p>
+                    <p>contact@nexatools.pro</p>
+                    <p class="mt-1">© 2025 NexaTools. All Rights Reserved.</p>
                 </div>
                 <div class="flex space-x-4 text-sm">
-                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
-                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
+                    <a href="/privacy-policy.html" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
+                    <a href="/terms-of-use.html" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
                 </div>
             </div>
         </div>
     </footer>
 
-    <!-- Our custom script is moved to the end of the body. -->
     <script>
         // --- THEME & HEADER LOGIC ---
         const header = document.getElementById('header');
@@ -168,7 +307,6 @@
         window.addEventListener('scroll', () => { header.classList.toggle('header-scrolled', window.scrollY > 10); });
 
         // --- RANDOM NUMBER GENERATOR LOGIC ---
-        // DOM Elements
         const generateBtn = document.getElementById('generate-btn');
         const copyBtn = document.getElementById('copy-btn');
         const resultArea = document.getElementById('result-area');
@@ -179,33 +317,30 @@
         const duplicatesCheck = document.getElementById('duplicates-check');
         const sortCheck = document.getElementById('sort-check');
         
-        // --- Functions ---
         const generateNumbers = () => {
             const min = parseFloat(minInput.value);
             const max = parseFloat(maxInput.value);
-            const count = parseInt(countInput.value, 10);
+            let count = parseInt(countInput.value, 10);
+            
+            if (isNaN(count) || count < 1) count = 1;
+            if (count > 10000) count = 10000;
+            countInput.value = count;
             
             const allowDecimals = decimalsCheck.checked;
             const allowDuplicates = duplicatesCheck.checked;
             const sortResults = sortCheck.checked;
             
-            // Validation
-            if (isNaN(min) || isNaN(max) || isNaN(count)) {
-                alert('Please enter valid numbers for min, max, and count.');
+            if (isNaN(min) || isNaN(max)) {
+                alert('Please enter valid numbers for min and max.');
                 return;
             }
             if (min > max) {
                 alert('Minimum value cannot be greater than the maximum value.');
                 return;
             }
-            if (count <= 0) {
-                alert('Number of results must be greater than 0.');
-                return;
-            }
 
             const results = allowDuplicates ? [] : new Set();
             
-            // Unique integer validation
             if (!allowDuplicates && !allowDecimals) {
                 const range = Math.floor(max) - Math.floor(min) + 1;
                 if (count > range) {
@@ -214,7 +349,8 @@
                 }
             }
             
-            while ((allowDuplicates && results.length < count) || (!allowDuplicates && results.size < count)) {
+            let attempts = 0; // Failsafe for unique generation
+            while (((allowDuplicates && results.length < count) || (!allowDuplicates && results.size < count)) && attempts < 20000) {
                  let randomNumber;
                  if (allowDecimals) {
                      randomNumber = Math.random() * (max - min) + min;
@@ -227,6 +363,7 @@
                  } else {
                      results.add(randomNumber);
                  }
+                 attempts++;
             }
             
             let finalResults = Array.from(results);
@@ -247,11 +384,9 @@
             }).catch(err => alert('Failed to copy.'));
         };
 
-        // --- Event Listeners ---
         generateBtn.addEventListener('click', generateNumbers);
         copyBtn.addEventListener('click', copyToClipboard);
         
-        // Initial generation on page load
         generateNumbers();
     </script>
 </body>

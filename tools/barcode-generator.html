@@ -3,10 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Barcode Generator - NexaTools</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Free Online Barcode Generator (CODE128, EAN, UPC) - NexaTools</title>
+    
+    <!-- ========= High SEO Meta Tags ========= -->
+    <meta name="description" content="Create and download custom barcodes for free with NexaTools. Supports various formats like CODE128, CODE39, EAN-13, and UPC. Customize colors, size, and text.">
+    <meta name="keywords" content="barcode generator, free barcode generator, create barcode, online barcode, CODE128 generator, EAN generator, UPC barcode, download barcode, nexatools">
+    <link rel="canonical" href="https://www.nexatools.pro/barcode-generator.html">
+    <meta name="robots" content="index, follow">
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.nexatools.pro/barcode-generator.html">
+    <meta property="og:title" content="Free Online Barcode Generator (CODE128, EAN, UPC) - NexaTools">
+    <meta property="og:description" content="Create and download custom barcodes for free with NexaTools. Supports various formats like CODE128, CODE39, EAN-13, and UPC. Customize colors, size, and text.">
+    <meta property="og:image" content="https://www.nexatools.pro/assets/images/og-image-barcode-generator.png"> <!-- Create and host a relevant image for social sharing -->
+    <meta property="og:site_name" content="NexaTools">
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.nexatools.pro/barcode-generator.html">
+    <meta property="twitter:title" content="Free Online Barcode Generator (CODE128, EAN, UPC) - NexaTools">
+    <meta property="twitter:description" content="Create and download custom barcodes for free with NexaTools. Supports various formats like CODE128, CODE39, EAN-13, and UPC. Customize colors, size, and text.">
+    <meta property="twitter:image" content="https://www.nexatools.pro/assets/images/og-image-barcode-generator.png"> <!-- Use the same image as OG -->
+    
+    <!-- ========= Favicon ========= -->
+    <link rel="icon" href="/assets/images/favicon.ico" sizes="any">
+    <link rel="icon" href="/assets/images/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
+    <link rel="manifest" href="/assets/site.webmanifest">
+
     <!-- JsBarcode library for barcode generation -->
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+
+    <!-- ========= JSON-LD Schema Markup ========= -->
+    <script type="application/ld+json">
+    [
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Barcode Generator",
+        "description": "A free online tool to generate and customize various types of barcodes, including CODE128, EAN, and UPC. Users can download the generated barcode as a PNG file.",
+        "url": "https://www.nexatools.pro/barcode-generator.html",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "creator": {
+            "@type": "Organization",
+            "url": "https://www.nexatools.pro",
+            "name": "NexaTools",
+            "logo": "https://www.nexatools.pro/assets/images/logo.png"
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Which barcode format should I use?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The best format depends on your needs. CODE128 is a versatile choice for alphanumeric data in logistics and inventory. EAN-13 and UPC are standard for retail products sold worldwide and in North America, respectively. CODE39 is an older, widely supported format for simple alphanumeric codes."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is this barcode generator free to use?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+                "text": "Yes, our barcode generator is completely free for both personal and commercial use. There are no limits on how many barcodes you can create or download."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do I save the generated barcode?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "After generating your barcode, simply click the 'Download as PNG' button. The tool will convert the barcode image into a high-quality PNG file and automatically start the download to your computer."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is my data secure?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Absolutely. All barcode generation happens directly in your browser using client-side JavaScript. The data you enter is never sent to our servers, ensuring your information remains private."
+            }
+          }
+        ]
+      }
+    ]
+    </script>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .header-scrolled {
             background-color: rgba(255, 255, 255, 0.8);
@@ -53,12 +144,12 @@
     <!-- =========== HEADER =========== -->
     <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+            <a href="/index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
             <nav class="hidden md:flex items-center space-x-8">
-                <a href="index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Home</a>
-                <a href="index.html#tools" class="text-brand-blue font-semibold">Tools</a>
-                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">About</a>
-                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Contact</a>
+                <a href="/index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Home</a>
+                <a href="/index.html#tools" class="text-brand-blue font-semibold">Tools</a>
+                <a href="/about-us.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">About</a>
+                <a href="/contact-us.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Contact</a>
             </nav>
             <div class="flex items-center">
                 <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
@@ -142,21 +233,72 @@
         </div>
     </main>
 
+    <!-- =========== NEW: FAQ Section =========== -->
+    <section class="py-16 bg-slate-100 dark:bg-slate-900">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto">
+                <h2 class="text-3xl font-bold text-center mb-8 text-slate-900 dark:text-white">Frequently Asked Questions</h2>
+                <div class="space-y-4">
+                    <!-- FAQ Item 1 -->
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg cursor-pointer shadow-sm">
+                        <summary class="flex justify-between items-center font-semibold text-slate-800 dark:text-slate-100 list-none">
+                            Which barcode format should I use?
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </summary>
+                        <div class="mt-4 text-slate-600 dark:text-slate-400">
+                            <p>The best format depends on your needs. CODE128 is a versatile choice for alphanumeric data in logistics and inventory. EAN-13 and UPC are standard for retail products sold worldwide and in North America, respectively. CODE39 is an older, widely supported format for simple alphanumeric codes.</p>
+                        </div>
+                    </details>
+                    <!-- FAQ Item 2 -->
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg cursor-pointer shadow-sm">
+                        <summary class="flex justify-between items-center font-semibold text-slate-800 dark:text-slate-100 list-none">
+                           Is this barcode generator free to use?
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </summary>
+                        <div class="mt-4 text-slate-600 dark:text-slate-400">
+                            <p>Yes, our barcode generator is completely free for both personal and commercial use. There are no limits on how many barcodes you can create or download.</p>
+                        </div>
+                    </details>
+                    <!-- FAQ Item 3 -->
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg cursor-pointer shadow-sm">
+                        <summary class="flex justify-between items-center font-semibold text-slate-800 dark:text-slate-100 list-none">
+                            How do I save the generated barcode?
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </summary>
+                        <div class="mt-4 text-slate-600 dark:text-slate-400">
+                            <p>After generating your barcode, simply click the 'Download as PNG' button. The tool will convert the barcode image into a high-quality PNG file and automatically start the download to your computer.</p>
+                        </div>
+                    </details>
+                    <!-- FAQ Item 4 -->
+                     <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg cursor-pointer shadow-sm">
+                        <summary class="flex justify-between items-center font-semibold text-slate-800 dark:text-slate-100 list-none">
+                            Is my data secure?
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </summary>
+                        <div class="mt-4 text-slate-600 dark:text-slate-400">
+                            <p>Absolutely. All barcode generation happens directly in your browser using client-side JavaScript. The data you enter is never sent to our servers, ensuring your information remains private.</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- =========== FOOTER =========== -->
     <footer class="bg-slate-100 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700/50 mt-auto">
         <div class="container mx-auto px-4 py-8">
             <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left space-y-4 md:space-y-0">
                 <div>
-                    <a href="index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+                    <a href="/index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
                     <p class="text-sm text-slate-500 dark:text-slate-400">Simplifying your digital life.</p>
                 </div>
                 <div class="text-sm text-slate-600 dark:text-slate-400">
-                    <p>contact@nexatools.com</p>
-                    <p class="mt-1">© 2024 NexaTools. All Rights Reserved.</p>
+                    <p>contact@nexatools.pro</p>
+                    <p class="mt-1">© 2025 NexaTools. All Rights Reserved.</p>
                 </div>
                 <div class="flex space-x-4 text-sm">
-                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
-                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
+                    <a href="/privacy-policy.html" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
+                    <a href="/terms-of-use.html" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
                 </div>
             </div>
         </div>
@@ -210,19 +352,29 @@ document.addEventListener('DOMContentLoaded', function() {
                 height: parseInt(barHeightSlider.value, 10),
                 displayValue: displayValueCheckbox.checked,
                 background: backgroundColorPicker.value,
+                margin: 10 // Add some margin for better appearance
             });
             barcodeContainer.style.backgroundColor = backgroundColorPicker.value;
         } catch (e) {
-            errorMessage.textContent = e.message;
+            errorMessage.textContent = e.message.replace("Warning: ", ""); // Clean up error message
             document.getElementById('barcode-output').style.display = 'none';
         }
     };
     
     const downloadBarcode = () => {
         const svg = document.getElementById('barcode-output');
+        if (svg.style.display === 'none' || !dataInput.value) {
+            alert('Please generate a valid barcode first.');
+            return;
+        }
+        
         const serializer = new XMLSerializer();
-        const svgString = serializer.serializeToString(svg);
+        let svgString = serializer.serializeToString(svg);
 
+        // For download, ensure background color is explicitly set in the SVG
+        const rect = `<rect width="100%" height="100%" fill="${backgroundColorPicker.value}"></rect>`;
+        svgString = svgString.replace('>', `>${rect}`);
+        
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
         const img = new Image();
@@ -231,9 +383,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const url = URL.createObjectURL(svgBlob);
 
         img.onload = function() {
-            canvas.width = img.width;
-            canvas.height = img.height;
-            ctx.drawImage(img, 0, 0);
+            canvas.width = this.width;
+            canvas.height = this.height;
+            ctx.drawImage(this, 0, 0);
             URL.revokeObjectURL(url);
 
             const pngUrl = canvas.toDataURL('image/png');
@@ -252,6 +404,11 @@ document.addEventListener('DOMContentLoaded', function() {
     downloadBtn.addEventListener('click', downloadBarcode);
     barWidthSlider.addEventListener('input', (e) => barWidthLabel.textContent = e.target.value);
     barHeightSlider.addEventListener('input', (e) => barHeightLabel.textContent = e.target.value);
+    
+    // Auto-update on any change for a more reactive experience
+    [dataInput, formatSelect, barWidthSlider, barHeightSlider, displayValueCheckbox, lineColorPicker, backgroundColorPicker].forEach(el => {
+        el.addEventListener('input', generateBarcode);
+    });
 
     // Initial generation
     generateBarcode();

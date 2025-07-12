@@ -3,12 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Converter - NexaTools</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Free Image Converter to JPG, PNG, WEBP - NexaTools</title>
+    
+    <!-- ========= High SEO Meta Tags ========= -->
+    <meta name="description" content="Free online image converter to convert multiple images to JPG, PNG, or WEBP formats. Fast, secure, and client-side batch processing with quality control.">
+    <meta name="keywords" content="image converter, convert to jpg, convert to png, convert to webp, batch image converter, free image converter, online converter, image format, nexatools">
+    <link rel="canonical" href="https://www.nexatools.pro/image-converter.html">
+    <meta name="robots" content="index, follow">
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.nexatools.pro/image-converter.html">
+    <meta property="og:title" content="Free Image Converter to JPG, PNG, WEBP - NexaTools">
+    <meta property="og:description" content="Free online image converter to convert multiple images to JPG, PNG, or WEBP formats. Fast, secure, and client-side batch processing with quality control.">
+    <meta property="og:image" content="https://www.nexatools.pro/assets/images/og-image-converter.png"> <!-- Create and host a relevant image for social sharing -->
+    <meta property="og:site_name" content="NexaTools">
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.nexatools.pro/image-converter.html">
+    <meta property="twitter:title" content="Free Image Converter to JPG, PNG, WEBP - NexaTools">
+    <meta property="twitter:description" content="Free online image converter to convert multiple images to JPG, PNG, or WEBP formats. Fast, secure, and client-side batch processing with quality control.">
+    <meta property="twitter:image" content="https://www.nexatools.pro/assets/images/og-image-converter.png"> <!-- Use the same image as OG -->
+
+    <!-- ========= Favicon ========= -->
+    <link rel="icon" href="/assets/images/favicon.ico" sizes="any">
+    <link rel="icon" href="/assets/images/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
+    <link rel="manifest" href="/assets/site.webmanifest">
+    
     <!-- JSZip for creating zip files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+    <!-- ========= JSON-LD Schema Markup ========= -->
+    <script type="application/ld+json">
+    [
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Image Converter",
+        "description": "A free, client-side online tool to convert multiple image files to JPG, PNG, and WEBP formats. Features include batch processing, quality control for JPG/WEBP, and a 'Download All' as a .zip file option.",
+        "url": "https://www.nexatools.pro/image-converter.html",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "Web",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "creator": {
+            "@type": "Organization",
+            "url": "https://www.nexatools.pro",
+            "name": "NexaTools",
+            "logo": "https://www.nexatools.pro/assets/images/logo.png"
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Are my images secure?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes, completely. This Image Converter tool processes all your files directly in your web browser using JavaScript. Your images are never uploaded to our servers, ensuring your data remains private and secure."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Which image formats can I upload?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Our tool is designed to accept a wide variety of common image formats, including JPG, PNG, GIF, BMP, WEBP, and even SVG. You can convert any of these to JPG, PNG, or WEBP."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What does the 'Quality' slider do?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The quality slider is available for lossy formats like JPG and WEBP. A higher quality setting (e.g., 90-100) will result in a larger file size with better image detail. A lower quality setting (e.g., 60-70) will create a smaller, more compressed file, which might have slightly lower visual fidelity. For PNG, which is a lossless format, this setting does not apply."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I convert multiple images at once?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes, this is a batch image converter. You can drag and drop multiple files or select multiple files from your computer to add them to the queue. After converting, you can either download each image individually or use the 'Download All (.zip)' button to get all converted images in a single compressed file."
+            }
+          }
+        ]
+      }
+    ]
+    </script>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Re-using styles from the homepage for consistency */
         .header-scrolled {
             background-color: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(10px);
@@ -20,7 +110,6 @@
         .file-list-item {
             transition: background-color 0.2s ease-in-out;
         }
-        /* Custom styles for drag-and-drop area */
         .drag-over {
             border-color: #3b82f6; /* brand-blue */
             background-color: rgb(59 130 246 / 0.05);
@@ -57,12 +146,12 @@
     <!-- =========== HEADER =========== -->
     <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+            <a href="/index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
             <nav class="hidden md:flex items-center space-x-8">
-                <a href="index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Home</a>
-                <a href="index.html#tools" class="text-brand-blue font-semibold">Tools</a> <!-- Highlight current section -->
-                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">About</a>
-                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Contact</a>
+                <a href="/index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Home</a>
+                <a href="/index.html#tools" class="text-brand-blue font-semibold">Tools</a>
+                <a href="/about-us.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">About</a>
+                <a href="/contact-us.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Contact</a>
             </nav>
             <div class="flex items-center">
                 <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
@@ -140,21 +229,72 @@
         </div>
     </main>
 
+    <!-- =========== NEW: FAQ Section =========== -->
+    <section class="py-16 bg-slate-100 dark:bg-slate-900">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto">
+                <h2 class="text-3xl font-bold text-center mb-8 text-slate-900 dark:text-white">Frequently Asked Questions</h2>
+                <div class="space-y-4">
+                    <!-- FAQ Item 1 -->
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg cursor-pointer shadow-sm">
+                        <summary class="flex justify-between items-center font-semibold text-slate-800 dark:text-slate-100 list-none">
+                            Are my images secure?
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </summary>
+                        <div class="mt-4 text-slate-600 dark:text-slate-400">
+                           <p>Yes, completely. This Image Converter tool processes all your files directly in your web browser using JavaScript. Your images are never uploaded to our servers, ensuring your data remains private and secure.</p>
+                        </div>
+                    </details>
+                    <!-- FAQ Item 2 -->
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg cursor-pointer shadow-sm">
+                        <summary class="flex justify-between items-center font-semibold text-slate-800 dark:text-slate-100 list-none">
+                            Which image formats can I upload?
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </summary>
+                        <div class="mt-4 text-slate-600 dark:text-slate-400">
+                            <p>Our tool is designed to accept a wide variety of common image formats, including JPG, PNG, GIF, BMP, WEBP, and even SVG. You can convert any of these to JPG, PNG, or WEBP.</p>
+                        </div>
+                    </details>
+                    <!-- FAQ Item 3 -->
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg cursor-pointer shadow-sm">
+                        <summary class="flex justify-between items-center font-semibold text-slate-800 dark:text-slate-100 list-none">
+                            What does the 'Quality' slider do?
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </summary>
+                        <div class="mt-4 text-slate-600 dark:text-slate-400">
+                            <p>The quality slider is available for lossy formats like JPG and WEBP. A higher quality setting (e.g., 90-100) will result in a larger file size with better image detail. A lower quality setting (e.g., 60-70) will create a smaller, more compressed file, which might have slightly lower visual fidelity. For PNG, which is a lossless format, this setting does not apply.</p>
+                        </div>
+                    </details>
+                    <!-- FAQ Item 4 -->
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg cursor-pointer shadow-sm">
+                        <summary class="flex justify-between items-center font-semibold text-slate-800 dark:text-slate-100 list-none">
+                            Can I convert multiple images at once?
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </summary>
+                        <div class="mt-4 text-slate-600 dark:text-slate-400">
+                            <p>Yes, this is a batch image converter. You can drag and drop multiple files or select multiple files from your computer to add them to the queue. After converting, you can either download each image individually or use the 'Download All (.zip)' button to get all converted images in a single compressed file.</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- =========== FOOTER =========== -->
     <footer class="bg-slate-100 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700/50 mt-auto">
         <div class="container mx-auto px-4 py-8">
             <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left space-y-4 md:space-y-0">
                 <div>
-                    <a href="index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+                    <a href="/index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
                     <p class="text-sm text-slate-500 dark:text-slate-400">Simplifying your digital life.</p>
                 </div>
                 <div class="text-sm text-slate-600 dark:text-slate-400">
-                    <p>contact@nexatools.com</p>
-                    <p class="mt-1">© 2024 NexaTools. All Rights Reserved.</p>
+                    <p>contact@nexatools.pro</p>
+                    <p class="mt-1">© 2025 NexaTools. All Rights Reserved.</p>
                 </div>
                 <div class="flex space-x-4 text-sm">
-                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
-                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
+                    <a href="/privacy-policy.html" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
+                    <a href="/terms-of-use.html" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
                 </div>
             </div>
         </div>
@@ -163,7 +303,7 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     
-    // --- THEME & HEADER LOGIC (from homepage) ---
+    // --- THEME & HEADER LOGIC ---
     const header = document.getElementById('header');
     const themeToggleBtn = document.getElementById('theme-toggle');
     const darkIcon = document.getElementById('theme-toggle-dark-icon');

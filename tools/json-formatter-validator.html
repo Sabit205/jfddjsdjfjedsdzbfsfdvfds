@@ -3,7 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JSON Formatter & Validator - NexaTools</title>
+    <title>Free Online JSON Formatter & Validator - NexaTools</title>
+    
+    <!-- ========= High SEO Meta Tags ========= -->
+    <meta name="description" content="Format, validate, and beautify your JSON data with our free online tool. Instantly make your JSON readable and check for syntax errors. Secure and client-side.">
+    <meta name="keywords" content="json formatter, json validator, json beautifier, prettify json, format json, validate json, online json tool, nexatools">
+    <link rel="canonical" href="https://www.nexatools.pro/json-formatter.html">
+    <meta name="robots" content="index, follow">
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.nexatools.pro/json-formatter.html">
+    <meta property="og:title" content="Free Online JSON Formatter & Validator - NexaTools">
+    <meta property="og:description" content="Format, validate, and beautify your JSON data with our free online tool. Instantly make your JSON readable and check for syntax errors.">
+    <meta property="og:image" content="https://www.nexatools.pro/assets/images/og-image-json-formatter.png"> <!-- Create and host a relevant image for social sharing -->
+    <meta property="og:site_name" content="NexaTools">
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.nexatools.pro/json-formatter.html">
+    <meta property="twitter:title" content="Free Online JSON Formatter & Validator - NexaTools">
+    <meta property="twitter:description" content="Format, validate, and beautify your JSON data with our free online tool. Instantly make your JSON readable and check for syntax errors.">
+    <meta property="twitter:image" content="https://www.nexatools.pro/assets/images/og-image-json-formatter.png"> <!-- Use the same image as OG -->
+    
+    <!-- ========= Favicon ========= -->
+    <link rel="icon" href="/assets/images/favicon.ico" sizes="any">
+    <link rel="icon" href="/assets/images/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
+    <link rel="manifest" href="/assets/site.webmanifest">
+    
+    <!-- ========= JSON-LD Schema Markup ========= -->
+    <script type="application/ld+json">
+    [
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "JSON Formatter & Validator",
+        "description": "A free, client-side online tool to format (prettify), validate, and minify JSON data. It helps developers make JSON readable and check for syntax errors.",
+        "url": "https://www.nexatools.pro/json-formatter.html",
+        "applicationCategory": "DeveloperTool",
+        "operatingSystem": "Web",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "creator": {
+            "@type": "Organization",
+            "url": "https://www.nexatools.pro",
+            "name": "NexaTools",
+            "logo": "https://www.nexatools.pro/assets/images/logo.png"
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is JSON (JavaScript Object Notation)?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "JSON is a lightweight data-interchange format that is easy for humans to read and write and easy for machines to parse and generate. It is widely used for transmitting data in web applications (e.g., sending some data from the server to the client, so it can be displayed on a web page)."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Why do I need to format or validate JSON?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Formatting (or 'prettifying') JSON adds indentation and line breaks, making it much easier for humans to read and debug. Validating checks the code for syntax errors, like missing commas or brackets, which can cause programs to fail. Our tool does both at the same time."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is my data secure?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes, completely. This tool processes all JSON data directly in your browser. Your data is never sent to our servers, ensuring your information remains private and secure."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What happens if my JSON is invalid?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "If your JSON code has a syntax error, the formatter will not be able to process it. Instead, the output box will display an error message that helps you locate the problem, such as 'Unexpected token' or 'Unexpected end of JSON input'."
+            }
+          }
+        ]
+      }
+    ]
+    </script>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .header-scrolled {
@@ -14,41 +104,39 @@
         .dark .header-scrolled {
             background-color: rgba(15, 23, 42, 0.8);
         }
-        /* Custom scrollbar for textareas */
         textarea::-webkit-scrollbar {
             width: 8px;
         }
         textarea::-webkit-scrollbar-track {
-            background: #f1f5f9; /* slate-100 */
+            background: #f1f5f9;
         }
         .dark textarea::-webkit-scrollbar-track {
-            background: #334155; /* slate-700 */
+            background: #334155;
         }
         textarea::-webkit-scrollbar-thumb {
-            background: #cbd5e1; /* slate-300 */
+            background: #cbd5e1;
             border-radius: 4px;
         }
         .dark textarea::-webkit-scrollbar-thumb {
-            background: #475569; /* slate-600 */
+            background: #475569;
         }
         textarea::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8; /* slate-400 */
+            background: #94a3b8;
         }
         .dark textarea::-webkit-scrollbar-thumb:hover {
-            background: #64748b; /* slate-500 */
+            background: #64748b;
         }
-        /* Add border colors for validation feedback */
         .validation-success {
-            border-color: #10b981 !important; /* brand-green */
+            border-color: #10b981 !important;
         }
         .dark .validation-success {
             border-color: #10b981 !important;
         }
         .validation-error {
-            border-color: #ef4444 !important; /* red-500 */
+            border-color: #ef4444 !important;
         }
         .dark .validation-error {
-            border-color: #f87171 !important; /* red-400 */
+            border-color: #f87171 !important;
         }
     </style>
     <script>
@@ -80,12 +168,12 @@
     <!-- =========== HEADER =========== -->
     <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+            <a href="/index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
             <nav class="hidden md:flex items-center space-x-8">
-                <a href="index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Home</a>
-                <a href="index.html#tools" class="text-brand-blue font-semibold">Tools</a>
-                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">About</a>
-                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Contact</a>
+                <a href="/index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Home</a>
+                <a href="/index.html#tools" class="text-brand-blue font-semibold">Tools</a>
+                <a href="/about-us.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">About</a>
+                <a href="/contact-us.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Contact</a>
             </nav>
             <div class="flex items-center">
                 <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
@@ -152,21 +240,72 @@
         </div>
     </main>
 
+    <!-- =========== NEW: FAQ Section =========== -->
+    <section class="py-16 bg-slate-100 dark:bg-slate-900">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto">
+                <h2 class="text-3xl font-bold text-center mb-8 text-slate-900 dark:text-white">Frequently Asked Questions</h2>
+                <div class="space-y-4">
+                    <!-- FAQ Item 1 -->
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg cursor-pointer shadow-sm">
+                        <summary class="flex justify-between items-center font-semibold text-slate-800 dark:text-slate-100 list-none">
+                            What is JSON (JavaScript Object Notation)?
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </summary>
+                        <div class="mt-4 text-slate-600 dark:text-slate-400">
+                            <p>JSON is a lightweight data-interchange format that is easy for humans to read and write and easy for machines to parse and generate. It is widely used for transmitting data in web applications (e.g., sending some data from the server to the client, so it can be displayed on a web page).</p>
+                        </div>
+                    </details>
+                    <!-- FAQ Item 2 -->
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg cursor-pointer shadow-sm">
+                        <summary class="flex justify-between items-center font-semibold text-slate-800 dark:text-slate-100 list-none">
+                            Why do I need to format or validate JSON?
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </summary>
+                        <div class="mt-4 text-slate-600 dark:text-slate-400">
+                           <p>Formatting (or 'prettifying') JSON adds indentation and line breaks, making it much easier for humans to read and debug. Validating checks the code for syntax errors, like missing commas or brackets, which can cause programs to fail. Our tool does both at the same time.</p>
+                        </div>
+                    </details>
+                    <!-- FAQ Item 3 -->
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg cursor-pointer shadow-sm">
+                        <summary class="flex justify-between items-center font-semibold text-slate-800 dark:text-slate-100 list-none">
+                            Is my data secure?
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </summary>
+                        <div class="mt-4 text-slate-600 dark:text-slate-400">
+                           <p>Yes, completely. This tool processes all JSON data directly in your browser. Your data is never sent to our servers, ensuring your information remains private and secure.</p>
+                        </div>
+                    </details>
+                    <!-- FAQ Item 4 -->
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg cursor-pointer shadow-sm">
+                        <summary class="flex justify-between items-center font-semibold text-slate-800 dark:text-slate-100 list-none">
+                            What happens if my JSON is invalid?
+                           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </summary>
+                        <div class="mt-4 text-slate-600 dark:text-slate-400">
+                           <p>If your JSON code has a syntax error, the formatter will not be able to process it. Instead, the output box will display an error message that helps you locate the problem, such as 'Unexpected token' or 'Unexpected end of JSON input'.</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- =========== FOOTER =========== -->
     <footer class="bg-slate-100 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700/50 mt-auto">
         <div class="container mx-auto px-4 py-8">
             <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left space-y-4 md:space-y-0">
                 <div>
-                    <a href="index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+                    <a href="/index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
                     <p class="text-sm text-slate-500 dark:text-slate-400">Simplifying your digital life.</p>
                 </div>
                 <div class="text-sm text-slate-600 dark:text-slate-400">
-                    <p>contact@nexatools.com</p>
-                    <p class="mt-1">© 2024 NexaTools. All Rights Reserved.</p>
+                    <p>contact@nexatools.pro</p>
+                    <p class="mt-1">© 2025 NexaTools. All Rights Reserved.</p>
                 </div>
                 <div class="flex space-x-4 text-sm">
-                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
-                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
+                    <a href="/privacy-policy.html" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
+                    <a href="/terms-of-use.html" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
                 </div>
             </div>
         </div>
@@ -196,7 +335,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const originalSizeEl = document.getElementById('original-size');
     const formattedSizeEl = document.getElementById('formatted-size');
     const changeSizeEl = document.getElementById('change-size');
-
     
     function formatBytes(bytes) {
         if (bytes === 0) return '0 B';
@@ -221,14 +359,13 @@ document.addEventListener('DOMContentLoaded', function() {
         originalSizeEl.textContent = formatBytes(originalLength);
         formattedSizeEl.textContent = formatBytes(formattedLength);
 
+        changeSizeEl.classList.remove('text-brand-green', 'text-red-500');
         if (change > 0) {
             changeSizeEl.textContent = `+${percentChange.toFixed(1)}%`;
             changeSizeEl.classList.add('text-red-500');
-            changeSizeEl.classList.remove('text-brand-green');
         } else {
             changeSizeEl.textContent = `${percentChange.toFixed(1)}%`;
             changeSizeEl.classList.add('text-brand-green');
-            changeSizeEl.classList.remove('text-red-500');
         }
     }
 
@@ -241,7 +378,6 @@ document.addEventListener('DOMContentLoaded', function() {
     formatBtn.addEventListener('click', () => {
         const originalCode = jsonInput.value;
         
-        // Reset state before processing
         jsonOutput.classList.remove('validation-success', 'validation-error');
 
         if (!originalCode.trim()) {
@@ -250,19 +386,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         try {
-            // Step 1: Parse the JSON. This is the validation step.
             const parsedJSON = JSON.parse(originalCode);
+            const formattedJSON = JSON.stringify(parsedJSON, null, 2);
             
-            // Step 2: Stringify it with indentation. This is the formatting step.
-            const formattedJSON = JSON.stringify(parsedJSON, null, 2); // Using 2 spaces for indentation
-            
-            // Success
             jsonOutput.value = formattedJSON;
             jsonOutput.classList.add('validation-success');
             updateStats(originalCode.length, formattedJSON.length);
             
         } catch (error) {
-            // Failure: The JSON is invalid
             jsonOutput.value = `Error: ${error.message}`;
             jsonOutput.classList.add('validation-error');
             originalSizeEl.textContent = formatBytes(originalCode.length);
@@ -278,13 +409,12 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     copyBtn.addEventListener('click', () => {
-        // Only copy if the JSON was valid
         if (jsonOutput.value && !jsonOutput.classList.contains('validation-error')) {
             navigator.clipboard.writeText(jsonOutput.value).then(() => {
                 const originalText = copyBtn.textContent;
                 copyBtn.textContent = 'Copied!';
                 setTimeout(() => {
-                    copyBtn.textContent = originalText;
+                    copyBtn.textContent = 'Copy';
                 }, 2000);
             });
         }

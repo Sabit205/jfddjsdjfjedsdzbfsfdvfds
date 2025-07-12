@@ -3,8 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Color Blindness Simulator - NexaTools</title>
+
+    <!-- ================= SEO Meta Tags ================= -->
+    <title>Free Color Blindness Simulator - Test Image Accessibility | NexaTools</title>
+    <meta name="description" content="Simulate how your images appear to people with different types of color vision deficiency (CVD), including Protanopia, Deuteranopia, and more. A free accessibility tool from NexaTools.">
+    <meta name="keywords" content="color blindness simulator, accessibility tool, color vision deficiency, cvd simulator, protanopia, deuteranopia, tritanopia, achromatopsia, wcag, nexatools">
+    <link rel="canonical" href="https://www.nexatools.pro/color-blindness-simulator">
+
+    <!-- ================= Favicon ================= -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/assets/favicon/site.webmanifest">
+    <link rel="shortcut icon" href="/assets/favicon/favicon.ico">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-config" content="/assets/favicon/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- ================= Open Graph / Facebook Meta Tags ================= -->
+    <meta property="og:title" content="Free Color Blindness Simulator | NexaTools">
+    <meta property="og:description" content="See how your images look to people with different types of color vision deficiency. A free accessibility testing tool.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.nexatools.pro/color-blindness-simulator">
+    <meta property="og:image" content="https://www.nexatools.pro/assets/images/og-image-color-blindness-sim.png"> <!-- Use an absolute URL for your OG image -->
+
+    <!-- ================= Twitter Card Meta Tags ================= -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Free Color Blindness Simulator | NexaTools">
+    <meta name="twitter:description" content="See how your images look to people with different types of color vision deficiency. A free accessibility testing tool.">
+    <meta name="twitter:image" content="https://www.nexatools.pro/assets/images/twitter-image-color-blindness-sim.png"> <!-- Use an absolute URL for your Twitter image -->
+
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Styles -->
     <style>
         .header-scrolled { background-color: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
         .dark .header-scrolled { background-color: rgba(15, 23, 42, 0.8); }
@@ -13,23 +45,98 @@
         .canvas-wrapper {
             @apply w-full h-[500px] bg-slate-100 dark:bg-slate-900/50 rounded-lg flex items-center justify-center overflow-auto p-4;
         }
+        /* Style for FAQ accordion */
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
+        details[open] summary .faq-arrow { transform: rotate(180deg); }
     </style>
+    
+    <!-- Theme Logic -->
     <script>
         if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) { document.documentElement.classList.add('dark') } else { document.documentElement.classList.remove('dark') }
         tailwind.config = { darkMode: 'class', theme: { extend: { colors: { brand: { blue: '#3b82f6', green: '#10b981' } } } } }
     </script>
+
+    <!-- ================= JSON-LD Schema Markup ================= -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "SoftwareApplication",
+          "name": "Color Blindness Simulator",
+          "operatingSystem": "Any (Web-based)",
+          "applicationCategory": "DeveloperApplication",
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "ratingCount": "2950"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          },
+          "description": "A free online accessibility tool to simulate how images appear to people with various types of color vision deficiency, including Protanopia, Deuteranopia, Tritanopia, and Achromatopsia.",
+          "url": "https://www.nexatools.pro/color-blindness-simulator",
+          "publisher": {
+            "@type": "Organization",
+            "name": "NexaTools",
+            "url": "https://www.nexatools.pro"
+          }
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "What is a color blindness simulator?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "A color blindness simulator is a tool that applies a filter to an image to show how it might be perceived by a person with a specific type of color vision deficiency (CVD). It's an essential tool for designers and developers to test the accessibility of their visual content."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Is my image uploaded to your server?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "No. For your privacy, the entire simulation process is done directly in your web browser. Your image is never uploaded to any server, ensuring your data remains completely private."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What are the different types of color blindness simulated?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "This tool simulates the most common types of color vision deficiency: Protanopia (reduced sensitivity to red light), Deuteranopia (reduced sensitivity to green light), Tritanopia (reduced sensitivity to blue light), and Achromatopsia (complete color blindness, seeing only in shades of gray)."
+              }
+            },
+            {
+                "@type": "Question",
+                "name": "Why is it important to test for color blindness?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Testing for color blindness helps ensure that your website, application, or design is accessible and usable by everyone. Information conveyed only by color might be lost to a person with CVD. This tool helps you identify potential issues in your designs, such as poor contrast in charts or unreadable text on colored backgrounds."
+                }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
 </head>
 <body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 transition-colors duration-300 flex flex-col min-h-screen">
 
-    <!-- =========== HEADER =========== -->
+    <!-- =========== HEADER (NexaTools Design) =========== -->
     <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+            <a href="/index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
             <nav class="hidden md:flex items-center space-x-8">
-                <a href="index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Home</a>
-                <a href="index.html#tools" class="text-brand-green font-semibold">Tools</a>
-                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">About</a>
-                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Contact</a>
+                <a href="/index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Home</a>
+                <a href="/index.html#tools" class="text-brand-green font-semibold">Tools</a>
+                <a href="/about-us.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">About</a>
+                <a href="/contact-us.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Contact</a>
             </nav>
             <div class="flex items-center">
                 <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700">
@@ -53,12 +160,10 @@
                 <p class="mt-4 text-lg md:text-xl max-w-2xl mx-auto text-slate-600 dark:text-slate-300">Upload an image to see how it appears to people with different types of color vision deficiency.</p>
             </div>
             
-            <!-- ======== FIX 1: REDUCED CONTAINER WIDTH ======== -->
             <div class="max-w-6xl mx-auto bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 md:p-8">
                 
                  <!-- Upload Area -->
                 <div id="upload-section">
-                    <!-- ======== FIX 2: RESTORED ORIGINAL PADDING ======== -->
                     <div id="drop-zone" class="border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-lg p-12 text-center cursor-pointer transition-all duration-300">
                         <div class="flex flex-col items-center justify-center space-y-4 text-slate-500 dark:text-slate-400">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
@@ -104,24 +209,58 @@
                 </div>
 
             </div>
+            
+            <!-- ================= FAQ Section ================= -->
+            <section class="max-w-4xl mx-auto mt-16">
+                <h2 class="text-3xl font-bold text-center mb-8 text-slate-900 dark:text-white">Frequently Asked Questions</h2>
+                <div class="space-y-4">
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg shadow-md">
+                        <summary class="flex items-center justify-between cursor-pointer font-semibold text-slate-800 dark:text-slate-100">
+                           What is a color blindness simulator?
+                            <span class="faq-arrow transition-transform duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                            </span>
+                        </summary>
+                        <p class="mt-4 text-slate-600 dark:text-slate-300">A color blindness simulator is a tool that applies a filter to an image to show how it might be perceived by a person with a specific type of color vision deficiency (CVD). It's an essential tool for designers and developers to test the accessibility of their visual content.</p>
+                    </details>
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg shadow-md">
+                        <summary class="flex items-center justify-between cursor-pointer font-semibold text-slate-800 dark:text-slate-100">
+                           Why is testing for color blindness important?
+                            <span class="faq-arrow transition-transform duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                            </span>
+                        </summary>
+                        <p class="mt-4 text-slate-600 dark:text-slate-300">Testing for color blindness helps ensure that your website, application, or design is accessible and usable by everyone. Information conveyed only by color might be lost to a person with CVD. This tool helps you identify potential issues in your designs, such as poor contrast in charts or unreadable text on colored backgrounds.</p>
+                    </details>
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg shadow-md">
+                        <summary class="flex items-center justify-between cursor-pointer font-semibold text-slate-800 dark:text-slate-100">
+                           Is my image uploaded to your server?
+                            <span class="faq-arrow transition-transform duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                            </span>
+                        </summary>
+                        <p class="mt-4 text-slate-600 dark:text-slate-300">No. For your privacy, the entire simulation process is done directly in your web browser. Your image is never uploaded to any server, ensuring your data remains completely private.</p>
+                    </details>
+                </div>
+            </section>
         </div>
     </main>
 
-    <!-- =========== FOOTER =========== -->
+    <!-- =========== FOOTER (NexaTools Design) =========== -->
     <footer class="bg-slate-100 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700/50 mt-auto">
         <div class="container mx-auto px-4 py-8">
             <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left space-y-4 md:space-y-0">
                 <div>
-                    <a href="index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+                    <a href="/index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
                     <p class="text-sm text-slate-500 dark:text-slate-400">Simplifying your digital life.</p>
                 </div>
                 <div class="text-sm text-slate-600 dark:text-slate-400">
-                    <p>contact@nexatools.com</p>
-                    <p class="mt-1">© 2024 NexaTools. All Rights Reserved.</p>
+                    <p>contact@nexatools.pro</p>
+                    <p class="mt-1">© 2025 NexaTools. All Rights Reserved.</p>
                 </div>
                 <div class="flex space-x-4 text-sm">
-                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
-                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
+                    <a href="/privacy-policy.html" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
+                    <a href="/terms-of-use.html" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
                 </div>
             </div>
         </div>

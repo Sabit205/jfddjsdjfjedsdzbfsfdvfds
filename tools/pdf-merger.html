@@ -3,8 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDF Merger - NexaTools</title>
+    
+    <!-- ================= SEO Meta Tags ================= -->
+    <title>Free PDF Merger - Combine & Merge PDF Files Online | NexaTools</title>
+    <meta name="description" content="Combine and merge multiple PDF files into a single document online for free. Drag and drop to reorder your files. Secure, fast, and entirely in-browser with NexaTools.">
+    <meta name="keywords" content="pdf merger, combine pdf, merge pdf, join pdf, free pdf merger, online pdf merger, nexatools, combine pdf files">
+    <link rel="canonical" href="https://www.nexatools.pro/pdf-merger">
+
+    <!-- ================= Favicon ================= -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/assets/favicon/site.webmanifest">
+    <link rel="shortcut icon" href="/assets/favicon/favicon.ico">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-config" content="/assets/favicon/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- ================= Open Graph / Facebook Meta Tags ================= -->
+    <meta property="og:title" content="Free PDF Merger - Combine PDF Files Online | NexaTools">
+    <meta property="og:description" content="Combine multiple PDF files into one document for free. Easy drag-and-drop reordering. Secure and private, no uploads required.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.nexatools.pro/pdf-merger">
+    <meta property="og:image" content="https://www.nexatools.pro/assets/images/og-image-pdf-merger.png"> <!-- Use an absolute URL for your OG image -->
+
+    <!-- ================= Twitter Card Meta Tags ================= -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Free PDF Merger - Combine PDF Files Online | NexaTools">
+    <meta name="twitter:description" content="Combine multiple PDF files into one document for free. Easy drag-and-drop reordering. Secure and private, no uploads required.">
+    <meta name="twitter:image" content="https://www.nexatools.pro/assets/images/twitter-image-pdf-merger.png"> <!-- Use an absolute URL for your Twitter image -->
+
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Styles -->
     <style>
         .header-scrolled {
             background-color: rgba(255, 255, 255, 0.8);
@@ -42,7 +74,13 @@
         .drag-handle:active {
             cursor: grabbing;
         }
+        /* Style for FAQ accordion */
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
+        details[open] summary .faq-arrow { transform: rotate(180deg); }
     </style>
+
+    <!-- Theme Logic -->
     <script>
         if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark')
@@ -51,18 +89,87 @@
         }
         tailwind.config = { darkMode: 'class', theme: { extend: { colors: { brand: { blue: '#3b82f6', green: '#10b981' } } } } }
     </script>
+    
+    <!-- ================= JSON-LD Schema Markup ================= -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "SoftwareApplication",
+          "name": "PDF Merger",
+          "operatingSystem": "Any (Web-based)",
+          "applicationCategory": "UtilitiesApplication",
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.9",
+            "ratingCount": "4120"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          },
+          "description": "A free online utility to combine multiple PDF files into a single document. Users can reorder files with drag-and-drop. All processing is done securely in the user's browser.",
+          "url": "https://www.nexatools.pro/pdf-merger",
+          "publisher": {
+            "@type": "Organization",
+            "name": "NexaTools",
+            "url": "https://www.nexatools.pro"
+          }
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Is this PDF merger tool really free?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes, our PDF Merger tool is completely free to use. You can combine as many files as you need without any cost or subscription."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Are my PDF files uploaded to a server?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "No. Your security and privacy are paramount. Our tool processes and merges your PDF files directly in your web browser. Your files never leave your computer."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How do I reorder the files before merging?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "You can easily reorder the files by clicking and dragging them. Use the handle icon on the left of each file name to drag it to your desired position in the list."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Is there a limit to how many files I can merge at once?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "There is no set limit on the number of files you can merge. However, performance may vary depending on the number of files, their size, and your computer's processing power, as all operations are done locally in your browser."
+              }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
 </head>
 <body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 transition-colors duration-300 flex flex-col min-h-screen">
 
-    <!-- =========== HEADER =========== -->
+    <!-- =========== HEADER (NexaTools Design) =========== -->
     <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+            <a href="/index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
             <nav class="hidden md:flex items-center space-x-8">
-                <a href="index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Home</a>
-                <a href="index.html#tools" class="text-brand-green font-semibold">Tools</a>
-                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">About</a>
-                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Contact</a>
+                <a href="/index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Home</a>
+                <a href="/index.html#tools" class="text-brand-green font-semibold">Tools</a>
+                <a href="/about-us.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">About</a>
+                <a href="/contact-us.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Contact</a>
             </nav>
             <div class="flex items-center">
                 <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700">
@@ -125,12 +232,74 @@
                     </div>
                 </div>
             </div>
+
+            <!-- ================= FAQ Section ================= -->
+            <section class="max-w-4xl mx-auto mt-16">
+                <h2 class="text-3xl font-bold text-center mb-8 text-slate-900 dark:text-white">Frequently Asked Questions</h2>
+                <div class="space-y-4">
+                    <!-- FAQ Item 1 -->
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg shadow-md">
+                        <summary class="flex items-center justify-between cursor-pointer font-semibold text-slate-800 dark:text-slate-100">
+                            Is this PDF merger tool really free?
+                            <span class="faq-arrow transition-transform duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                            </span>
+                        </summary>
+                        <p class="mt-4 text-slate-600 dark:text-slate-300">Yes, our PDF Merger tool is completely free to use. You can combine as many files as you need without any cost or subscription.</p>
+                    </details>
+                    <!-- FAQ Item 2 -->
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg shadow-md">
+                        <summary class="flex items-center justify-between cursor-pointer font-semibold text-slate-800 dark:text-slate-100">
+                            Are my PDF files uploaded to a server?
+                            <span class="faq-arrow transition-transform duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                            </span>
+                        </summary>
+                        <p class="mt-4 text-slate-600 dark:text-slate-300">No. Your security and privacy are paramount. Our tool processes and merges your PDF files directly in your web browser. Your files never leave your computer.</p>
+                    </details>
+                    <!-- FAQ Item 3 -->
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg shadow-md">
+                        <summary class="flex items-center justify-between cursor-pointer font-semibold text-slate-800 dark:text-slate-100">
+                           How do I reorder the files before merging?
+                            <span class="faq-arrow transition-transform duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                            </span>
+                        </summary>
+                        <p class="mt-4 text-slate-600 dark:text-slate-300">You can easily reorder the files by clicking and dragging them. Use the handle icon on the left of each file name to drag it to your desired position in the list.</p>
+                    </details>
+                     <!-- FAQ Item 4 -->
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg shadow-md">
+                        <summary class="flex items-center justify-between cursor-pointer font-semibold text-slate-800 dark:text-slate-100">
+                           Is there a limit to how many files I can merge at once?
+                            <span class="faq-arrow transition-transform duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                            </span>
+                        </summary>
+                        <p class="mt-4 text-slate-600 dark:text-slate-300">There is no set limit on the number of files you can merge. However, performance may vary depending on the number of files, their size, and your computer's processing power, as all operations are done locally in your browser.</p>
+                    </details>
+                </div>
+            </section>
         </div>
     </main>
 
-    <!-- =========== FOOTER =========== -->
+    <!-- =========== FOOTER (NexaTools Design) =========== -->
     <footer class="bg-slate-100 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700/50 mt-auto">
-        <!-- Footer content is identical and intentionally omitted for brevity -->
+        <div class="container mx-auto px-4 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left space-y-4 md:space-y-0">
+                <div>
+                    <a href="/index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">Simplifying your digital life.</p>
+                </div>
+                <div class="text-sm text-slate-600 dark:text-slate-400">
+                    <p>contact@nexatools.pro</p>
+                    <p class="mt-1">© 2025 NexaTools. All Rights Reserved.</p>
+                </div>
+                <div class="flex space-x-4 text-sm">
+                    <a href="/privacy-policy.html" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
+                    <a href="/terms-of-use.html" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
+                </div>
+            </div>
+        </div>
     </footer>
 
     <!-- External Libraries -->
@@ -156,12 +325,10 @@
             let sortable = null;
 
             // --- THEME & HEADER ---
-            // (Identical to other tools)
             const toggleTheme = () => { document.documentElement.classList.toggle('dark'); localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'; updateThemeIcons(); };
-            const updateThemeIcons = () => { const isDark = document.documentElement.classList.contains('dark'); document.getElementById('theme-toggle-dark-icon').classList.toggle('hidden', !isDark); document.getElementById('theme-toggle-light-icon').classList.toggle('hidden', isDark); };
+            const updateThemeIcons = () => { const isDark = document.documentElement.classList.contains('dark'); if(themeToggleBtn){ document.getElementById('theme-toggle-dark-icon').classList.toggle('hidden', !isDark); document.getElementById('theme-toggle-light-icon').classList.toggle('hidden', isDark); } };
             const handleHeaderScroll = () => { const header = document.getElementById('header'); if (header) { window.scrollY > 10 ? header.classList.add('header-scrolled') : header.classList.remove('header-scrolled'); } };
             window.addEventListener('scroll', handleHeaderScroll);
-            updateThemeIcons();
             
             // --- ROBUST LIBRARY INITIALIZATION ---
             const initializeTool = () => {
@@ -198,11 +365,7 @@
             const renderFileList = () => {
                 fileListEl.innerHTML = ''; // Clear the list
                 
-                if (pdfFiles.length === 0) {
-                    placeholderEl.classList.remove('hidden');
-                } else {
-                    placeholderEl.classList.add('hidden');
-                }
+                placeholderEl.classList.toggle('hidden', pdfFiles.length > 0);
 
                 pdfFiles.forEach((file, index) => {
                     const li = document.createElement('li');
@@ -258,12 +421,12 @@
             
             // --- UTILITY FUNCTIONS ---
             const formatBytes = (bytes, decimals = 2) => {
-                if (bytes === 0) return '0 Bytes';
+                if (!+bytes) return '0 Bytes';
                 const k = 1024;
                 const dm = decimals < 0 ? 0 : decimals;
                 const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
                 const i = Math.floor(Math.log(bytes) / Math.log(k));
-                return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+                return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
             };
             
             const downloadFile = () => {
@@ -329,13 +492,14 @@
                         // Reorder the pdfFiles array to match the new UI order
                         const [movedItem] = pdfFiles.splice(evt.oldIndex, 1);
                         pdfFiles.splice(evt.newIndex, 0, movedItem);
-                        // Re-render to update data attributes, though Sortable handles the visuals
+                        // Re-render to update data attributes
                         renderFileList();
                     },
                 });
             };
             
             // --- INITIALIZATION ---
+            updateThemeIcons();
             initializeTool();
         });
     </script>

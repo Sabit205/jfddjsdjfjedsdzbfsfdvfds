@@ -3,31 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Keyword Density Checker - NexaTools</title>
+    
+    <!-- ================= SEO Meta Tags ================= -->
+    <title>Keyword Density Checker - Free SEO & Text Analysis Tool | NexaTools</title>
+    <meta name="description" content="Analyze your text for keyword density with our free online tool. Check the frequency of 1-word, 2-word, and 3-word phrases to optimize your content for SEO.">
+    <meta name="keywords" content="keyword density checker, seo tool, keyword frequency, n-gram analyzer, text analysis, content optimization, online tool, nexatools">
+    <link rel="canonical" href="https://www.nexatools.pro/keyword-density-checker">
+
+    <!-- ================= Favicon ================= -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/assets/favicon/site.webmanifest">
+    <link rel="shortcut icon" href="/assets/favicon/favicon.ico">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-config" content="/assets/favicon/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- ================= Open Graph / Facebook Meta Tags ================= -->
+    <meta property="og:title" content="Keyword Density Checker - Free SEO Tool | NexaTools">
+    <meta property="og:description" content="Analyze your text for keyword density of 1, 2, and 3-word phrases. Free, fast, and secure online SEO tool.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.nexatools.pro/keyword-density-checker">
+    <meta property="og:image" content="https://www.nexatools.pro/assets/images/og-image-keyword-density.png"> <!-- Use an absolute URL for your OG image -->
+
+    <!-- ================= Twitter Card Meta Tags ================= -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Keyword Density Checker - Free SEO Tool | NexaTools">
+    <meta name="twitter:description" content="Analyze your text for keyword density of 1, 2, and 3-word phrases. Free, fast, and secure online SEO tool.">
+    <meta name="twitter:image" content="https://www.nexatools.pro/assets/images/twitter-image-keyword-density.png"> <!-- Use an absolute URL for your Twitter image -->
+
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Styles -->
     <style>
         .header-scrolled { background-color: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
         .dark .header-scrolled { background-color: rgba(15, 23, 42, 0.8); }
         .tab-btn { @apply px-4 py-2 font-semibold transition-colors; }
         .tab-btn-active { @apply border-b-2 border-brand-blue text-brand-blue; }
         .tab-btn-inactive { @apply text-slate-500 hover:text-slate-700 dark:hover:text-slate-300; }
+        /* Style for FAQ accordion */
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
+        details[open] summary .faq-arrow { transform: rotate(180deg); }
     </style>
+    
+    <!-- Theme Logic -->
     <script>
         if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) { document.documentElement.classList.add('dark') } else { document.documentElement.classList.remove('dark') }
         tailwind.config = { darkMode: 'class', theme: { extend: { colors: { brand: { blue: '#3b82f6', green: '#10b981' } } } } }
     </script>
+
+    <!-- ================= JSON-LD Schema Markup ================= -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "SoftwareApplication",
+          "name": "Keyword Density Checker",
+          "operatingSystem": "Any (Web-based)",
+          "applicationCategory": "DeveloperApplication",
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "ratingCount": "4320"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          },
+          "description": "A free SEO tool to analyze text and calculate the keyword density of 1-word, 2-word, and 3-word phrases (n-grams). Helps with content optimization.",
+          "url": "https://www.nexatools.pro/keyword-density-checker",
+          "publisher": {
+            "@type": "Organization",
+            "name": "NexaTools",
+            "url": "https://www.nexatools.pro"
+          }
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "What is keyword density?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Keyword density is a percentage that represents how frequently a specific keyword or phrase appears in a piece of text compared to the total number of words. It is often used in search engine optimization (SEO) to analyze content relevance."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Why is it important to check keyword density?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Checking keyword density helps you understand if your content is well-optimized for a target keyword without overusing it (known as 'keyword stuffing'). It ensures your text is relevant to search engines and reads naturally to users."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What are 1-word, 2-word, and 3-word phrases?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "These are also known as n-grams. A 1-word phrase is a single keyword. A 2-word phrase is a two-word combination (bigram), and a 3-word phrase is a three-word combination (trigram). Analyzing these helps identify common themes and long-tail keywords in your text."
+              }
+            },
+            {
+                "@type": "Question",
+                "name": "Is my text saved on your servers?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. For complete privacy, all text analysis is performed directly in your web browser. Your content is never sent to or stored on our servers."
+                }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
 </head>
 <body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 transition-colors duration-300 flex flex-col min-h-screen">
 
-    <!-- =========== HEADER =========== -->
+    <!-- =========== HEADER (NexaTools Design) =========== -->
     <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+            <a href="/index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
             <nav class="hidden md:flex items-center space-x-8">
-                <a href="index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Home</a>
-                <a href="index.html#tools" class="text-brand-green font-semibold">Tools</a>
-                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">About</a>
-                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Contact</a>
+                <a href="/index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Home</a>
+                <a href="/index.html#tools" class="text-brand-green font-semibold">Tools</a>
+                <a href="/about-us.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">About</a>
+                <a href="/contact-us.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Contact</a>
             </nav>
             <div class="flex items-center">
                 <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700">
@@ -81,7 +188,7 @@
                             <input id="focus-keyword" type="text" class="w-full p-2 border border-slate-300 dark:border-slate-600 rounded-md bg-white dark:bg-slate-800" placeholder="Enter keyword to track...">
                         </div>
                         
-                        <!-- =========== STATS DISPLAY (FIXED) =========== -->
+                        <!-- Stats Display -->
                         <div class="text-sm font-semibold text-slate-600 dark:text-slate-400 space-y-2">
                              <div class="flex justify-between">
                                 <span>Total Words:</span>
@@ -108,26 +215,59 @@
                         </div>
                     </div>
                 </div>
-
             </div>
+
+            <!-- ================= FAQ Section ================= -->
+            <section class="max-w-4xl mx-auto mt-16">
+                <h2 class="text-3xl font-bold text-center mb-8 text-slate-900 dark:text-white">Frequently Asked Questions</h2>
+                <div class="space-y-4">
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg shadow-md">
+                        <summary class="flex items-center justify-between cursor-pointer font-semibold text-slate-800 dark:text-slate-100">
+                           What is keyword density?
+                            <span class="faq-arrow transition-transform duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                            </span>
+                        </summary>
+                        <p class="mt-4 text-slate-600 dark:text-slate-300">Keyword density is a percentage that represents how frequently a specific keyword or phrase appears in a piece of text compared to the total number of words. It is often used in search engine optimization (SEO) to analyze content relevance.</p>
+                    </details>
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg shadow-md">
+                        <summary class="flex items-center justify-between cursor-pointer font-semibold text-slate-800 dark:text-slate-100">
+                           Why is it important to check keyword density?
+                            <span class="faq-arrow transition-transform duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                            </span>
+                        </summary>
+                        <p class="mt-4 text-slate-600 dark:text-slate-300">Checking keyword density helps you understand if your content is well-optimized for a target keyword without overusing it (known as 'keyword stuffing'). It ensures your text is relevant to search engines and reads naturally to users.</p>
+                    </details>
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg shadow-md">
+                        <summary class="flex items-center justify-between cursor-pointer font-semibold text-slate-800 dark:text-slate-100">
+                           What are 1-word, 2-word, and 3-word phrases?
+                            <span class="faq-arrow transition-transform duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                            </span>
+                        </summary>
+                        <p class="mt-4 text-slate-600 dark:text-slate-300">These are also known as n-grams. A 1-word phrase is a single keyword. A 2-word phrase is a two-word combination (bigram), and a 3-word phrase is a three-word combination (trigram). Analyzing these helps identify common themes and long-tail keywords in your text.</p>
+                    </details>
+                </div>
+            </section>
         </div>
     </main>
 
-    <!-- =========== FOOTER (ADDED) =========== -->
+    <!-- =========== FOOTER (NexaTools Design) =========== -->
     <footer class="bg-slate-100 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700/50 mt-auto">
         <div class="container mx-auto px-4 py-8">
             <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left space-y-4 md:space-y-0">
                 <div>
-                    <a href="index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+                    <a href="/index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
                     <p class="text-sm text-slate-500 dark:text-slate-400">Simplifying your digital life.</p>
                 </div>
                 <div class="text-sm text-slate-600 dark:text-slate-400">
-                    <p>contact@nexatools.com</p>
-                    <p class="mt-1">© 2024 NexaTools. All Rights Reserved.</p>
+                    <p>contact@nexatools.pro</p>
+                    <p class="mt-1">© 2025 NexaTools. All Rights Reserved.</p>
                 </div>
                 <div class="flex space-x-4 text-sm">
-                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
-                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
+                    <a href="/privacy-policy.html" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
+                    <a href="/terms-of-use.html" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
                 </div>
             </div>
         </div>

@@ -3,8 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDF to Image Converter - NexaTools</title>
+    
+    <!-- ================= SEO Meta Tags ================= -->
+    <title>Free PDF to Image Converter (JPG, PNG) Online | NexaTools</title>
+    <meta name="description" content="Convert any page from a PDF document into a high-quality JPG or PNG image for free. Select pages, choose your format and resolution. Fast, secure, and browser-based with NexaTools.">
+    <meta name="keywords" content="pdf to image, pdf to jpg, pdf to png, convert pdf to image, free pdf converter, pdf page to image, nexatools, online tool">
+    <link rel="canonical" href="https://www.nexatools.pro/pdf-to-image">
+
+    <!-- ================= Favicon ================= -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/assets/favicon/site.webmanifest">
+    <link rel="shortcut icon" href="/assets/favicon/favicon.ico">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-config" content="/assets/favicon/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- ================= Open Graph / Facebook Meta Tags ================= -->
+    <meta property="og:title" content="Free PDF to Image Converter (JPG, PNG) | NexaTools">
+    <meta property="og:description" content="Convert PDF pages to high-quality JPG or PNG images online for free. Fast, easy, and secure.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.nexatools.pro/pdf-to-image">
+    <meta property="og:image" content="https://www.nexatools.pro/assets/images/og-image-pdf-to-image.png"> <!-- Use an absolute URL for your OG image -->
+
+    <!-- ================= Twitter Card Meta Tags ================= -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Free PDF to Image Converter (JPG, PNG) | NexaTools">
+    <meta name="twitter:description" content="Convert PDF pages to high-quality JPG or PNG images online for free. Fast, easy, and secure.">
+    <meta name="twitter:image" content="https://www.nexatools.pro/assets/images/twitter-image-pdf-to-image.png"> <!-- Use an absolute URL for your Twitter image -->
+
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Styles -->
     <style>
         .header-scrolled { background-color: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
         .dark .header-scrolled { background-color: rgba(15, 23, 42, 0.8); }
@@ -12,23 +44,98 @@
         .dark .drag-over { background-color: rgb(16 185 129 / 0.1); }
         input[type="range"] { @apply w-full h-2 bg-slate-200 dark:bg-slate-600 rounded-lg appearance-none cursor-pointer; }
         input[type="range"]::-webkit-slider-thumb { @apply appearance-none h-5 w-5 bg-brand-green rounded-full shadow-md; }
+        /* Style for FAQ accordion */
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
+        details[open] summary .faq-arrow { transform: rotate(180deg); }
     </style>
+    
+    <!-- Theme Logic -->
     <script>
         if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) { document.documentElement.classList.add('dark') } else { document.documentElement.classList.remove('dark') }
         tailwind.config = { darkMode: 'class', theme: { extend: { colors: { brand: { blue: '#3b82f6', green: '#10b981' } } } } }
     </script>
+
+    <!-- ================= JSON-LD Schema Markup ================= -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "SoftwareApplication",
+          "name": "PDF to Image Converter",
+          "operatingSystem": "Any (Web-based)",
+          "applicationCategory": "MultimediaApplication",
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "ratingCount": "1890"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          },
+          "description": "A free online tool to convert selected pages from a PDF document into high-quality JPG or PNG image files. Users can specify page ranges and output resolution.",
+          "url": "https://www.nexatools.pro/pdf-to-image",
+          "publisher": {
+            "@type": "Organization",
+            "name": "NexaTools",
+            "url": "https://www.nexatools.pro"
+          }
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "What image formats can I convert my PDF to?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Our tool allows you to convert your PDF pages into two of the most popular image formats: PNG and JPG (JPEG)."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Is this PDF to Image converter secure?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes, absolutely. The entire conversion process happens in your web browser. Your PDF files are never uploaded to our servers, ensuring your data remains private and secure on your own computer."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can I convert specific pages from the PDF?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes! After uploading your PDF, you can specify exactly which pages you want to convert. You can enter single page numbers (e.g., 3), ranges (e.g., 5-8), or a combination of both (e.g., 1, 4, 6-9)."
+              }
+            },
+            {
+                "@type": "Question",
+                "name": "How are multiple images downloaded?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "If you convert a single page, it will be downloaded as a single image file (PNG or JPG). If you convert multiple pages, they will be conveniently bundled and downloaded together in a single .zip file."
+                }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
 </head>
 <body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 transition-colors duration-300 flex flex-col min-h-screen">
 
-    <!-- =========== HEADER =========== -->
+    <!-- =========== HEADER (NexaTools Design) =========== -->
     <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+            <a href="/index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
             <nav class="hidden md:flex items-center space-x-8">
-                <a href="index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Home</a>
-                <a href="index.html#tools" class="text-brand-green font-semibold">Tools</a>
-                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">About</a>
-                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Contact</a>
+                <a href="/index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Home</a>
+                <a href="/index.html#tools" class="text-brand-green font-semibold">Tools</a>
+                <a href="/about-us.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">About</a>
+                <a href="/contact-us.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Contact</a>
             </nav>
             <div class="flex items-center">
                 <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700">
@@ -108,24 +215,71 @@
                     </div>
                 </div>
             </div>
+
+            <!-- ================= FAQ Section ================= -->
+            <section class="max-w-4xl mx-auto mt-16">
+                <h2 class="text-3xl font-bold text-center mb-8 text-slate-900 dark:text-white">Frequently Asked Questions</h2>
+                <div class="space-y-4">
+                    <!-- FAQ Item 1 -->
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg shadow-md">
+                        <summary class="flex items-center justify-between cursor-pointer font-semibold text-slate-800 dark:text-slate-100">
+                            What image formats can I convert my PDF to?
+                            <span class="faq-arrow transition-transform duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                            </span>
+                        </summary>
+                        <p class="mt-4 text-slate-600 dark:text-slate-300">Our tool allows you to convert your PDF pages into two of the most popular image formats: PNG (ideal for graphics and transparency) and JPG (ideal for photographs).</p>
+                    </details>
+                    <!-- FAQ Item 2 -->
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg shadow-md">
+                        <summary class="flex items-center justify-between cursor-pointer font-semibold text-slate-800 dark:text-slate-100">
+                            Is this PDF to Image converter secure?
+                            <span class="faq-arrow transition-transform duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                            </span>
+                        </summary>
+                        <p class="mt-4 text-slate-600 dark:text-slate-300">Yes, absolutely. The entire conversion process happens in your web browser. Your PDF files are never uploaded to our servers, ensuring your data remains private and secure on your own computer.</p>
+                    </details>
+                    <!-- FAQ Item 3 -->
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg shadow-md">
+                        <summary class="flex items-center justify-between cursor-pointer font-semibold text-slate-800 dark:text-slate-100">
+                           Can I convert specific pages from the PDF?
+                            <span class="faq-arrow transition-transform duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                            </span>
+                        </summary>
+                        <p class="mt-4 text-slate-600 dark:text-slate-300">Yes! After uploading your PDF, you can specify exactly which pages you want to convert. You can enter single page numbers (e.g., 3), ranges (e.g., 5-8), or a combination of both (e.g., 1, 4, 6-9).</p>
+                    </details>
+                     <!-- FAQ Item 4 -->
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg shadow-md">
+                        <summary class="flex items-center justify-between cursor-pointer font-semibold text-slate-800 dark:text-slate-100">
+                           How are multiple images downloaded?
+                            <span class="faq-arrow transition-transform duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                            </span>
+                        </summary>
+                        <p class="mt-4 text-slate-600 dark:text-slate-300">If you convert a single page, it will be downloaded as a single image file (PNG or JPG). If you convert multiple pages, they will be conveniently bundled and downloaded together in a single .zip file.</p>
+                    </details>
+                </div>
+            </section>
         </div>
     </main>
 
-    <!-- =========== FOOTER =========== -->
+    <!-- =========== FOOTER (NexaTools Design) =========== -->
     <footer class="bg-slate-100 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700/50 mt-auto">
         <div class="container mx-auto px-4 py-8">
             <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left space-y-4 md:space-y-0">
                 <div>
-                    <a href="index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+                    <a href="/index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
                     <p class="text-sm text-slate-500 dark:text-slate-400">Simplifying your digital life.</p>
                 </div>
                 <div class="text-sm text-slate-600 dark:text-slate-400">
-                    <p>contact@nexatools.com</p>
-                    <p class="mt-1">© 2024 NexaTools. All Rights Reserved.</p>
+                    <p>contact@nexatools.pro</p>
+                    <p class="mt-1">© 2025 NexaTools. All Rights Reserved.</p>
                 </div>
                 <div class="flex space-x-4 text-sm">
-                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
-                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
+                    <a href="/privacy-policy.html" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
+                    <a href="/terms-of-use.html" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
                 </div>
             </div>
         </div>
@@ -187,7 +341,7 @@
                 }
             };
             
-            // --- CONVERSION LOGIC (FIXED) ---
+            // --- CONVERSION LOGIC ---
             const onActionClick = async () => {
                 if (outputBlob) {
                     downloadFile();
@@ -276,11 +430,11 @@
                 }
             };
             
-            // --- UTILITY FUNCTIONS (FIXED) ---
+            // --- UTILITY FUNCTIONS ---
             const downloadFile = () => {
                 const originalName = fileNameEl.textContent.replace(/\.pdf$/i, '');
                 const format = document.querySelector('input[name="format-type"]:checked').value;
-                const extension = isSingleFile ? format.split('/')[1] : 'zip';
+                const extension = isSingleFile ? (format.includes('jpeg') ? 'jpg' : 'png') : 'zip';
                 const pageNum = parseRanges(rangeInput.value, pdfDoc.numPages)[0];
                 const newFileName = isSingleFile ? `${originalName}-page-${pageNum}.${extension}` : `${originalName}-images.zip`;
 

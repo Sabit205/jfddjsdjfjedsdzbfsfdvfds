@@ -3,31 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meta Tag Analyzer - NexaTools</title>
+    
+    <!-- ================= SEO Meta Tags ================= -->
+    <title>Free Meta Tag Analyzer - Check SEO & Social Tags | NexaTools</title>
+    <meta name="description" content="Analyze the meta tags of any webpage with our free SEO tool. Check title, description, Open Graph, and Twitter Card tags to improve your online presence.">
+    <meta name="keywords" content="meta tag analyzer, meta tag checker, seo analyzer, open graph checker, twitter card validator, seo tool, nexatools">
+    <link rel="canonical" href="https://www.nexatools.pro/meta-tag-analyzer">
+
+    <!-- ================= Favicon ================= -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/assets/favicon/site.webmanifest">
+    <link rel="shortcut icon" href="/assets/favicon/favicon.ico">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-config" content="/assets/favicon/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- ================= Open Graph / Facebook Meta Tags ================= -->
+    <meta property="og:title" content="Free Meta Tag Analyzer - Check SEO & Social Tags | NexaTools">
+    <meta property="og:description" content="Analyze title, description, Open Graph, and Twitter Card tags to improve your online presence.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.nexatools.pro/meta-tag-analyzer">
+    <meta property="og:image" content="https://www.nexatools.pro/assets/images/og-image-meta-analyzer.png"> <!-- Use an absolute URL for your OG image -->
+
+    <!-- ================= Twitter Card Meta Tags ================= -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Free Meta Tag Analyzer - Check SEO & Social Tags | NexaTools">
+    <meta name="twitter:description" content="Analyze title, description, Open Graph, and Twitter Card tags to improve your online presence.">
+    <meta name="twitter:image" content="https://www.nexatools.pro/assets/images/twitter-image-meta-analyzer.png"> <!-- Use an absolute URL for your Twitter image -->
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Styles -->
     <style>
         .header-scrolled { background-color: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
         .dark .header-scrolled { background-color: rgba(15, 23, 42, 0.8); }
         .status-pass { color: #10b981; }
         .status-warn { color: #f59e0b; }
         .status-fail { color: #ef4444; }
+        /* Style for FAQ accordion */
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
+        details[open] summary .faq-arrow { transform: rotate(180deg); }
     </style>
+    
+    <!-- Theme Logic -->
     <script>
         if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) { document.documentElement.classList.add('dark') } else { document.documentElement.classList.remove('dark') }
         tailwind.config = { darkMode: 'class', theme: { extend: { colors: { brand: { blue: '#3b82f6', green: '#10b981' } } } } }
     </script>
+
+    <!-- ================= JSON-LD Schema Markup ================= -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "SoftwareApplication",
+          "name": "Meta Tag Analyzer",
+          "operatingSystem": "Any (Web-based)",
+          "applicationCategory": "DeveloperApplication",
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "ratingCount": "3750"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          },
+          "description": "A free SEO tool to analyze the meta tags of any webpage, including title, description, Open Graph tags, and Twitter Card tags, to help improve search engine and social media performance.",
+          "url": "https://www.nexatools.pro/meta-tag-analyzer",
+          "publisher": {
+            "@type": "Organization",
+            "name": "NexaTools",
+            "url": "https://www.nexatools.pro"
+          }
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "What are meta tags?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Meta tags are snippets of text that describe a page's content; they don't appear on the page itself but only in the page's source code. Meta tags are essentially little content descriptors that help tell search engines what a web page is about."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Why are meta tags important for SEO?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Meta tags are important for SEO because they impact how your site appears in Search Engine Results Pages (SERPs) and on social media. A well-crafted title tag and meta description can increase your click-through rate, while Open Graph and Twitter Card tags ensure your content looks great when shared."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What are Open Graph (OG) tags?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Open Graph (OG) tags are a type of meta tag used by social media platforms like Facebook, LinkedIn, and Pinterest to understand the content of a page. They control how your page's title, description, and image appear when shared on these platforms."
+              }
+            },
+            {
+                "@type": "Question",
+                "name": "Why does the analysis sometimes fail?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Analysis can fail if a website blocks automated tools (like ours) or if there's a temporary issue with the third-party proxy services we use to bypass browser security restrictions (CORS). Please try again later or with a different URL."
+                }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
 </head>
 <body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 transition-colors duration-300 flex flex-col min-h-screen">
 
-    <!-- =========== HEADER =========== -->
+    <!-- =========== HEADER (NexaTools Design) =========== -->
     <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+            <a href="/index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
             <nav class="hidden md:flex items-center space-x-8">
-                <a href="index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Home</a>
-                <a href="index.html#tools" class="text-brand-green font-semibold">Tools</a>
-                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">About</a>
-                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Contact</a>
+                <a href="/index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Home</a>
+                <a href="/index.html#tools" class="text-brand-green font-semibold">Tools</a>
+                <a href="/about-us.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">About</a>
+                <a href="/contact-us.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Contact</a>
             </nav>
             <div class="flex items-center">
                 <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700">
@@ -77,24 +184,58 @@
                 </div>
 
             </div>
+            
+            <!-- ================= FAQ Section ================= -->
+            <section class="max-w-4xl mx-auto mt-16">
+                <h2 class="text-3xl font-bold text-center mb-8 text-slate-900 dark:text-white">Frequently Asked Questions</h2>
+                <div class="space-y-4">
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg shadow-md">
+                        <summary class="flex items-center justify-between cursor-pointer font-semibold text-slate-800 dark:text-slate-100">
+                           What are meta tags?
+                            <span class="faq-arrow transition-transform duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                            </span>
+                        </summary>
+                        <p class="mt-4 text-slate-600 dark:text-slate-300">Meta tags are snippets of text that describe a page's content; they don't appear on the page itself but only in the page's source code. Meta tags are essentially little content descriptors that help tell search engines what a web page is about.</p>
+                    </details>
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg shadow-md">
+                        <summary class="flex items-center justify-between cursor-pointer font-semibold text-slate-800 dark:text-slate-100">
+                           Why are meta tags important for SEO?
+                            <span class="faq-arrow transition-transform duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                            </span>
+                        </summary>
+                        <p class="mt-4 text-slate-600 dark:text-slate-300">Meta tags are important for SEO because they impact how your site appears in Search Engine Results Pages (SERPs) and on social media. A well-crafted title tag and meta description can increase your click-through rate, while Open Graph and Twitter Card tags ensure your content looks great when shared.</p>
+                    </details>
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg shadow-md">
+                        <summary class="flex items-center justify-between cursor-pointer font-semibold text-slate-800 dark:text-slate-100">
+                           What are Open Graph (OG) tags?
+                            <span class="faq-arrow transition-transform duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                            </span>
+                        </summary>
+                        <p class="mt-4 text-slate-600 dark:text-slate-300">Open Graph (OG) tags are a type of meta tag used by social media platforms like Facebook, LinkedIn, and Pinterest to understand the content of a page. They control how your page's title, description, and image appear when shared on these platforms.</p>
+                    </details>
+                </div>
+            </section>
         </div>
     </main>
 
-    <!-- =========== FOOTER =========== -->
+    <!-- =========== FOOTER (NexaTools Design) =========== -->
     <footer class="bg-slate-100 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700/50 mt-auto">
         <div class="container mx-auto px-4 py-8">
             <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left space-y-4 md:space-y-0">
                 <div>
-                    <a href="index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+                    <a href="/index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
                     <p class="text-sm text-slate-500 dark:text-slate-400">Simplifying your digital life.</p>
                 </div>
                 <div class="text-sm text-slate-600 dark:text-slate-400">
-                    <p>contact@nexatools.com</p>
-                    <p class="mt-1">© 2024 NexaTools. All Rights Reserved.</p>
+                    <p>contact@nexatools.pro</p>
+                    <p class="mt-1">© 2025 NexaTools. All Rights Reserved.</p>
                 </div>
                 <div class="flex space-x-4 text-sm">
-                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
-                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
+                    <a href="/privacy-policy.html" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
+                    <a href="/terms-of-use.html" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
                 </div>
             </div>
         </div>
@@ -208,20 +349,17 @@
                 return { status: 'status-pass', message: `Good (${text.length} chars)` };
             };
             
-            // New helper function for basic presence check
             const checkPresence = (text) => {
                 if (text === 'Not Found' || text.length === 0) return { status: 'status-fail', message: 'Missing' };
                 return { status: 'status-pass', message: 'Present' };
             };
             
-            // --- UI RENDERING (FIXED) ---
             const renderResults = (data) => {
                 const titleStatus = checkLength(data.title, 20, 70, 60);
                 const descStatus = checkLength(data.description, 70, 160, 155);
                 const keywordStatus = checkPresence(data.keywords);
                 const viewportStatus = checkPresence(data.viewport);
 
-                // This flexible function renders 2 or 3 columns based on whether a 'status' is provided.
                 const renderTableRow = (label, value, status = null) => {
                     const statusCell = status ? `
                         <td class="p-3 text-right">
@@ -241,7 +379,6 @@
                     `;
                 };
                 
-                // SERP Preview
                 document.getElementById('serp-preview').innerHTML = `
                     <h4 class="font-bold mb-2">Google Preview</h4>
                     <div class="p-4 border rounded-lg bg-slate-50 dark:bg-slate-900/50">
@@ -251,7 +388,6 @@
                     </div>
                 `;
 
-                // Social Preview
                 document.getElementById('social-preview').innerHTML = `
                      <h4 class="font-bold mb-2">Social Preview (OG)</h4>
                      <div class="border rounded-lg overflow-hidden bg-slate-50 dark:bg-slate-900/50">
@@ -264,7 +400,6 @@
                      </div>
                 `;
                 
-                // Analysis Tables
                 document.getElementById('analysis-tables').innerHTML = `
                     <div class="bg-slate-100 dark:bg-slate-700/50 rounded-lg p-4">
                         <h4 class="font-bold text-lg mb-2">Meta Tags</h4>

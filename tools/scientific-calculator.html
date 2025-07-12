@@ -3,7 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scientific Calculator - NexaTools</title>
+    <title>Scientific Calculator - Online Math & Function Tool - NexaTools</title>
+    
+    <!-- ========= High SEO Meta Tags ========= -->
+    <meta name="description" content="Perform basic and advanced mathematical calculations with our free online scientific calculator. Supports trigonometry, logarithms, exponents, and more. Secure and easy to use.">
+    <meta name="keywords" content="scientific calculator, online calculator, math calculator, trigonometry calculator, log calculator, free calculator, nexatools">
+    <link rel="canonical" href="https://www.nexatools.pro/scientific-calculator.html">
+    <meta name="robots" content="index, follow">
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.nexatools.pro/scientific-calculator.html">
+    <meta property="og:title" content="Scientific Calculator - Online Math & Function Tool - NexaTools">
+    <meta property="og:description" content="Perform basic and advanced mathematical calculations with our free online scientific calculator. Supports trigonometry, logarithms, exponents, and more.">
+    <meta property="og:image" content="https://www.nexatools.pro/assets/images/og-image-calculator.png"> <!-- Create and host a relevant image for social sharing -->
+    <meta property="og:site_name" content="NexaTools">
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.nexatools.pro/scientific-calculator.html">
+    <meta property="twitter:title" content="Scientific Calculator - Online Math & Function Tool - NexaTools">
+    <meta property="twitter:description" content="Perform basic and advanced mathematical calculations with our free online scientific calculator. Supports trigonometry, logarithms, exponents, and more.">
+    <meta property="twitter:image" content="https://www.nexatools.pro/assets/images/og-image-calculator.png"> <!-- Use the same image as OG -->
+
+    <!-- ========= Favicon ========= -->
+    <link rel="icon" href="/assets/images/favicon.ico" sizes="any">
+    <link rel="icon" href="/assets/images/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
+    <link rel="manifest" href="/assets/site.webmanifest">
+    
+    <!-- ========= JSON-LD Schema Markup ========= -->
+    <script type="application/ld+json">
+    [
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Scientific Calculator",
+        "description": "A free online scientific calculator that performs basic and advanced mathematical functions, including trigonometric, logarithmic, and exponential calculations.",
+        "url": "https://www.nexatools.pro/scientific-calculator.html",
+        "applicationCategory": "EducationalApplication",
+        "operatingSystem": "Web",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "creator": {
+            "@type": "Organization",
+            "url": "https://www.nexatools.pro",
+            "name": "NexaTools",
+            "logo": "https://www.nexatools.pro/assets/images/logo.png"
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is the difference between DEG and RAD mode?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "DEG (Degrees) and RAD (Radians) are two different units for measuring angles. A full circle is 360 degrees or 2π radians. You should use DEG mode for most everyday geometry problems. RAD mode is typically used in higher-level mathematics and physics. Make sure you select the correct mode for your trigonometric calculations (sin, cos, tan)."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do I use functions like sin, cos, or log?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "To use a function, press the function button (e.g., 'sin'), which will add 'sin(' to the display. Then, enter the number you want to apply the function to and close the parenthesis ')'. For example, to calculate the sine of 30 degrees, you would type 'sin(30)'."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is my calculation data saved or stored anywhere?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. This calculator operates entirely within your browser (client-side). Your inputs and calculations are not sent to our servers or stored anywhere, ensuring your privacy."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do I calculate powers (x^y) or factorials (x!)?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "To calculate a power, use the 'x^y' button. For example, to calculate 2 to the power of 3, you would enter '2^3'. To calculate a factorial, enter the number and then press the 'x!' button, which adds the '!' operator. For example, to calculate the factorial of 5, enter '5!'."
+            }
+          }
+        ]
+      }
+    ]
+    </script>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .header-scrolled {
@@ -14,13 +104,11 @@
         .dark .header-scrolled {
             background-color: rgba(15, 23, 42, 0.8);
         }
-        /* Custom styles for calculator display */
         #main-display {
             font-variant-numeric: tabular-nums;
         }
-        /* Active state for DEG/RAD toggle */
         .btn-toggle-active {
-            background-color: #3b82f6 !important; /* brand-blue */
+            background-color: #3b82f6 !important;
             color: white !important;
         }
     </style>
@@ -53,12 +141,12 @@
     <!-- =========== HEADER =========== -->
     <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+            <a href="/index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
             <nav class="hidden md:flex items-center space-x-8">
-                <a href="index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Home</a>
-                <a href="index.html#tools" class="text-brand-blue font-semibold">Tools</a>
-                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">About</a>
-                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Contact</a>
+                <a href="/index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Home</a>
+                <a href="/index.html#tools" class="text-brand-blue font-semibold">Tools</a>
+                <a href="/about-us.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">About</a>
+                <a href="/contact-us.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors">Contact</a>
             </nav>
             <div class="flex items-center">
                 <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
@@ -143,21 +231,72 @@
         </div>
     </main>
 
+    <!-- =========== NEW: FAQ Section =========== -->
+    <section class="py-16 bg-slate-100 dark:bg-slate-900">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto">
+                <h2 class="text-3xl font-bold text-center mb-8 text-slate-900 dark:text-white">Frequently Asked Questions</h2>
+                <div class="space-y-4">
+                    <!-- FAQ Item 1 -->
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg cursor-pointer shadow-sm">
+                        <summary class="flex justify-between items-center font-semibold text-slate-800 dark:text-slate-100 list-none">
+                            What is the difference between DEG and RAD mode?
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </summary>
+                        <div class="mt-4 text-slate-600 dark:text-slate-400">
+                            <p>DEG (Degrees) and RAD (Radians) are two different units for measuring angles. A full circle is 360 degrees or 2π radians. You should use DEG mode for most everyday geometry problems. RAD mode is typically used in higher-level mathematics and physics. Make sure you select the correct mode for your trigonometric calculations (sin, cos, tan).</p>
+                        </div>
+                    </details>
+                    <!-- FAQ Item 2 -->
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg cursor-pointer shadow-sm">
+                        <summary class="flex justify-between items-center font-semibold text-slate-800 dark:text-slate-100 list-none">
+                            How do I use functions like sin, cos, or log?
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </summary>
+                        <div class="mt-4 text-slate-600 dark:text-slate-400">
+                           <p>To use a function, press the function button (e.g., 'sin'), which will add 'sin(' to the display. Then, enter the number you want to apply the function to and close the parenthesis ')'. For example, to calculate the sine of 30 degrees, you would type 'sin(30)'.</p>
+                        </div>
+                    </details>
+                    <!-- FAQ Item 3 -->
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg cursor-pointer shadow-sm">
+                        <summary class="flex justify-between items-center font-semibold text-slate-800 dark:text-slate-100 list-none">
+                            Is my calculation data saved or stored anywhere?
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </summary>
+                        <div class="mt-4 text-slate-600 dark:text-slate-400">
+                           <p>No. This calculator operates entirely within your browser (client-side). Your inputs and calculations are not sent to our servers or stored anywhere, ensuring your privacy.</p>
+                        </div>
+                    </details>
+                    <!-- FAQ Item 4 -->
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg cursor-pointer shadow-sm">
+                        <summary class="flex justify-between items-center font-semibold text-slate-800 dark:text-slate-100 list-none">
+                            How do I calculate powers (x^y) or factorials (x!)?
+                           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </summary>
+                        <div class="mt-4 text-slate-600 dark:text-slate-400">
+                           <p>To calculate a power, use the 'x^y' button. For example, to calculate 2 to the power of 3, you would enter '2^3'. To calculate a factorial, enter the number and then press the 'x!' button, which adds the '!' operator. For example, to calculate the factorial of 5, enter '5!'.</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- =========== FOOTER =========== -->
     <footer class="bg-slate-100 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700/50 mt-auto">
         <div class="container mx-auto px-4 py-8">
             <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left space-y-4 md:space-y-0">
                 <div>
-                    <a href="index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+                    <a href="/index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
                     <p class="text-sm text-slate-500 dark:text-slate-400">Simplifying your digital life.</p>
                 </div>
                 <div class="text-sm text-slate-600 dark:text-slate-400">
-                    <p>contact@nexatools.com</p>
-                    <p class="mt-1">© 2024 NexaTools. All Rights Reserved.</p>
+                    <p>contact@nexatools.pro</p>
+                    <p class="mt-1">© 2025 NexaTools. All Rights Reserved.</p>
                 </div>
                 <div class="flex space-x-4 text-sm">
-                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
-                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
+                    <a href="/privacy-policy.html" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
+                    <a href="/terms-of-use.html" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
                 </div>
             </div>
         </div>
@@ -212,7 +351,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (value === 'DEL') {
             expression = expression.slice(0, -1);
-            mainDisplay.textContent = expression || '0';
+            mainDisplay.textContent = expression.replace(/\*/g, '×').replace(/\//g, '÷') || '0';
             return;
         }
         
@@ -230,17 +369,17 @@ document.addEventListener('DOMContentLoaded', function() {
                     .replace(/sin\(/g, isDeg ? 'Math.sin(Math.PI/180*' : 'Math.sin(')
                     .replace(/cos\(/g, isDeg ? 'Math.cos(Math.PI/180*' : 'Math.cos(')
                     .replace(/tan\(/g, isDeg ? 'Math.tan(Math.PI/180*' : 'Math.tan(')
-                    .replace(/(\d+)!/g, (match, n) => `factorial(${n})`);
+                    .replace(/(\d+\.?\d*|\([^)]+\))!/g, (match, n) => `factorial(${n})`); // Updated factorial regex
 
                 const result = new Function('factorial', `return ${evalExpression}`)(factorial);
                 
                 if (isNaN(result) || !isFinite(result)) {
                     mainDisplay.textContent = 'Error';
+                    expression = '';
                 } else {
-                    // Round to a reasonable number of decimal places to avoid floating point issues
                     mainDisplay.textContent = parseFloat(result.toPrecision(14));
+                    expression = mainDisplay.textContent;
                 }
-                expression = mainDisplay.textContent;
 
             } catch (error) {
                 mainDisplay.textContent = 'Error';
@@ -257,8 +396,15 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // Handle initial '0' or error state
-        if (mainDisplay.textContent === '0' || mainDisplay.textContent === 'Error') {
+        if (expression === '0' || mainDisplay.textContent === 'Error') {
              expression = '';
+        }
+        
+        // Prevent multiple operators in a row, etc. (simple validation)
+        const lastChar = expression.slice(-1);
+        const operators = ['+', '-', '*', '/', '^', '%'];
+        if (operators.includes(lastChar) && operators.includes(value)) {
+            expression = expression.slice(0, -1);
         }
 
         expression += value;

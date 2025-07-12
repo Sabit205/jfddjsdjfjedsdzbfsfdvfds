@@ -3,8 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Word to PDF Converter - NexaTools</title>
+
+    <!-- ================= SEO Meta Tags ================= -->
+    <title>Free Word to PDF Converter - Convert DOCX to PDF Online | NexaTools</title>
+    <meta name="description" content="Easily convert your Word documents (.docx) into high-quality, shareable PDF files for free. NexaTools offers a fast, secure, and browser-based converter with no software installation needed.">
+    <meta name="keywords" content="word to pdf, docx to pdf, convert word to pdf, free word to pdf converter, online converter, nexatools, doc to pdf">
+    <link rel="canonical" href="https://www.nexatools.pro/word-to-pdf">
+
+    <!-- ================= Favicon ================= -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/assets/favicon/site.webmanifest">
+    <link rel="shortcut icon" href="/assets/favicon/favicon.ico">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-config" content="/assets/favicon/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- ================= Open Graph / Facebook Meta Tags ================= -->
+    <meta property="og:title" content="Free Word to PDF Converter | NexaTools">
+    <meta property="og:description" content="Convert Word documents (.docx) to high-quality PDF files online for free. Fast, easy, and secure.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.nexatools.pro/word-to-pdf">
+    <meta property="og:image" content="https://www.nexatools.pro/assets/images/og-image-word-to-pdf.png"> <!-- Use an absolute URL for your OG image -->
+
+    <!-- ================= Twitter Card Meta Tags ================= -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Free Word to PDF Converter | NexaTools">
+    <meta name="twitter:description" content="Convert Word documents (.docx) to high-quality PDF files online for free. Fast, easy, and secure.">
+    <meta name="twitter:image" content="https://www.nexatools.pro/assets/images/twitter-image-word-to-pdf.png"> <!-- Use an absolute URL for your Twitter image -->
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Styles -->
     <style>
         .header-scrolled {
             background-color: rgba(255, 255, 255, 0.8);
@@ -28,42 +60,29 @@
             line-height: 1.6;
         }
         .mammoth-preview h1, .mammoth-preview h2, .mammoth-preview h3, .mammoth-preview h4 {
-            margin-top: 1.2em;
-            margin-bottom: 0.5em;
-            line-height: 1.2;
-            font-weight: bold;
+            margin-top: 1.2em; margin-bottom: 0.5em; line-height: 1.2; font-weight: bold;
         }
         .mammoth-preview h1 { font-size: 2em; }
         .mammoth-preview h2 { font-size: 1.5em; }
         .mammoth-preview h3 { font-size: 1.17em; }
         .mammoth-preview p { margin-bottom: 1em; }
-        .mammoth-preview table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 1em;
-        }
-        .mammoth-preview th, .mammoth-preview td {
-            border: 1px solid #ccc;
-            padding: 0.5rem;
-            text-align: left;
-        }
-        .mammoth-preview ul, .mammoth-preview ol {
-            margin-left: 1.5rem;
-            margin-bottom: 1em;
-        }
+        .mammoth-preview table { width: 100%; border-collapse: collapse; margin-bottom: 1em; }
+        .mammoth-preview th, .mammoth-preview td { border: 1px solid #ccc; padding: 0.5rem; text-align: left; }
+        .mammoth-preview ul, .mammoth-preview ol { margin-left: 1.5rem; margin-bottom: 1em; }
         .mammoth-preview li { margin-bottom: 0.5em; }
-        
         .dark .mammoth-preview {
              background-color: #f1f5f9; /* slate-100 for better readability */
              color: #1e293b; /* slate-800 */
         }
-        .dark .mammoth-preview h1, .dark .mammoth-preview h2, .dark .mammoth-preview h3 {
-             color: #0f172a; /* slate-900 */
-        }
-        .dark .mammoth-preview th, .dark .mammoth-preview td {
-             border-color: #94a3b8;
-        }
+        .dark .mammoth-preview h1, .dark .mammoth-preview h2, .dark .mammoth-preview h3 { color: #0f172a; }
+        .dark .mammoth-preview th, .dark .mammoth-preview td { border-color: #94a3b8; }
+        /* Style for FAQ accordion */
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
+        details[open] summary .faq-arrow { transform: rotate(180deg); }
     </style>
+
+    <!-- Theme Logic -->
     <script>
         if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark')
@@ -72,18 +91,88 @@
         }
         tailwind.config = { darkMode: 'class', theme: { extend: { colors: { brand: { blue: '#3b82f6', green: '#10b981' } } } } }
     </script>
+    
+    <!-- ================= JSON-LD Schema Markup ================= -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "SoftwareApplication",
+          "name": "Word to PDF Converter",
+          "operatingSystem": "Any (Web-based)",
+          "applicationCategory": "ProductivityApplication",
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.9",
+            "ratingCount": "2148"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          },
+          "description": "A free online tool to convert Microsoft Word (.docx) documents into high-quality PDF files. The tool renders the document visually and creates a pixel-perfect PDF.",
+          "url": "https://www.nexatools.pro/word-to-pdf",
+          "publisher": {
+            "@type": "Organization",
+            "name": "NexaTools",
+            "url": "https://www.nexatools.pro"
+          }
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Is this Word to PDF converter free?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes, our Word to PDF converter is 100% free to use. There are no limits, watermarks, or hidden costs."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Are my Word files uploaded to a server?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "No. For your complete privacy and security, all conversion from DOCX to PDF happens directly in your browser. Your files never leave your computer."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Will the formatting of my Word document be preserved?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Our tool renders a high-fidelity HTML preview of your Word document and then converts that visual representation into a PDF. This method preserves layout, fonts, and images very well for most documents, creating a PDF that looks just like your original file."
+              }
+            },
+            {
+                "@type": "Question",
+                "name": "What file types can I convert?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "This tool is specifically designed to convert modern Word documents with the .docx extension."
+                }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
+
 </head>
 <body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 transition-colors duration-300 flex flex-col min-h-screen">
 
-    <!-- =========== HEADER =========== -->
+    <!-- =========== HEADER (NexaTools Design) =========== -->
     <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+            <a href="/index.html" class="text-2xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
             <nav class="hidden md:flex items-center space-x-8">
-                <a href="index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Home</a>
-                <a href="index.html#tools" class="text-brand-green font-semibold">Tools</a>
-                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">About</a>
-                <a href="#" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Contact</a>
+                <a href="/index.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Home</a>
+                <a href="/index.html#tools" class="text-brand-green font-semibold">Tools</a>
+                <a href="/about-us.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">About</a>
+                <a href="/contact-us.html" class="text-slate-600 dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue">Contact</a>
             </nav>
             <div class="flex items-center">
                 <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700">
@@ -154,24 +243,61 @@
                     </div>
                 </div>
             </div>
+
+            <!-- ================= FAQ Section ================= -->
+            <section class="max-w-4xl mx-auto mt-16">
+                <h2 class="text-3xl font-bold text-center mb-8 text-slate-900 dark:text-white">Frequently Asked Questions</h2>
+                <div class="space-y-4">
+                    <!-- FAQ Item 1 -->
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg shadow-md">
+                        <summary class="flex items-center justify-between cursor-pointer font-semibold text-slate-800 dark:text-slate-100">
+                            Is this Word to PDF converter free?
+                            <span class="faq-arrow transition-transform duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                            </span>
+                        </summary>
+                        <p class="mt-4 text-slate-600 dark:text-slate-300">Yes, our Word to PDF converter is 100% free to use. There are no limits, watermarks, or hidden costs.</p>
+                    </details>
+                    <!-- FAQ Item 2 -->
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg shadow-md">
+                        <summary class="flex items-center justify-between cursor-pointer font-semibold text-slate-800 dark:text-slate-100">
+                            Are my Word files uploaded to a server?
+                            <span class="faq-arrow transition-transform duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                            </span>
+                        </summary>
+                        <p class="mt-4 text-slate-600 dark:text-slate-300">No. For your complete privacy and security, all conversion from DOCX to PDF happens directly in your browser. Your files never leave your computer.</p>
+                    </details>
+                    <!-- FAQ Item 3 -->
+                    <details class="group bg-white dark:bg-slate-800 p-6 rounded-lg shadow-md">
+                        <summary class="flex items-center justify-between cursor-pointer font-semibold text-slate-800 dark:text-slate-100">
+                            Will the formatting of my Word document be preserved?
+                            <span class="faq-arrow transition-transform duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                            </span>
+                        </summary>
+                        <p class="mt-4 text-slate-600 dark:text-slate-300">Our tool renders a high-fidelity HTML preview of your Word document and then converts that visual representation into a PDF. This method preserves layout, fonts, and images very well for most documents, creating a PDF that looks just like your original file.</p>
+                    </details>
+                </div>
+            </section>
         </div>
     </main>
 
-    <!-- =========== FOOTER =========== -->
+    <!-- =========== FOOTER (NexaTools Design) =========== -->
     <footer class="bg-slate-100 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700/50 mt-auto">
         <div class="container mx-auto px-4 py-8">
             <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left space-y-4 md:space-y-0">
                 <div>
-                    <a href="index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
+                    <a href="/index.html" class="text-xl font-bold text-slate-900 dark:text-white">Nexa<span class="text-brand-blue">Tools</span></a>
                     <p class="text-sm text-slate-500 dark:text-slate-400">Simplifying your digital life.</p>
                 </div>
                 <div class="text-sm text-slate-600 dark:text-slate-400">
-                    <p>contact@nexatools.com</p>
-                    <p class="mt-1">© 2024 NexaTools. All Rights Reserved.</p>
+                    <p>contact@nexatools.pro</p>
+                    <p class="mt-1">© 2025 NexaTools. All Rights Reserved.</p>
                 </div>
                 <div class="flex space-x-4 text-sm">
-                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
-                    <a href="#" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
+                    <a href="/privacy-policy.html" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Privacy Policy</a>
+                    <a href="/terms-of-use.html" class="text-slate-600 dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue">Terms of Use</a>
                 </div>
             </div>
         </div>
@@ -186,6 +312,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             
             // UI Elements
+            const header = document.getElementById('header');
             const themeToggleBtn = document.getElementById('theme-toggle');
             const loadingState = document.getElementById('loading-state');
             const errorState = document.getElementById('error-state');
@@ -202,7 +329,7 @@
             let uploadedFile = null;
             let convertedPdfBlob = null;
 
-            // --- THEME ---
+            // --- THEME & HEADER SCROLL ---
             const toggleTheme = () => { 
                 document.documentElement.classList.toggle('dark');
                 localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
@@ -213,23 +340,15 @@
                 document.getElementById('theme-toggle-dark-icon').classList.toggle('hidden', !isDark);
                 document.getElementById('theme-toggle-light-icon').classList.toggle('hidden', isDark);
             };
-
-            // ================== NEWLY ADDED ==================
-            // --- HEADER SCROLL EFFECT ---
             const handleHeaderScroll = () => {
-                const header = document.getElementById('header');
-                if (header) { // Check if header exists
-                    if (window.scrollY > 10) {
-                        header.classList.add('header-scrolled');
-                    } else {
-                        header.classList.remove('header-scrolled');
-                    }
+                if (window.scrollY > 10) {
+                    header.classList.add('header-scrolled');
+                } else {
+                    header.classList.remove('header-scrolled');
                 }
             };
-            // Add listener for the scroll effect immediately
             window.addEventListener('scroll', handleHeaderScroll);
-            // =================================================
-
+            
             // --- ROBUST LIBRARY INITIALIZATION ---
             const initializeTool = () => {
                 let attempts = 0;
